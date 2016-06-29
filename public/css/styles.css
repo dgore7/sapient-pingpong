@@ -68,6 +68,9 @@ h2, h3{
 #signup-btn {
   background-color: #DE2728;
 }
+#back-btn {
+  background-color: #DE2728; 
+}
 @media only screen and (max-width: 768px) {
   .container {
     width: 20em;
