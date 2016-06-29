@@ -2,13 +2,13 @@ html {
   height: 100%;
 }
 body {
-  /*background-color: #1D1D1D; */
+  background-color: #1D1D1D;
   min-height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-span {
+#error {
   color: red;
 }
 h2, h3{
