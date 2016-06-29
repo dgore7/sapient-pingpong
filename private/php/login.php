@@ -24,7 +24,7 @@
     if ($rows == 1) {
       // Login successful!
       $_SESSION['login_user'] = $username;
-      header('location: profile.php');
+      header('location: profile');
     } else {
       $error = "Invalid username or password!";
     }
