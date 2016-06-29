@@ -1,13 +1,13 @@
 <?php
-  $link = mysqli_connect("localhost", "root", "sapient", "pingpong");
+  include_once('dbconfig.php');
+
   session_start();  
 
   $user_check = $_SESSION['login_user'];
-  $ses_sql = mysqli_query($link, "select username from login where username = '$user_check'");
+  $ses_sql = mysqli_query($db_link, "SELECT username FROM login WHERE username = '$user_check'");
   $row = mysqli_fetch_assoc($ses_sql);
   $login_session = $row['username'];
   if (!isset($login_session)) {
-    mysqli_close($link);
     header('location: index.php');
   }
 ?>
