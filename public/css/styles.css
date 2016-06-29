@@ -1,4 +1,3 @@
-<<<<<<< HEAD:public/css/styles.css
 html {
   height: 100%;
 }
@@ -70,7 +69,7 @@ h2, h3{
   background-color: #DE2728;
 }
 #back-btn {
-  background-color: #DE2728; 
+  background-color: #DE2728;
 }
 @media only screen and (max-width: 768px) {
   .container {
@@ -82,7 +81,7 @@ html {
   height: 100%;
 }
 body {
-  background-color: #1D1D1D; 
+  background-color: #1D1D1D;
   min-height: 100%;
   display: flex;
   justify-content: center;
@@ -153,4 +152,3 @@ h2, h3{
     width: 20em;
   }
 }
->>>>>>> master:public/css/styles.css

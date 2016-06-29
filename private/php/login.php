@@ -5,10 +5,10 @@
   $error = '';
 
   // Quit if "Login" button was not clicked
-  if (isset($_POST['signup'])) {
-    header('location: signup.php');
-    return;
-  }
+  // if (isset($_POST['signup'])) {
+  //   header('location: signup.php');
+  //   return;
+  // }
   if (!isset($_POST['login'])) {
     return;
   }
