@@ -12,11 +12,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sapient Ping-Pong</title>
-<<<<<<< HEAD:private/php/index.php
     <link rel="stylesheet" href="css/styles.css" media="screen" title="no title" charset="utf-8">
-=======
     <link rel="stylesheet" href="public/css/styles.css" media="screen" title="no title" charset="utf-8">
->>>>>>> master:index.php
     <link href='https://fonts.googleapis.com/css?family=Raleway:400,900' rel='stylesheet' type='text/css'>
   </head>
   <body>
