@@ -1,6 +1,6 @@
-
 var loaded = false;
 var loader;
+var options;
 
 $(document).ready(function () {
   loader = $("#loader");
@@ -13,6 +13,19 @@ $(document).ready(function () {
 
   }
 });
+
+/* login page */
+var addLoginButtonListener = function() {
+  $("#login-btn").click(function (e) {
+    e.preventDefault();
+    loader.load("xml/profile.html",function () {
+      optionsForm = $("#options-form");
+      optionsForm.toggle();
+      addOptionsButtonListener();
+
+    });
+  });
+};
 
 var addSignUpButtonListener = function() {
   $("#signup-btn").click(function(e) {
@@ -31,7 +44,9 @@ var addSignUpButtonListener = function() {
     });
   });
 };
+/*=======================================*/
 
+/* signup page */
 var addBackButtonListener = function() {
   $("#back-btn").click(function(evt) {
     evt.preventDefault();
@@ -46,18 +61,18 @@ var addBackButtonListener = function() {
     });
   });
 };
-
-var addLoginButtonListener = function() {
-  $("#login-btn").click(function (e) {
-    e.preventDefault();
-    loader.load("xml/profile.html");
-  });
-};
-
-
 var addRegisterButtonListener = function () {
-  console.log(('#register-btn'));
+  console.log($('#register-btn'));
   $("#register-btn").click(function (e) {
     e.preventDefault();
   });
 };
+/*=======================================*/
+
+/* profile page */
+var addOptionsButtonListener = function() {
+  $("#options-btn").click(function(e) {
+    optionsForm.animate({height:"toggle"});
+  });
+};
+/*=======================================*/
