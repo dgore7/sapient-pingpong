@@ -3,7 +3,24 @@
   <img src="http://placekitten.com/g/250/250" alt="profile pic" />
   <h4>{{name}}</h4>
   <h5>{{record}}</h5>
-  <form class="" action="#" method="post">
+  <form id="options-form" action="" method="post">
+    <div class="form-grp">
+      <label>Score to win</label>
+      <select class="score-option" name="score">
+        <option value="21">21</option>
+        <option value="15">15</option>
+        <option value="11">11</option>
+      </select>
+    </div>
+    <div class="form-grp">
+      <label>win by 2</label>
+      <input type="checkbox" name="name" value="win by 2">
+    </div>
+
+    <div class="form-grp">
+      <label>teams</label>
+      <input type="checkbox" name="name" value="teams">
+    </div>
 
   </form>
   <div class="form-btns">

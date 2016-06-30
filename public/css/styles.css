@@ -98,6 +98,19 @@ h4 {
   margin-top: .75em;
   margin-bottom: 0em;
 }
+
 h5 {
   margin: .45em;
+}
+
+.form-grp {
+  display: inline;
+  width: 12em;
+}
+
+.form-grp > input, .form-grp > select {
+  float: right;
+}
+.form-grp > label {
+  float: left;
 }
