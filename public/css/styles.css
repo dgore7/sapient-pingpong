@@ -3,7 +3,6 @@ html {
 }
 body {
   background-color: #1D1D1D;
-  min-height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,23 +11,31 @@ body {
   color: red;
   text-align: center;
 }
-h2, h3{
+h2, h3 {
   font-family: 'Raleway', sans-serif;
   font-weight: 900;
-  -webkit-transform:scale(2,1.5); /* Safari and Chrome */
-  -moz-transform:scale(2,1.5); /* Firefox */
-  -ms-transform:scale(2,1.5); /* IE 9 */
-  -o-transform:scale(2,1.5); /* Opera */
   text-align: center;
+  -webkit-transform:scale(1,0.85); /* Safari and Chrome */
+  -moz-transform:scale(1,0.85); /* Firefox */
+  -ms-transform:scale(1,0.85); /* IE 9 */
+  -o-transform:scale(1,0.85); /* Opera */
   color: #DE2728;
-  margin: 10px;
+  margin: 2px;
 }
+
+h2 {
+  font-size: 36pt;
+}
+
+h3 {
+  font-size: 24pt;
+}
+
 .container {
   padding: 2em 3em 3em 3em;
   border-radius: 2%;
   background-color: #C7C7C7;
   margin-bottom: 2em;
-  width: 14em;
 }
 
 form > input {
