@@ -2,33 +2,38 @@
   include_once('dbconfig.php');
 
   session_start();
-  $error = '';
+  $error_msg = "";
 
   // Quit if "Login" button was not clicked
-  // if (isset($_POST['signup'])) {
-  //   header('location: signup.php');
-  //   return;
-  // }
   if (!isset($_POST['login'])) {
     return;
   }
 
-  // Attempt to log in if "username" and "password" fields are not empty
-  if (!empty($_POST['username']) && !empty($_POST['password'])) {
-    $username = mysqli_real_escape_string($db_link, stripslashes($_POST['username']));
-    $password = mysqli_real_escape_string($db_link, stripslashes($_POST['password']));
+  // Get raw username and password
+  $username = $_POST['username'];
+  $password = $_POST['password'];
 
-    $result = mysqli_query($db_link, "SELECT * FROM login WHERE username = '$username' AND password = '$password'");
-    $rows = mysqli_num_rows($result);
+  if (empty($username) || empty($password)) {
+    $error_msg = "Invalid username or password!";
+    return;
+  }
 
-    if ($rows == 1) {
-      // Login successful!
-      $_SESSION['login_user'] = $username;
-      header('location: profile');
-    } else {
-      $error = "Invalid username or password!";
-    }
+  // Sanitize username and password
+  $username = mysqli_real_escape_string($db_link, stripslashes($username));
+  $password = mysqli_real_escape_string($db_link, stripslashes($password));
+
+  // Query database
+  $query = sprintf("SELECT * FROM %s WHERE username = '%s' AND password = '%s' LIMIT 1",
+      DB_USERS_TABLE, $username, $password);
+  $result = mysqli_query($db_link, $query);
+  $rows = mysqli_num_rows($result);
+
+  // TODO: password hash check
+
+  // Check for succesful login
+  if ($rows == 1) {
+    $error_msg = "Login success!";
   } else {
-    $error = "Invalid username or password!";
+    $error_msg = "Invalid username or password!";
   }
 ?>

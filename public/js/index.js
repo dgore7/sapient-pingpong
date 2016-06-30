@@ -5,7 +5,7 @@ var loader;
 $(document).ready(function () {
   loader = $("#loader");
   if (!loaded) {
-    loader.load("xml/index.html",function () {
+    loader.load("xml/login.html",function () {
       loaded= true;
       addLoginButtonListener();
       addSignUpButtonListener();
@@ -39,8 +39,7 @@ var addBackButtonListener = function() {
       height:"toggle",
       opacity: 0.25
     },function () {
-      loader.load("xml/index.html",function () {
-        addLoginButtonListener();
+      loader.load("xml/login.html",function () {
         addSignUpButtonListener();
         loader.animate({height:"toggle", opacity:1});
       });

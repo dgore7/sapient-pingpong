@@ -1,5 +1,6 @@
 <?php
   include('login.php');
+  include('signup.php');
 
   if (isset($_SESSION['login_user'])) {
       header('location: profile');
@@ -22,8 +23,8 @@
       <div id="loader">
 
       </div>
-      <!-- signup -->
-      <script   src="https://code.jquery.com/jquery-3.0.0.min.js"   integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
+      <p id="error"><?php echo $error_msg; ?></p>
+      <script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
       <script type="text/javascript" src="/js/index.js"></script>
     </div>
   </body>
