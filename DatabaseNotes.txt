@@ -1,0 +1,27 @@
+SQL Database Notes and Specifications
+=====================================
+
+>>> General Database Info
+-------------------------
+Database name: 'pingpong'
+
+>>> Tables
+----------
+
+# Table name: 'users'
++----------+--------------+------+----------------+------------------------+
+| Field    | Type         | Null | Extra          | Notes                  |
++----------+--------------+------+----------------+------------------------+
+| id       | INT          | NO   | auto_increment | unique                 |
+| username | VARCHAR(255) | NO   |                | duplicates not allowed |
+| password | VARCHAR(255) | NO   |                | hash                   |
++----------+--------------+------+----------------+------------------------+
+
+# Table name: 'stats'
++--------+------+------+-------+---------+
+| Field  | Type | Null | Extra | Notes   |
++--------+------+------+-------+---------+
+| id     | INT  | NO   |       | user id |
+| wins   | INT  | NO   |       |         |
+| losses | INT  | NO   |       |         |
++--------+------+------+-------+---------+
