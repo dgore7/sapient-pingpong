@@ -2,7 +2,6 @@
   include_once('dbconfig.php');
 
   session_start();
-  $error_msg = "";
 
   // Quit if "Login" button was not clicked
   if (!isset($_POST['login'])) {
@@ -14,7 +13,7 @@
   $password = $_POST['password'];
 
   if (empty($username) || empty($password)) {
-    $error_msg = "Invalid username or password!";
+    echo "fail";
     return;
   }
 
@@ -32,8 +31,8 @@
 
   // Check for succesful login
   if ($rows == 1) {
-    $error_msg = "Login success!";
+    echo "success";
   } else {
-    $error_msg = "Invalid username or password!";
+    echo "fail";
   }
 ?>
