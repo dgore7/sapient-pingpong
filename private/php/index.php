@@ -19,16 +19,10 @@
     <div class="container">
       <h2>Sapient</h2>
       <h3>Ping-Pong</h3>
-      <form class="login-form" action="" method="post">
-        <input type="text" name="username" value="" placeholder="username">
-        <input type="password" name="password" value="" placeholder="password">
-        <div class="form-btns">
-          <input id="login-btn" type="submit" name="login" value="Login">
-          <input id="signup-btn" type="submit" name="signup" value="Sign Up">
-      	</div>
-        <span id="error"><?php echo $error; ?></span>
-      </form>
-      <!-- content -->
+      <div id="loader">
+
+      </div>
+      <!-- signup -->
       <script   src="https://code.jquery.com/jquery-3.0.0.min.js"   integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
       <script type="text/javascript" src="/js/index.js"></script>
     </div>
