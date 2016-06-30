@@ -7,6 +7,7 @@ $(document).ready(function () {
   if (!loaded) {
     loader.load("xml/index.html",function () {
       loaded= true;
+      addLoginButtonListener();
       addSignUpButtonListener();
     });
 
@@ -22,6 +23,7 @@ var addSignUpButtonListener = function() {
     },function () {
       loader.load("xml/signup.html",function () {
         addBackButtonListener();
+        addRegisterButtonListener();
         loader.animate({height:"toggle", opacity:1},function () {
 
         });
@@ -38,11 +40,25 @@ var addBackButtonListener = function() {
       opacity: 0.25
     },function () {
       loader.load("xml/index.html",function () {
+        addLoginButtonListener();
         addSignUpButtonListener();
-        loader.animate({height:"toggle", opacity:1},function () {
-
-        });
+        loader.animate({height:"toggle", opacity:1});
       });
     });
+  });
+};
+
+var addLoginButtonListener = function() {
+  $("#login-btn").click(function (e) {
+    e.preventDefault();
+    loader.load("xml/profile.html");
+  });
+};
+
+
+var addRegisterButtonListener = function () {
+  console.log(('#register-btn'));
+  $("#register-btn").click(function (e) {
+    e.preventDefault();
   });
 };
