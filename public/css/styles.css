@@ -44,7 +44,7 @@ form {
 }
 form > * {
   font-size:16px;
-  margin: 8px;
+  margin: 12px;
 }
 .form-btns {
   display: flex;
@@ -61,8 +61,17 @@ form > * {
   height: 2em;
   cursor: pointer;
 }
-
-#login-btn {
+.form-btns > button, .form-btns > input {
+  background-color: #DE2728;
+  margin: 8px;
+}
+#options-btn {
+  align-self: flex-start;
+}
+#ready-btn {
+  align-self: flex-end;
+}
+/*#login-btn {
   background-color: #DE2728;
 }
 #signup-btn {
@@ -70,9 +79,24 @@ form > * {
 }
 #back-btn {
   background-color: #DE2728;
-}
+}*/
 @media only screen and (max-width: 768px) {
   .container {
     width: 20em;
   }
+}
+
+/* ==profile styling== */
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+h4 {
+  margin-top: .75em;
+  margin-bottom: 0em;
+}
+h5 {
+  margin: .45em;
 }
