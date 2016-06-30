@@ -8,6 +8,6 @@
   $row = mysqli_fetch_assoc($ses_sql);
   $login_session = $row['username'];
   if (!isset($login_session)) {
-    header('location: index.php');
+    header('location: login');
   }
 ?>
