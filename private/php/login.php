@@ -4,9 +4,10 @@
   session_start();
 
   // Quit if "Login" button was not clicked
-  if (!isset($_POST['login'])) {
-    return;
-  }
+  // if (!isset($_POST['login'])) {
+  //   echo "foo";
+  //   return;
+  // }
 
   // Get raw username and password
   $username = $_POST['username'];
@@ -31,7 +32,12 @@
 
   // Check for succesful login
   if ($rows == 1) {
-    echo "success";
+    $_SESSION['login_user'] = $username;
+    // Load profile
+    $file_name = "../public/xml/profile.html";
+    $file = fopen($file_name, "r");
+    $content = fread($file, filesize($file_name));
+    echo $content;
   } else {
     echo "fail";
   }
