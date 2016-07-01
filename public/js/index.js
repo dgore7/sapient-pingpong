@@ -1,6 +1,6 @@
 var loaded = false;
 var loader;
-var options;
+var optionsForm;
 
 $(document).ready(function () {
   loader = $("#loader");
@@ -10,7 +10,6 @@ $(document).ready(function () {
       addLoginButtonListener();
       addSignUpButtonListener();
     });
-
   }
 });
 
@@ -25,19 +24,30 @@ var addLoginButtonListener = function() {
 };
 
 function submitForm() {
+  /* if form passes verification submit form
+     and proceed to login */
   var data = $("#login-form").serialize();
   $.ajax({
     type: 'POST',
     url: 'do-login',
     data: data,
     success: function(response) {
-      if (response == "fail") {
+      if (response == "fail") { // Login failure condition
         console.log("Login fail!");
         $("#error").html("<p>Invalid username or password!</p>");
-      } else {
-        console.log("Login success!");
+      } else { // Succesful login condition
         console.log(response);
-        loader.html(response);
+        loader.animate({height: "toggle", opacity: 0.25}, function () {
+          loader.html(response);
+          optionsForm = $("#options-form");
+          optionsForm.toggle();
+          $("#profile-pic").one("load", function() {
+            // wait for image to load before animation
+            loader.animate({height: "toggle", opacity: 1});// do stuff
+          });
+          addOptionsButtonListener();
+        });
+
       }
     }
   });
@@ -89,7 +99,7 @@ var addRegisterButtonListener = function () {
 /* profile page */
 var addOptionsButtonListener = function() {
   $("#options-btn").click(function(e) {
-    optionsForm.animate({height:"toggle"});
+    optionsForm.animate({height:"toggle",opacity:1});
   });
 };
 /*=======================================*/
