@@ -16,15 +16,32 @@ $(document).ready(function () {
 /* login page */
 var addLoginButtonListener = function() {
   $("#login-btn").click(function (e) {
-    e.preventDefault();
-    loader.load("xml/profile.html",function () {
-      optionsForm = $("#options-form");
-      optionsForm.toggle();
-      addOptionsButtonListener();
-
+    // e.preventDefault();
+    $("#login-form").validate({
+      submitHandler: submitForm
     });
   });
 };
+
+function submitForm() {
+  var data = $("#login-form").serialize();
+  $.ajax({
+    type: 'POST',
+    url: 'do-login',
+    data: data,
+    success: function(response) {
+      if (response == "fail") {
+        console.log("Login fail!");
+        $("#error").html("<p>Invalid username or password!</p>");
+      } else {
+        console.log("Login success!");
+        console.log(response);
+        loader.html(response);
+      }
+    }
+  });
+  return false;
+}
 
 var addSignUpButtonListener = function() {
   $("#signup-btn").click(function(e) {
