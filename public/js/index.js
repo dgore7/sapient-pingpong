@@ -73,14 +73,29 @@ var loadProfilePic = function() {
 };
 
 var animatePage = function(pageToLoad, listeners) {
-  var closeOptions = { height: "toggle", width: "toggle", opacity: 0.25 };
+  var closeOptions = { height: "toggle", width: "toggle", opacity: 0 };
   var openOptions = { height: "toggle", width: "toggle", opacity: 1 };
+  var children = loader.children();
+  while (children.length != 0) {
+    children.each(function() {
+      $(this).animate(closeOptions);
+    });
+    children = children.children();
+  }
   loader.animate(closeOptions, function() {
     loader.load(pageToLoad, function() {
       for (var i = 0; i < listeners.length; i++) {
         listeners[i]();
       }
       loader.animate(openOptions);
+      children = loader.children();
+      while (children.length != 0) {
+        children.each(function() {
+          $(this).toggle();
+          $(this).animate(openOptions);
+        });
+        children = children.children();
+      }
     });
   });
 };
