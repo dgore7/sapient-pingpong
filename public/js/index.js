@@ -2,104 +2,126 @@ var loaded = false;
 var loader;
 var optionsForm;
 
+/* Entry point. */
 $(document).ready(function () {
   loader = $("#loader");
-  if (!loaded) {
-    loader.load("xml/login.html",function () {
-      loaded= true;
-      addLoginButtonListener();
-      addSignUpButtonListener();
-    });
+
+  // Quit if page already loaded
+  if (loaded) {
+    return;
   }
+
+  // Get session status and decide which page to load
+  $.ajax({
+    type: 'GET',
+    url: 'session',
+    success: function(response) {
+      if (response === "true") {
+        loadProfile();
+      } else {
+        // Load login page
+        animatePage("xml/login.html",
+            [ addLoginButtonListener, addSignUpButtonListener ]);
+      }
+      loaded = true;
+    }
+  });
 });
 
-/* login page */
-var addLoginButtonListener = function() {
-  $("#login-btn").click(function (e) {
-    // e.preventDefault();
-    $("#login-form").validate({
-      submitHandler: submitForm
-    });
-  });
-};
+/* ====== HELPER FUNCTIONS ====== */
 
-function submitForm() {
-  /* if form passes verification submit form
-     and proceed to login */
+/* If form passes verification submit form and proceed to login */
+var submitLoginForm = function() {
   var data = $("#login-form").serialize();
   $.ajax({
     type: 'POST',
     url: 'do-login',
     data: data,
     success: function(response) {
-      if (response == "fail") { // Login failure condition
-        console.log("Login fail!");
+      if (response === "false") {
+        // Login failure condition
         $("#error").html("<p>Invalid username or password!</p>");
-      } else { // Succesful login condition
-        console.log(response);
-        loader.animate({height: "toggle", opacity: 0.25}, function () {
-          loader.html(response);
-          optionsForm = $("#options-form");
-          optionsForm.toggle();
-          $("#profile-pic").one("load", function() {
-            // wait for image to load before animation
-            loader.animate({height: "toggle", opacity: 1});// do stuff
-          });
-          addOptionsButtonListener();
-        });
-
+      } else {
+        // Succesful login condition
+        $("#error").html("");
+        loadProfile();
       }
     }
   });
-  return false;
-}
+};
 
-var addSignUpButtonListener = function() {
-  $("#signup-btn").click(function(e) {
-    e.preventDefault();
-    loader.animate({
-      height:"toggle",
-      opacity: 0.25
-    },function () {
-      loader.load("xml/signup.html",function () {
-        addBackButtonListener();
-        addRegisterButtonListener();
-        loader.animate({height:"toggle", opacity:1},function () {
-
-        });
+var loadProfile = function() {
+  loader.animate(
+    {height: "toggle", opacity: 0.25},
+    function() {
+      loader.load("xml/profile.html", function() {
+        optionsForm = $("#options-form");
+        addOptionsButtonListener();
+        // TODO: addReadyButtonListener();
+        optionsForm.toggle();
+        loadProfilePic();
       });
+    }
+  );
+};
+
+var loadProfilePic = function() {
+  var img = $("#profile-pic");
+  img.one("load", function() {
+    loader.animate({ height: "toggle", width: "toggle", opacity: 1 });
+  });
+};
+
+var animatePage = function(pageToLoad, listeners) {
+  var closeOptions = { height: "toggle", width: "toggle", opacity: 0.25 };
+  var openOptions = { height: "toggle", width: "toggle", opacity: 1 };
+  loader.animate(closeOptions, function() {
+    loader.load(pageToLoad, function() {
+      for (var i = 0; i < listeners.length; i++) {
+        listeners[i]();
+      }
+      loader.animate(openOptions);
     });
   });
 };
-/*=======================================*/
 
-/* signup page */
+/* ====== BUTTON LISTENERS ====== */
+
+/* --- login page --- */
+var addLoginButtonListener = function() {
+  $("#login-btn").click(function (e) {
+    $("#login-form").validate({
+      submitHandler: submitLoginForm
+    });
+  });
+};
+
+var addSignUpButtonListener = function() {
+  $("#signup-btn").click(function(evt) {
+    evt.preventDefault();
+    animatePage("xml/signup.html",
+        [ addBackButtonListener, addRegisterButtonListener ]);
+  });
+};
+
+/* --- signup page --- */
 var addBackButtonListener = function() {
   $("#back-btn").click(function(evt) {
     evt.preventDefault();
-    loader.animate({
-      height:"toggle",
-      opacity: 0.25
-    },function () {
-      loader.load("xml/login.html",function () {
-        addSignUpButtonListener();
-        loader.animate({height:"toggle", opacity:1});
-      });
-    });
+    animatePage("xml/login.html", [ addSignUpButtonListener ]);
   });
 };
+
 var addRegisterButtonListener = function () {
   console.log($('#register-btn'));
   $("#register-btn").click(function (e) {
     e.preventDefault();
   });
 };
-/*=======================================*/
 
-/* profile page */
+/* --- profile page --- */
 var addOptionsButtonListener = function() {
   $("#options-btn").click(function(e) {
     optionsForm.animate({height:"toggle",opacity:1});
   });
 };
-/*=======================================*/
