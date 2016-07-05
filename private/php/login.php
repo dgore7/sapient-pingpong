@@ -34,7 +34,7 @@
   if ($rows == 1) {
     $far_in_the_future = pow(2, 31);
     $_SESSION['login_user'] = $username;
-    setcookie("login_user", $username, $far_in_the_future);
+    setcookie("login_user", $username, $far_in_the_future, "/");
     echo "true";
   } else {
     echo "false";
