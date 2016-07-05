@@ -14,7 +14,7 @@
   $password = $_POST['password'];
 
   if (empty($username) || empty($password)) {
-    echo "fail";
+    echo "false";
     return;
   }
 
@@ -32,13 +32,11 @@
 
   // Check for succesful login
   if ($rows == 1) {
+    $far_in_the_future = pow(2, 31);
     $_SESSION['login_user'] = $username;
-    // Load profile
-    $file_name = "../public/xml/profile.html";
-    $file = fopen($file_name, "r");
-    $content = fread($file, filesize($file_name));
-    echo $content;
+    setcookie("login_user", $username, $far_in_the_future);
+    echo "true";
   } else {
-    echo "fail";
+    echo "false";
   }
 ?>

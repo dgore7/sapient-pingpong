@@ -9,8 +9,8 @@
     case "login":
       include("../private/php/index.php");
       break;
-    case "profile":
-      include("../private/php/profile.php");
+    case "session":
+      include("../private/php/session.php");
       break;
     default:
       include("404.php");
