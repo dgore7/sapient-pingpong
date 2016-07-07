@@ -38,6 +38,9 @@ var submitLoginForm = function() {
     url: 'do-login',
     data: data,
     success: function(response) {
+      var jsonResponse = JSON.parse(response);
+      console.log(jsonResponse.status);
+      console.log(jsonResponse.message);
       if (response === "false") {
         // Login failure condition
         $("#error").html("<p>Invalid username or password!</p>");
@@ -104,7 +107,7 @@ var animatePage = function(pageToLoad, listeners) {
 
 /* --- login page --- */
 var addLoginButtonListener = function() {
-  $("#login-btn").click(function (e) {
+  $("#login-btn").click(function (evt) {
     $("#login-form").validate({
       submitHandler: submitLoginForm
     });
@@ -114,6 +117,7 @@ var addLoginButtonListener = function() {
 var addSignUpButtonListener = function() {
   $("#signup-btn").click(function(evt) {
     evt.preventDefault();
+    $("#error").html("");
     animatePage("xml/signup.html",
         [ addBackButtonListener, addRegisterButtonListener ]);
   });
@@ -123,20 +127,22 @@ var addSignUpButtonListener = function() {
 var addBackButtonListener = function() {
   $("#back-btn").click(function(evt) {
     evt.preventDefault();
-    animatePage("xml/login.html", [ addSignUpButtonListener ]);
+    $("#error").html("");
+    animatePage("xml/login.html",
+        [ addLoginButtonListener, addSignUpButtonListener ]);
   });
 };
 
 var addRegisterButtonListener = function () {
   console.log($('#register-btn'));
-  $("#register-btn").click(function (e) {
-    e.preventDefault();
+  $("#register-btn").click(function (evt) {
+    evt.preventDefault();
   });
 };
 
 /* --- profile page --- */
 var addOptionsButtonListener = function() {
-  $("#options-btn").click(function(e) {
+  $("#options-btn").click(function(evt) {
     optionsForm.animate({height:"toggle",opacity:1});
   });
 };

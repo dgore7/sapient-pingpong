@@ -1,20 +1,26 @@
 <?php
   include_once('dbconfig.php');
 
-  session_start();
+  function response_fail($message)
+  {
+    $response = array(
+      "status" => "error",
+      "message" => $message
+    );
+    echo json_encode($response);
+  }
 
-  // Quit if "Login" button was not clicked
-  // if (!isset($_POST['login'])) {
-  //   echo "foo";
-  //   return;
-  // }
+
+  /*  ===== main() ===== */
+
+  session_start();
 
   // Get raw username and password
   $username = $_POST['username'];
   $password = $_POST['password'];
 
   if (empty($username) || empty($password)) {
-    echo "false";
+    response_fail("Invalid username or password.");
     return;
   }
 
@@ -31,12 +37,21 @@
   // TODO: password hash check
 
   // Check for succesful login
-  if ($rows == 1) {
-    $far_in_the_future = pow(2, 31);
-    $_SESSION['login_user'] = $username;
-    setcookie("login_user", $username, $far_in_the_future, "/");
-    echo "true";
-  } else {
-    echo "false";
+  if ($rows != 1) {
+    response_fail("Invalid username or password.");
+    return;
   }
+
+  // Set login cookie and session variable
+  $far_in_the_future = pow(2, 31);
+  setcookie("login_user", $username, $far_in_the_future, "/");
+  $_SESSION['login_user'] = $username;
+
+
+  $response = array(
+    "status" => "success",
+    "message" => "Login successful.",
+    "user" => $username
+  );
+  echo json_encode($response);
 ?>
