@@ -11,8 +11,12 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var routes = require('./app_server/routes/index');
+<<<<<<< Updated upstream
 var snippetRoutes = require('./app_server/routes/html-snippets');
 // var users = require('./app_server/routes/users');
+=======
+var routesAPI = require('./app_api/routes/index');
+>>>>>>> Stashed changes
 
 var app = express();
 
@@ -68,10 +72,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-
 app.use('/', routes);
 app.use('/snippets', snippetRoutes);
-// app.use('/users', users);
+app.use('/api', routesAPI);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,26 @@
+Routes
+======
+
+API Users
+---------
+GET:      api/users          - Get all users (maybe with token)
+POST:     api/users          - Create new user(s)
+PUT:      api/users          - 405 (not allowed)
+DELETE:   api/users          - 405 (not allowed)
+GET:      api/users/:id      - Get single user
+POST:     api/users/:id      - 405 (not allowed)
+PUT:      api/users/:id      - Update user
+DELETE:   api/users/:id      - Delete user
+
+Login
+-----
+GET:      /login             - Serves the login page
+POST:     /login             - Logs in a user
+
+Register
+--------
+GET:      /register          - Serves the register page
+POST:     /register          - Validate pw, check duplicate name, and call POST:api/users
+
+Session
+-------

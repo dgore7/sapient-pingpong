@@ -1,8 +1,11 @@
 var express = require('express');
 var router = express.Router();
+var users = require('../controllers/users');
 
-// Define API routes as router.{HTTP_METHOD}(string url, function with query logic)
+// router.get('/users', users.getAllUsers);
+router.post('/users', users.createUser);
 
+router.get('/users/:userid', users.getUserByID);
+router.post('/users/:userid', users.send405Response);
 
-// Ask me about this.
 module.exports = router;
