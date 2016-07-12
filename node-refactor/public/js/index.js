@@ -20,7 +20,7 @@ $(document).ready(function () {
         loadProfile();
       } else {
         // Load login page
-        animatePage("xml/login.html",
+        animatePage("snippets/login",
             [ addLoginButtonListener, addSignUpButtonListener ]);
       }
       loaded = true;
@@ -54,7 +54,7 @@ var loadProfile = function() {
   loader.animate(
     {height: "toggle", opacity: 0.25},
     function() {
-      loader.load("xml/profile.html", function() {
+      loader.load("snippets/profile", function() {
         optionsForm = $("#options-form");
         addOptionsButtonListener();
         // TODO: addReadyButtonListener();
@@ -114,7 +114,7 @@ var addLoginButtonListener = function() {
 var addSignUpButtonListener = function() {
   $("#signup-btn").click(function(evt) {
     evt.preventDefault();
-    animatePage("xml/signup.html",
+    animatePage("snippets/signup",
         [ addBackButtonListener, addRegisterButtonListener ]);
   });
 };
@@ -123,7 +123,7 @@ var addSignUpButtonListener = function() {
 var addBackButtonListener = function() {
   $("#back-btn").click(function(evt) {
     evt.preventDefault();
-    animatePage("xml/login.html", [ addSignUpButtonListener ]);
+    animatePage("snippets/login", [ addSignUpButtonListener ]);
   });
 };
 

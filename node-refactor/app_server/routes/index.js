@@ -7,4 +7,8 @@ router.get('/', function(req, res, next) {
   res.sendFile(path.resolve('./app_server/views/index.html'));
 });
 
+router.get('/session', function(req, res, next) {
+  res.send(true);
+});
+
 module.exports = router;
