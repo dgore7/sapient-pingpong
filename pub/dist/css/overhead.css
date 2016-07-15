@@ -1,0 +1,133 @@
+html{
+  width: 100%;
+  height: 100%;
+}
+body {
+  width:inherit;
+  height: inherit;
+}
+#app {
+  width: inherit;
+  height: inherit;
+}
+#app > div {
+  width: inherit;
+  height: inherit;
+}
+.quad-group {
+  background: tomato;
+  width: inherit;
+  height: 100%;
+  display: flex;
+}
+.left-quads, .right-quads {
+  width: 10000%; /* flex-box bug work around */
+  height: inherit;
+}
+.left-quads>*, .right-quads>* {
+  height: 50%;
+  background: #3171BB;
+  border: thick solid white;
+}
+#quad1, #quad2 {
+  align-content: space-around;
+  text-align: center;
+  border-right-color:  #3171BB;
+}
+#quad3, #quad4 {
+  text-align: center;
+  border-left-color:  #3171BB;
+}
+#quad1, #quad3 {
+  border-bottom-width: medium;
+}
+#quad2, #quad4 {
+  border-top-width: medium;
+}
+
+.left-quads {
+  border-right: thick solid black;
+}
+
+.right-quads {
+  border-left: thick solid black;
+}
+h1 {
+  font-size: 180px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+#ball {
+  opacity: 0.25;
+  background: tomato;
+  background: linear-gradient(tomato,orange);
+  position: absolute;
+  left: 10px;
+  top: 50px;
+  width:30px;
+  height:30px;
+  border-radius: 50%;
+  animation-name: pong;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  z-index: 3;
+}
+
+
+@keyframes pong {
+    0%   {}
+    15%  {
+      width:20px;
+      height:20px;
+    }
+    25%  {
+      width:30px;
+      height:30px;
+      left:98%;
+      top: 85%
+    }
+    40%  {
+      width:20px;
+      height:20px;
+    }
+    50%  {
+      width:30px;
+      height:30px;
+      left:10px;
+      top: 90%;
+    }
+    65%  {
+      width:30px;
+      height:30px;
+      width:20px;
+      height:20px;
+    }
+    75%  {
+      width:30px;
+      left: 98%;
+      height:30px;
+      top: 50px;
+    }
+    90%  {
+      width:20px;
+      height:20px;
+    }
+    100% {
+      width:30px;
+      height:30px;
+      left:10;
+      top: 50px;
+    }
+}
