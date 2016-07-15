@@ -21169,16 +21169,17 @@
 	    value: function componentDidMount() {
 	      var _this2 = this;
 
-	      Pusher.logToConsole = true;
+	      //Pusher.logToConsole = true;
 	      this.scoreBoard.bind('update-score', function (message) {
-	        switch (message.clickType) {
-	          case 'single':
-	            message.button === "playerOne" ? _this2.setState({ playerOneScore: _this2.state.playerOneScore + 1 }) : _this2.setState({ playerTwoScore: _this2.state.playerTwoScore + 1 });
+	        switch (message.action) {
+	          case 'increment-score':
+	            console.log(message.player);
+	            message.player === 1 ? _this2.setState({ playerOneScore: _this2.state.playerOneScore + 1 }) : _this2.setState({ playerTwoScore: _this2.state.playerTwoScore + 1 });
 	            break;
-	          case 'double':
-	            message.button === "playerOne" ? _this2.setState({ playerOneScore: _this2.state.playerOneScore - 1 }) : _this2.setState({ playerTwoScore: _this2.state.playerTwoScore - 1 });
+	          case 'decrement-score':
+	            message.player === 1 ? _this2.setState({ playerOneScore: _this2.state.playerOneScore - 1 }) : _this2.setState({ playerTwoScore: _this2.state.playerTwoScore - 1 });
 	            break;
-	          case 'hold':
+	          case 'end-game':
 	            _this2.setState({ playerOneScore: 0, playerTwoScore: 0 });
 	            break;
 	        }
@@ -21205,7 +21206,7 @@
 	            { id: 'quad1' },
 	            _react2.default.createElement(_Profile2.default, {
 	              name: 'Django',
-	              picURL: 'http://placekitten.com/g/250/250' })
+	              picURL: 'http://placekitten.com/g/225/225' })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -21221,7 +21222,7 @@
 	            { id: 'quad3' },
 	            _react2.default.createElement(_Profile2.default, {
 	              name: 'Whiskers',
-	              picURL: 'http://placekitten.com/250/250' })
+	              picURL: 'http://placekitten.com/225/225' })
 	          ),
 	          _react2.default.createElement(
 	            'div',

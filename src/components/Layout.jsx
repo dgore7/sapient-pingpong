@@ -22,20 +22,21 @@ export default class Layout extends React.Component{
   }
 
   componentDidMount() {
-    Pusher.logToConsole = true;
+    //Pusher.logToConsole = true;
     this.scoreBoard.bind('update-score', (message) => {
-      switch (message.clickType) {
-        case 'single':
-          message.button==="playerOne"?
+      switch (message.action) {
+        case 'increment-score':
+          console.log(message.player);
+          message.player===1?
             this.setState({playerOneScore: this.state.playerOneScore+1}):
             this.setState({playerTwoScore: this.state.playerTwoScore+1});
           break;
-        case 'double':
-          message.button==="playerOne"?
+        case 'decrement-score':
+          message.player===1?
             this.setState({playerOneScore: this.state.playerOneScore-1}):
             this.setState({playerTwoScore: this.state.playerTwoScore-1});
           break;
-        case 'hold':
+        case 'end-game':
           this.setState({playerOneScore: 0, playerTwoScore: 0})
           break;
       }
@@ -56,7 +57,7 @@ export default class Layout extends React.Component{
         <div id="quad1">
           <Profile
             name="Django"
-            picURL="http://placekitten.com/g/250/250"/>
+            picURL="http://placekitten.com/g/225/225"/>
         </div>
         <div id="quad2">
           <Score score={this.state.playerOneScore}/>
@@ -66,7 +67,7 @@ export default class Layout extends React.Component{
         <div id="quad3">
           <Profile
             name="Whiskers"
-            picURL="http://placekitten.com/250/250"/>
+            picURL="http://placekitten.com/225/225"/>
         </div>
         <div id="quad4">
           <Score score={this.state.playerTwoScore}/>

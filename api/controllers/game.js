@@ -3,6 +3,8 @@ var router = express.Router();
 var Pusher = require('pusher');
 var secret = require('../../secret');
 
+var debounce = false;
+
 // Initialize physical push-button actions
 // TODO: use map instead?
 var buttonActions = {
@@ -19,6 +21,18 @@ var pusher = new Pusher({
   cluster: 'eu',
   encrypted: true
 });
+
+function onMessage(scoreData, res) {
+  if (!debounce) {
+    debounce = true;
+    pusher.trigger('scoreboard', 'update-score', scoreData);
+    res.json({status: 'ok', message: 'transmit success'});
+
+    setTimeout(function() {
+      debounce = false;
+    }, 1000);
+  }
+}
 
 /*
  * Checks whether data sent from the physical push-button is valid.
@@ -58,6 +72,7 @@ function handleButtonPress(req, res) {
   console.log(req.body);
 
   var data = req.body;
+
   if (!validateButtonData(data)) {
     res.json({status: 'error', message: 'invalid data'});
     res.end();
@@ -70,8 +85,7 @@ function handleButtonPress(req, res) {
   }
 
   console.log(scoreData);
-  pusher.trigger('scoreboard', 'update-score', scoreData);
-  res.json({status: 'ok', message: 'transmit success'});
+  onMessage(scoreData, res);
   res.end();
 }
 
