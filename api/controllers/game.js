@@ -89,13 +89,8 @@ function handleButtonPress(req, res) {
   res.end();
 }
 
-// Handle POST from push-button 1
-router.post('/player1', function(req, res) {
-  handleButtonPress(req, res);
-});
-
-// Handle POST from push-button 2
-router.post('/player2', function(req, res) {
+// Handle POST from push-buttons
+router.post('/scoreboard', function(req, res) {
   handleButtonPress(req, res);
 });
 

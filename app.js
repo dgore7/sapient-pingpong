@@ -3,8 +3,9 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
-const HOST = "10.50.173.32";
-const PORT = 8080;
+// const HOST = "10.50.173.32";
+const HOST = "0.0.0.0";   // 0.0.0.0 should bind to external IP
+const PORT = 80;
 
 var routesAPI = require('./api/routes/index');
 
