@@ -75,7 +75,6 @@ img {
 
 
 #ball {
-  opacity: 0.25;
   background: tomato;
   background: linear-gradient(tomato,orange);
   position: absolute;

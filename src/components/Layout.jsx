@@ -13,6 +13,15 @@ export default class Layout extends React.Component{
     };
   }
 
+  isNewGame() {
+    if (this.state.playerOneScore == 0 && this.state.playerTwoScore == 0) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
   componentWillMount() {
     this.pusher = new Pusher('7478bf1c2d89d2efb9b0', {
       cluster: 'eu',
@@ -73,7 +82,11 @@ export default class Layout extends React.Component{
           <Score score={this.state.playerTwoScore}/>
         </div>
       </div>
-      <div id="ball"></div>
+      {if (isNewGame()) {
+        <div id="ball"></div>
+      }
+
+      }
     </div>);
   }
 }
