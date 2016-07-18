@@ -15,6 +15,6 @@ app.use('/api', routesAPI);
 
 // Server
 var server = http.createServer(app);
-server.listen(PORT, HOST, function() {
+server.listen(PORT/*, HOST, function() {
   console.log("Server listening on http://%s:%s", HOST, PORT);
-});
+}*/);
