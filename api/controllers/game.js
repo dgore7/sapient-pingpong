@@ -69,7 +69,7 @@ function validateButtonData(data) {
  */
 function handleButtonPress(req, res) {
   res.type('json');
-  console.log(req.body);
+  console.log(req);
 
   var data = req.body;
 
@@ -91,6 +91,7 @@ function handleButtonPress(req, res) {
 
 // Handle PUT from push-buttons
 router.put('/scoreboard', function(req, res) {
+
   handleButtonPress(req, res);
 });
 
