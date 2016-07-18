@@ -69,7 +69,7 @@ function validateButtonData(data) {
  */
 function handleButtonPress(req, res) {
   res.type('json');
-  console.log(req);
+  console.log(req.body);
 
   var data = req.body;
 
