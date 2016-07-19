@@ -3,8 +3,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
-// const HOST = "10.50.173.32";
-const HOST = "0.0.0.0";   // 0.0.0.0 should bind to external IP
 const PORT = 80;
 
 var routesAPI = require('./api/routes/index');
@@ -15,6 +13,4 @@ app.use('/api', routesAPI);
 
 // Server
 var server = http.createServer(app);
-server.listen(PORT, HOST, function() {
-  console.log("Server listening on http://%s:%s", HOST, PORT);
-});
+server.listen(PORT);
