@@ -1,6 +1,5 @@
 import React from 'react';
-import Profile from './Profile';
-import Score from './Score';
+import Player from './Player';
 // var Pusher = require('pusher-js');
 
 
@@ -61,28 +60,56 @@ export default class Layout extends React.Component{
 
   render() {
     return (
-    <div className="quad-group">
-      <div className="left-quads">
-        <div id="quad1">
-          <Profile
-            name="Django"
-            picURL="http://placekitten.com/g/225/225"/>
-        </div>
-        <div id="quad2">
-          <Score score={this.state.playerOneScore}/>
+      <div className="row">
+        <Player
+          offset="s1"
+          player="player1"
+          name="Django"
+          picURL="http://placekitten.com/g/225/225"
+          score={this.state.playerOneScore} />
+        <div className="col s2"></div>
+        <Player
+          offset="s2"
+          player="player2"
+          className="player2"
+          name="Whiskers"
+          picURL="http://placekitten.com/225/225"
+          score={this.state.playerTwoScore} />
+        <div id={this.isNewGame()?"ball":""}></div>
+        <div id="background-table" className="container">
+          <div className="col s6">
+            <div className="row"></div>
+            <div className="row"></div>
+          </div>
+          <div className="col s6">
+            <div className="row"></div>
+            <div className="row"></div>
+          </div>
         </div>
       </div>
-      <div className="right-quads">
-        <div id="quad3">
-          <Profile
-            name="Whiskers"
-            picURL="http://placekitten.com/225/225"/>
-        </div>
-        <div id="quad4">
-          <Score score={this.state.playerTwoScore}/>
-        </div>
-      </div>
-      {this.isNewGame()?<div id="ball"></div>:<div></div>}
-    </div>);
+    );
+    // <div className="quad-group">
+    //   <div className="left-quads">
+    //     <div id="quad1">
+    //       <Profile
+    //         name="Django"
+    //         picURL="http://placekitten.com/g/225/225"/>
+    //     </div>
+    //     <div id="quad2">
+    //       <Score score={this.state.playerOneScore}/>
+    //     </div>
+    //   </div>
+    //   <div className="right-quads">
+    //     <div id="quad3">
+    //       <Profile
+    //         name="Whiskers"
+    //         picURL="http://placekitten.com/225/225"/>
+    //     </div>
+    //     <div id="quad4">
+    //       <Score score={this.state.playerTwoScore}/>
+    //     </div>
+    //   </div>
+    //   {this.isNewGame()?<div id="ball"></div>:<div></div>}
+    // </div>);
   }
 }

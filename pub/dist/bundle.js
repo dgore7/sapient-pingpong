@@ -21122,13 +21122,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Profile = __webpack_require__(174);
+	var _Player = __webpack_require__(174);
 
-	var _Profile2 = _interopRequireDefault(_Profile);
-
-	var _Score = __webpack_require__(175);
-
-	var _Score2 = _interopRequireDefault(_Score);
+	var _Player2 = _interopRequireDefault(_Player);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21206,41 +21202,62 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'quad-group' },
+	        { className: 'row' },
+	        _react2.default.createElement(_Player2.default, {
+	          offset: 's1',
+	          player: 'player1',
+	          name: 'Django',
+	          picURL: 'http://placekitten.com/g/225/225',
+	          score: this.state.playerOneScore }),
+	        _react2.default.createElement('div', { className: 'col s2' }),
+	        _react2.default.createElement(_Player2.default, {
+	          offset: 's2',
+	          player: 'player2',
+	          className: 'player2',
+	          name: 'Whiskers',
+	          picURL: 'http://placekitten.com/225/225',
+	          score: this.state.playerTwoScore }),
+	        _react2.default.createElement('div', { id: this.isNewGame() ? "ball" : "" }),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'left-quads' },
+	          { id: 'background-table', className: 'container' },
 	          _react2.default.createElement(
 	            'div',
-	            { id: 'quad1' },
-	            _react2.default.createElement(_Profile2.default, {
-	              name: 'Django',
-	              picURL: 'http://placekitten.com/g/225/225' })
+	            { className: 'col s6' },
+	            _react2.default.createElement('div', { className: 'row' }),
+	            _react2.default.createElement('div', { className: 'row' })
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { id: 'quad2' },
-	            _react2.default.createElement(_Score2.default, { score: this.state.playerOneScore })
+	            { className: 'col s6' },
+	            _react2.default.createElement('div', { className: 'row' }),
+	            _react2.default.createElement('div', { className: 'row' })
 	          )
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'right-quads' },
-	          _react2.default.createElement(
-	            'div',
-	            { id: 'quad3' },
-	            _react2.default.createElement(_Profile2.default, {
-	              name: 'Whiskers',
-	              picURL: 'http://placekitten.com/225/225' })
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { id: 'quad4' },
-	            _react2.default.createElement(_Score2.default, { score: this.state.playerTwoScore })
-	          )
-	        ),
-	        this.isNewGame() ? _react2.default.createElement('div', { id: 'ball' }) : _react2.default.createElement('div', null)
+	        )
 	      );
+	      // <div className="quad-group">
+	      //   <div className="left-quads">
+	      //     <div id="quad1">
+	      //       <Profile
+	      //         name="Django"
+	      //         picURL="http://placekitten.com/g/225/225"/>
+	      //     </div>
+	      //     <div id="quad2">
+	      //       <Score score={this.state.playerOneScore}/>
+	      //     </div>
+	      //   </div>
+	      //   <div className="right-quads">
+	      //     <div id="quad3">
+	      //       <Profile
+	      //         name="Whiskers"
+	      //         picURL="http://placekitten.com/225/225"/>
+	      //     </div>
+	      //     <div id="quad4">
+	      //       <Score score={this.state.playerTwoScore}/>
+	      //     </div>
+	      //   </div>
+	      //   {this.isNewGame()?<div id="ball"></div>:<div></div>}
+	      // </div>);
 	    }
 	  }]);
 
@@ -21254,6 +21271,74 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Profile = __webpack_require__(175);
+
+	var _Profile2 = _interopRequireDefault(_Profile);
+
+	var _Score = __webpack_require__(176);
+
+	var _Score2 = _interopRequireDefault(_Score);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Player = function (_React$Component) {
+	  _inherits(Player, _React$Component);
+
+	  function Player(props) {
+	    _classCallCheck(this, Player);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Player).call(this, props));
+	  }
+
+	  _createClass(Player, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { id: this.props.player, className: "col s4 offset-" + this.props.offset },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'card center-align z-depth-5' },
+	          _react2.default.createElement(_Score2.default, {
+	            className: 'score-div',
+	            score: this.props.score }),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'take-back-point btn' },
+	            'Take Back Point'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Player;
+	}(_react2.default.Component);
+
+	exports.default = Player;
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -21283,14 +21368,14 @@
 	  }
 
 	  _createClass(Profile, [{
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement('img', { src: this.props.picURL }),
+	        "div",
+	        { className: "profile-div" },
+	        _react2.default.createElement("img", { src: this.props.picURL }),
 	        _react2.default.createElement(
-	          'h2',
+	          "h2",
 	          null,
 	          this.props.name
 	        )
@@ -21304,10 +21389,10 @@
 	exports.default = Profile;
 
 /***/ },
-/* 175 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -21337,13 +21422,13 @@
 	  }
 
 	  _createClass(Score, [{
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'div',
-	        null,
+	        "div",
+	        { className: "score" },
 	        _react2.default.createElement(
-	          'h1',
+	          "h1",
 	          null,
 	          this.props.score
 	        )

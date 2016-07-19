@@ -6,7 +6,7 @@ export default class Profile extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div className="profile-div">
         <img src={this.props.picURL}/>
         <h2>{this.props.name}</h2>
       </div>
