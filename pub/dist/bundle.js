@@ -21448,7 +21448,7 @@
 	        _react2.default.createElement(
 	          "h1",
 	          null,
-	          this.props.score
+	          this.props.score > 9 ? this.props.score : "0" + this.props.score
 	        )
 	      );
 	    }

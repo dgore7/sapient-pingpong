@@ -7,7 +7,7 @@ export default class Score extends React.Component {
   render() {
     return (
       <div className="score">
-        <h1>{this.props.score}</h1>
+        <h1>{this.props.score>9?this.props.score: "0" + this.props.score}</h1>
       </div>
     );
   }
