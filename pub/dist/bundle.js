@@ -21161,6 +21161,22 @@
 	      }
 	    }
 	  }, {
+	    key: 'decrementScore',
+	    value: function decrementScore(e) {
+	      switch (e.target.id) {
+	        case "player1":
+	          if (this.state.playerOneScore > 0) {
+	            this.setState({ playerOneScore: this.state.playerOneScore - 1 });
+	          }
+	          break;
+	        case "player2":
+	          if (this.state.playerTwoScore > 0) {
+	            this.setState({ playerTwoScore: this.state.playerTwoScore - 1 });
+	          }
+	          break;
+	      }
+	    }
+	  }, {
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      this.pusher = new Pusher('7478bf1c2d89d2efb9b0', {
@@ -21189,10 +21205,10 @@
 	            break;
 	        }
 	        if (_this2.state.playerOneScore >= 21 && _this2.state.playerTwoScore + 2 <= _this2.state.playerOneScore) {
-	          alert("Django wins!");
+	          alert("Player 1 wins!");
 	          _this2.setState({ playerTwoScore: 0, playerOneScore: 0 });
 	        } else if (_this2.state.playerTwoScore >= 21 && _this2.state.playerOneScore + 2 <= _this2.state.playerTwoScore) {
-	          alert("Whiskers wins!");
+	          alert("Player 2 wins!");
 	          _this2.setState({ playerTwoScore: 0, playerOneScore: 0 });
 	        }
 	      });
@@ -21208,6 +21224,7 @@
 	          player: 'player1',
 	          name: 'Django',
 	          picURL: 'http://placekitten.com/g/225/225',
+	          decrementScore: this.decrementScore.bind(this),
 	          score: this.state.playerOneScore }),
 	        _react2.default.createElement('div', { className: 'col s2' }),
 	        _react2.default.createElement(_Player2.default, {
@@ -21216,6 +21233,7 @@
 	          className: 'player2',
 	          name: 'Whiskers',
 	          picURL: 'http://placekitten.com/225/225',
+	          decrementScore: this.decrementScore.bind(this),
 	          score: this.state.playerTwoScore }),
 	        _react2.default.createElement('div', { id: this.isNewGame() ? "ball" : "" }),
 	        _react2.default.createElement(
@@ -21321,7 +21339,7 @@
 	            score: this.props.score }),
 	          _react2.default.createElement(
 	            'button',
-	            { className: 'take-back-point btn' },
+	            { className: 'take-back-point btn', id: this.props.player, onClick: this.props.decrementScore },
 	            'Take Back Point'
 	          )
 	        )

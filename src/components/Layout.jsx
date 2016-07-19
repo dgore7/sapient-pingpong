@@ -21,6 +21,21 @@ export default class Layout extends React.Component{
 
   }
 
+  decrementScore(e) {
+    switch (e.target.id) {
+      case "player1":
+        if (this.state.playerOneScore > 0) {
+          this.setState({playerOneScore: this.state.playerOneScore-1});
+        }
+        break;
+      case "player2":
+      if (this.state.playerTwoScore > 0) {
+        this.setState({playerTwoScore: this.state.playerTwoScore-1});
+      }
+      break;
+    }
+  }
+
   componentWillMount() {
     this.pusher = new Pusher('7478bf1c2d89d2efb9b0', {
       cluster: 'eu',
@@ -49,10 +64,10 @@ export default class Layout extends React.Component{
           break;
       }
       if (this.state.playerOneScore>=21 && this.state.playerTwoScore+2 <= this.state.playerOneScore) {
-        alert("Django wins!");
+        alert("Player 1 wins!");
         this.setState({playerTwoScore: 0, playerOneScore: 0});
       } else if (this.state.playerTwoScore>=21 && this.state.playerOneScore+2 <= this.state.playerTwoScore) {
-        alert("Whiskers wins!");
+        alert("Player 2 wins!");
         this.setState({playerTwoScore: 0, playerOneScore: 0});
       }
     });
@@ -66,6 +81,7 @@ export default class Layout extends React.Component{
           player="player1"
           name="Django"
           picURL="http://placekitten.com/g/225/225"
+          decrementScore={this.decrementScore.bind(this)}
           score={this.state.playerOneScore} />
         <div className="col s2"></div>
         <Player
@@ -74,6 +90,7 @@ export default class Layout extends React.Component{
           className="player2"
           name="Whiskers"
           picURL="http://placekitten.com/225/225"
+          decrementScore={this.decrementScore.bind(this)}
           score={this.state.playerTwoScore} />
         <div id={this.isNewGame()?"ball":""}></div>
         <div id="background-table" className="container">
