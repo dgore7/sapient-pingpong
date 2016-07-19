@@ -82,11 +82,7 @@ export default class Layout extends React.Component{
           <Score score={this.state.playerTwoScore}/>
         </div>
       </div>
-      {if (isNewGame()) {
-        <div id="ball"></div>
-      }
-
-      }
+      {this.isNewGame()?<div id="ball"></div>:<div></div>}
     </div>);
   }
 }

@@ -21156,6 +21156,15 @@
 	  }
 
 	  _createClass(Layout, [{
+	    key: 'isNewGame',
+	    value: function isNewGame() {
+	      if (this.state.playerOneScore == 0 && this.state.playerTwoScore == 0) {
+	        return true;
+	      } else {
+	        return false;
+	      }
+	    }
+	  }, {
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      this.pusher = new Pusher('7478bf1c2d89d2efb9b0', {
@@ -21230,7 +21239,7 @@
 	            _react2.default.createElement(_Score2.default, { score: this.state.playerTwoScore })
 	          )
 	        ),
-	        _react2.default.createElement('div', { id: 'ball' })
+	        this.isNewGame() ? _react2.default.createElement('div', { id: 'ball' }) : _react2.default.createElement('div', null)
 	      );
 	    }
 	  }]);
