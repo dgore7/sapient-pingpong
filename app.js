@@ -3,7 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
-const PORT = 80;
+const PORT = process.env.PORT || 80;
 
 var routesAPI = require('./api/routes/index');
 

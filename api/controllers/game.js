@@ -90,7 +90,7 @@ function handleButtonPress(req, res) {
   res.end();
 }
 
-// Handle POST from push-buttons
+// Handle PUT from push-buttons
 router.post('/scoreboard', function(req, res) {
   handleButtonPress(req, res);
 });
