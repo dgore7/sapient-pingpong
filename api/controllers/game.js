@@ -4,6 +4,7 @@ var Pusher = require('pusher');
 var secret = require('../../secret');
 
 var debounce = false;
+var timeout = null;
 
 // Initialize physical push-button actions
 // TODO: use map instead?
@@ -27,11 +28,11 @@ function onMessage(scoreData, res) {
     debounce = true;
     pusher.trigger('scoreboard', 'update-score', scoreData);
     res.json({status: 'ok', message: 'transmit success'});
-
-    setTimeout(function() {
-      debounce = false;
-    }, 1000);
   }
+  clearTimeout(timeout);
+  timeout = setTimeout(function() {
+    debounce = false;
+  }, 2000);
 }
 
 /*
