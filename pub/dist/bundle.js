@@ -21162,14 +21162,14 @@
 	    }
 	  }, {
 	    key: 'decrementScore',
-	    value: function decrementScore(e) {
-	      switch (e.target.id) {
-	        case "player1":
+	    value: function decrementScore(player) {
+	      switch (player) {
+	        case 1:
 	          if (this.state.playerOneScore > 0) {
 	            this.setState({ playerOneScore: this.state.playerOneScore - 1 });
 	          }
 	          break;
-	        case "player2":
+	        case 2:
 	          if (this.state.playerTwoScore > 0) {
 	            this.setState({ playerTwoScore: this.state.playerTwoScore - 1 });
 	          }
@@ -21203,7 +21203,7 @@
 	            message.player === 1 ? _this2.setState({ playerOneScore: _this2.state.playerOneScore + 1 }) : _this2.setState({ playerTwoScore: _this2.state.playerTwoScore + 1 });
 	            break;
 	          case 'decrement-score':
-	            message.player === 1 ? _this2.setState({ playerOneScore: _this2.state.playerOneScore - 1 }) : _this2.setState({ playerTwoScore: _this2.state.playerTwoScore - 1 });
+	            _this2.decrementScore(message.player);
 	            break;
 	          case 'end-game':
 	            _this2.resetGame();
@@ -21343,6 +21343,12 @@
 	  }
 
 	  _createClass(Player, [{
+	    key: 'onTakeBackClick',
+	    value: function onTakeBackClick(e) {
+	      var player = e.target.id == "player1" ? 1 : 2;
+	      this.props.decrementScore(player);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -21359,7 +21365,7 @@
 	            {
 	              className: 'take-back-point waves-effect waves-light btn',
 	              id: this.props.player,
-	              onClick: this.props.decrementScore },
+	              onClick: this.onTakeBackClick.bind(this) },
 	            'Take Back'
 	          )
 	        )

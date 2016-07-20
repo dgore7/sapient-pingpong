@@ -20,18 +20,18 @@ export default class Layout extends React.Component{
     }
   }
 
-  decrementScore(e) {
-    switch (e.target.id) {
-      case "player1":
+  decrementScore(player) {
+    switch (player) {
+      case 1:
         if (this.state.playerOneScore > 0) {
           this.setState({playerOneScore: this.state.playerOneScore-1});
         }
         break;
-      case "player2":
-      if (this.state.playerTwoScore > 0) {
-        this.setState({playerTwoScore: this.state.playerTwoScore-1});
-      }
-      break;
+      case 2:
+        if (this.state.playerTwoScore > 0) {
+          this.setState({playerTwoScore: this.state.playerTwoScore-1});
+        }
+        break;
     }
   }
 
@@ -58,9 +58,7 @@ export default class Layout extends React.Component{
             this.setState({playerTwoScore: this.state.playerTwoScore+1});
           break;
         case 'decrement-score':
-          message.player===1?
-            this.setState({playerOneScore: this.state.playerOneScore-1}):
-            this.setState({playerTwoScore: this.state.playerTwoScore-1});
+          this.decrementScore(message.player);
           break;
         case 'end-game':
           this.resetGame();
