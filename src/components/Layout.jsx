@@ -52,7 +52,6 @@ export default class Layout extends React.Component{
     this.scoreBoard.bind('update-score', (message) => {
       switch (message.action) {
         case 'increment-score':
-          console.log(message.player);
           message.player===1?
             this.setState({playerOneScore: this.state.playerOneScore+1}):
             this.setState({playerTwoScore: this.state.playerTwoScore+1});
@@ -62,6 +61,11 @@ export default class Layout extends React.Component{
           break;
         case 'end-game':
           this.resetGame();
+          break;
+        case 'set-score':
+          message.player===1 ?
+            this.setState({playerOneScore: message.score}) :
+            this.setState({playerTwoScore: message.score});
           break;
       }
       if (this.state.playerOneScore>=21 && this.state.playerTwoScore+2 <= this.state.playerOneScore) {

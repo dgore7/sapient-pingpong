@@ -21199,7 +21199,6 @@
 	      this.scoreBoard.bind('update-score', function (message) {
 	        switch (message.action) {
 	          case 'increment-score':
-	            console.log(message.player);
 	            message.player === 1 ? _this2.setState({ playerOneScore: _this2.state.playerOneScore + 1 }) : _this2.setState({ playerTwoScore: _this2.state.playerTwoScore + 1 });
 	            break;
 	          case 'decrement-score':
@@ -21207,6 +21206,9 @@
 	            break;
 	          case 'end-game':
 	            _this2.resetGame();
+	            break;
+	          case 'set-score':
+	            message.player === 1 ? _this2.setState({ playerOneScore: message.score }) : _this2.setState({ playerTwoScore: message.score });
 	            break;
 	        }
 	        if (_this2.state.playerOneScore >= 21 && _this2.state.playerTwoScore + 2 <= _this2.state.playerOneScore) {
