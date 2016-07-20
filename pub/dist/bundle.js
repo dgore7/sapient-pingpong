@@ -21177,6 +21177,11 @@
 	      }
 	    }
 	  }, {
+	    key: 'resetGame',
+	    value: function resetGame() {
+	      this.setState({ playerTwoScore: 0, playerOneScore: 0 });
+	    }
+	  }, {
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      this.pusher = new Pusher('7478bf1c2d89d2efb9b0', {
@@ -21201,15 +21206,15 @@
 	            message.player === 1 ? _this2.setState({ playerOneScore: _this2.state.playerOneScore - 1 }) : _this2.setState({ playerTwoScore: _this2.state.playerTwoScore - 1 });
 	            break;
 	          case 'end-game':
-	            _this2.setState({ playerOneScore: 0, playerTwoScore: 0 });
+	            _this2.resetGame();
 	            break;
 	        }
 	        if (_this2.state.playerOneScore >= 21 && _this2.state.playerTwoScore + 2 <= _this2.state.playerOneScore) {
 	          alert("Player 1 wins!");
-	          _this2.setState({ playerTwoScore: 0, playerOneScore: 0 });
+	          _this2.resetGame();
 	        } else if (_this2.state.playerTwoScore >= 21 && _this2.state.playerOneScore + 2 <= _this2.state.playerTwoScore) {
 	          alert("Player 2 wins!");
-	          _this2.setState({ playerTwoScore: 0, playerOneScore: 0 });
+	          _this2.resetGame();
 	        }
 	      });
 	    }
@@ -21250,6 +21255,18 @@
 	            { className: 'col s6' },
 	            _react2.default.createElement('div', { className: 'row' }),
 	            _react2.default.createElement('div', { className: 'row' })
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { id: 'reset-btn-container' },
+	          _react2.default.createElement(
+	            'button',
+	            {
+	              id: 'reset-btn',
+	              className: 'waves-effect waves-light btn',
+	              onClick: this.resetGame.bind(this) },
+	            'Reset'
 	          )
 	        )
 	      );
@@ -21339,8 +21356,11 @@
 	            score: this.props.score }),
 	          _react2.default.createElement(
 	            'button',
-	            { className: 'take-back-point btn', id: this.props.player, onClick: this.props.decrementScore },
-	            'Take Back Point'
+	            {
+	              className: 'take-back-point waves-effect waves-light btn',
+	              id: this.props.player,
+	              onClick: this.props.decrementScore },
+	            'Take Back'
 	          )
 	        )
 	      );

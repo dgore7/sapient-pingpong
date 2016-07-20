@@ -18,7 +18,6 @@ export default class Layout extends React.Component{
     } else {
       return false;
     }
-
   }
 
   decrementScore(e) {
@@ -34,6 +33,10 @@ export default class Layout extends React.Component{
       }
       break;
     }
+  }
+
+  resetGame() {
+    this.setState({playerTwoScore: 0, playerOneScore: 0});
   }
 
   componentWillMount() {
@@ -60,15 +63,15 @@ export default class Layout extends React.Component{
             this.setState({playerTwoScore: this.state.playerTwoScore-1});
           break;
         case 'end-game':
-          this.setState({playerOneScore: 0, playerTwoScore: 0})
+          this.resetGame();
           break;
       }
       if (this.state.playerOneScore>=21 && this.state.playerTwoScore+2 <= this.state.playerOneScore) {
         alert("Player 1 wins!");
-        this.setState({playerTwoScore: 0, playerOneScore: 0});
+        this.resetGame();
       } else if (this.state.playerTwoScore>=21 && this.state.playerOneScore+2 <= this.state.playerTwoScore) {
         alert("Player 2 wins!");
-        this.setState({playerTwoScore: 0, playerOneScore: 0});
+        this.resetGame();
       }
     });
   }
@@ -102,6 +105,14 @@ export default class Layout extends React.Component{
             <div className="row"></div>
             <div className="row"></div>
           </div>
+        </div>
+        <div id="reset-btn-container">
+          <button
+              id="reset-btn"
+              className="waves-effect waves-light btn"
+              onClick={this.resetGame.bind(this)}>
+            Reset
+          </button>
         </div>
       </div>
     );

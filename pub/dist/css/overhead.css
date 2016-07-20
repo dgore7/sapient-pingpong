@@ -51,6 +51,25 @@
   border-right: none;
 }
 
+#reset-btn-container {
+  position: absolute;
+  left: 50%;
+  top: 90%;
+  margin-left: -75px;
+}
+
+#reset-btn {
+  border-radius: 3px;
+  background-color: red;
+  border: none;
+  width: 150px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  align-self: flex-end;
+}
+
 .card > button {
   margin-top: 30%;
 }

@@ -17,7 +17,12 @@ export default class Player extends React.Component {
           <Score
           className="score-div"
           score={this.props.score}/>
-          <button className="take-back-point btn" id={this.props.player} onClick={this.props.decrementScore}>Take Back Point</button>
+          <button
+                className="take-back-point waves-effect waves-light btn"
+                id={this.props.player}
+                onClick={this.props.decrementScore}>
+              Take Back
+          </button>
         </div>
       </div>
     );
