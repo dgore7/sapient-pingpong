@@ -11,7 +11,7 @@ var timeout = null;
 var buttonActions = {
   single: 'increment-score',
   double: 'decrement-score',
-  hold: 'end-game'
+  hold: 'decrement-score'
 };
 
 // Initialize Pusher

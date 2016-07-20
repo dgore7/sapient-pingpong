@@ -28,6 +28,9 @@ export default class Player extends React.Component {
         this.style = {};
         break;
     }
+  onTakeBackClick(e) {
+    var player = (e.target.id == "player1") ? 1 : 2;
+    this.props.decrementScore(player);
   }
 
   render() {
@@ -45,7 +48,7 @@ export default class Player extends React.Component {
           <button
                 className="take-back-point waves-effect waves-light btn"
                 id={this.props.player}
-                onClick={this.props.decrementScore}>
+                onClick={this.onTakeBackClick.bind(this)}>
               Take Back
           </button>
         </div>
