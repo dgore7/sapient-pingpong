@@ -9,7 +9,7 @@ export default class Layout extends React.Component{
     this.state = {
       playerOneScore: 0,
       playerTwoScore: 0,
-      winner:0
+      winner: null
     };
   }
 
@@ -70,20 +70,21 @@ export default class Layout extends React.Component{
           break;
       }
       if (this.state.playerOneScore>=21 && this.state.playerTwoScore+2 <= this.state.playerOneScore) {
-        this.setState({winner:1});
+        this.setState({winner:"player1"});
         setTimeout(() =>{
-          this.setState({winner:0});
+          this.setState({winner:null});
           this.resetGame();
         },5000)
       } else if (this.state.playerTwoScore>=21 && this.state.playerOneScore+2 <= this.state.playerTwoScore) {
-        this.setState({winner:2});
+        this.setState({winner:"player2"});
         setTimeout(() =>{
-          this.setState({winner:0});
+          this.setState({winner:null});
           this.resetGame();
         },5000)
       }
     });
   }
+
 
 
   render() {
