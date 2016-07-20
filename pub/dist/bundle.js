@@ -21146,7 +21146,8 @@
 
 	    _this.state = {
 	      playerOneScore: 0,
-	      playerTwoScore: 0
+	      playerTwoScore: 0,
+	      winner: 0
 	    };
 	    return _this;
 	  }
@@ -21210,11 +21211,17 @@
 	            break;
 	        }
 	        if (_this2.state.playerOneScore >= 21 && _this2.state.playerTwoScore + 2 <= _this2.state.playerOneScore) {
-	          alert("Player 1 wins!");
-	          _this2.resetGame();
+	          _this2.setState({ winner: 1 });
+	          setTimeout(function () {
+	            _this2.setState({ winner: 0 });
+	            _this2.resetGame();
+	          }, 5000);
 	        } else if (_this2.state.playerTwoScore >= 21 && _this2.state.playerOneScore + 2 <= _this2.state.playerTwoScore) {
-	          alert("Player 2 wins!");
-	          _this2.resetGame();
+	          _this2.setState({ winner: 2 });
+	          setTimeout(function () {
+	            _this2.setState({ winner: 0 });
+	            _this2.resetGame();
+	          }, 5000);
 	        }
 	      });
 	    }
@@ -21225,6 +21232,7 @@
 	        'div',
 	        { className: 'row' },
 	        _react2.default.createElement(_Player2.default, {
+	          winner: this.state.winner,
 	          offset: 's1',
 	          player: 'player1',
 	          name: 'Django',
@@ -21233,6 +21241,7 @@
 	          score: this.state.playerOneScore }),
 	        _react2.default.createElement('div', { className: 'col s2' }),
 	        _react2.default.createElement(_Player2.default, {
+	          winner: this.state.winner,
 	          offset: 's2',
 	          player: 'player2',
 	          className: 'player2',
@@ -21339,10 +21348,44 @@
 	  function Player(props) {
 	    _classCallCheck(this, Player);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Player).call(this, props));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Player).call(this, props));
+
+	    _this.style = {};
+	    return _this;
 	  }
 
 	  _createClass(Player, [{
+	    key: 'checkWinner',
+	    value: function checkWinner() {
+	      switch (this.props.winner) {
+	        case 1:
+	          if (this.props.player === "player2") {
+	            this.style = { backgroundColor: grey };
+	          } else {
+	            return _react2.default.createElement(
+	              'h1',
+	              null,
+	              'WINNER'
+	            );
+	          }
+	          break;
+	        case 2:
+	          if (this.props.player === "player1") {
+	            this.style = { backgroundColor: grey };
+	          } else {
+	            return _react2.default.createElement(
+	              'h1',
+	              null,
+	              'WINNER'
+	            );
+	          }
+	          break;
+	        default:
+	          this.style = {};
+	          break;
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -21350,7 +21393,8 @@
 	        { id: this.props.player, className: "col s4 offset-" + this.props.offset },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'card center-align z-depth-5' },
+	          { style: this.style, className: 'card center-align z-depth-5' },
+	          this.checkWinner(),
 	          _react2.default.createElement(_Score2.default, {
 	            className: 'score-div',
 	            score: this.props.score }),

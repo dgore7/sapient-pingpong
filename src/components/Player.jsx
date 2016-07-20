@@ -5,11 +5,36 @@ import Score from './Score';
 export default class Player extends React.Component {
   constructor(props){
     super(props);
+    this.style ={}
   }
+
+  checkWinner() {
+    switch (this.props.winner) {
+      case 1:
+        if(this.props.player==="player2"){
+          this.style = {backgroundColor: grey}
+        }else {
+          return(<h1>WINNER</h1>);
+        }
+        break;
+      case 2:
+        if (this.props.player==="player1") {
+          this.style = {backgroundColor: grey}
+        } else {
+          return(<h1>WINNER</h1>);
+        }
+        break;
+      default:
+        this.style = {};
+        break;
+    }
+  }
+
   render() {
     return (
       <div id={this.props.player} className={"col s4 offset-" + this.props.offset}>
-        <div className="card center-align z-depth-5">
+        <div style={this.style} className="card center-align z-depth-5">
+          {this.checkWinner()}
           {/*<Profile
           className="profile-div"
           name={this.props.name}

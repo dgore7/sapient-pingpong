@@ -8,7 +8,8 @@ export default class Layout extends React.Component{
     super(props);
     this.state = {
       playerOneScore: 0,
-      playerTwoScore: 0
+      playerTwoScore: 0,
+      winner:0
     };
   }
 
@@ -67,19 +68,27 @@ export default class Layout extends React.Component{
           break;
       }
       if (this.state.playerOneScore>=21 && this.state.playerTwoScore+2 <= this.state.playerOneScore) {
-        alert("Player 1 wins!");
-        this.resetGame();
+        this.setState({winner:1});
+        setTimeout(() =>{
+          this.setState({winner:0});
+          this.resetGame();
+        },5000)
       } else if (this.state.playerTwoScore>=21 && this.state.playerOneScore+2 <= this.state.playerTwoScore) {
-        alert("Player 2 wins!");
-        this.resetGame();
+        this.setState({winner:2});
+        setTimeout(() =>{
+          this.setState({winner:0});
+          this.resetGame();
+        },5000)
       }
     });
   }
+
 
   render() {
     return (
       <div className="row">
         <Player
+          winner={this.state.winner}
           offset="s1"
           player="player1"
           name="Django"
@@ -88,6 +97,7 @@ export default class Layout extends React.Component{
           score={this.state.playerOneScore} />
         <div className="col s2"></div>
         <Player
+          winner={this.state.winner}
           offset="s2"
           player="player2"
           className="player2"
