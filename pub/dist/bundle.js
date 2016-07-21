@@ -21134,13 +21134,13 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	// var Pusher = require('pusher-js');
-
 	var Layout = function (_React$Component) {
 	  _inherits(Layout, _React$Component);
 
 	  function Layout(props) {
 	    _classCallCheck(this, Layout);
+
+	    // Configure game state
 
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Layout).call(this, props));
 
@@ -21150,22 +21150,30 @@
 	      winner: null,
 	      server: null
 	    };
+
+	    // Configure Pusher
+	    _this.pusher = new Pusher('7478bf1c2d89d2efb9b0', {
+	      cluster: 'eu',
+	      encrypted: true
+	    });
+	    _this.scoreBoard = _this.pusher.subscribe('scoreboard'); // change variable name
 	    return _this;
 	  }
 
 	  _createClass(Layout, [{
 	    key: 'isNewGame',
 	    value: function isNewGame() {
-	      if (this.state.playerOneScore == 0 && this.state.playerTwoScore == 0) {
-	        return true;
-	      } else {
-	        return false;
-	      }
+	      return this.state.playerOneScore == 0 && this.state.playerTwoScore == 0;
 	    }
 	  }, {
 	    key: 'setServer',
 	    value: function setServer(player) {
 	      this.setState({ server: "player" + player });
+	    }
+	  }, {
+	    key: 'shouldToggleServer',
+	    value: function shouldToggleServer() {
+	      return this.state.server != null && (this.state.playerOneScore != 0 || this.state.playerTwoScore != 0) && (this.state.playerOneScore + this.state.playerTwoScore) % 5 === 0;
 	    }
 	  }, {
 	    key: 'incrementScore',
@@ -21179,13 +21187,18 @@
 	          break;
 	      }
 	      var nextServer = this.state.server === "player1" ? "2" : "1";
-	      if ((this.state.playerOneScore + this.state.playerTwoScore) % 5 === 0) this.setServer(nextServer);
+	      if (this.shouldToggleServer()) {
+	        this.setServer(nextServer);
+	      }
 	    }
 	  }, {
 	    key: 'decrementScore',
 	    value: function decrementScore(player) {
 	      var nextServer = this.state.server === "player1" ? "2" : "1";
-	      if ((this.state.playerOneScore + this.state.playerTwoScore) % 5 === 0) this.setServer(nextServer);
+	      if (this.shouldToggleServer() && (this.state.playerOneScore > 0 && player == 1 || this.state.playerTwoScore > 0 && player == 2)) {
+	        this.setServer(nextServer);
+	      }
+
 	      switch (player) {
 	        case 1:
 	          if (this.state.playerOneScore > 0) {
@@ -21202,23 +21215,13 @@
 	  }, {
 	    key: 'resetGame',
 	    value: function resetGame() {
-	      this.setState({ playerTwoScore: 0, playerOneScore: 0 });
-	    }
-	  }, {
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      this.pusher = new Pusher('7478bf1c2d89d2efb9b0', {
-	        cluster: 'eu',
-	        encrypted: true
-	      });
-	      this.scoreBoard = this.pusher.subscribe('scoreboard'); // change variable name
+	      this.setState({ playerTwoScore: 0, playerOneScore: 0, server: null, winner: null });
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var _this2 = this;
 
-	      //Pusher.logToConsole = true;
 	      this.scoreBoard.bind('update-score', function (message) {
 	        switch (message.clickType) {
 	          case 'single':
@@ -21239,13 +21242,13 @@
 	        if (_this2.state.playerOneScore >= 21 && _this2.state.playerTwoScore + 2 <= _this2.state.playerOneScore) {
 	          _this2.setState({ winner: "player1" });
 	          setTimeout(function () {
-	            _this2.setState({ winner: null });
+	            _this2.setState({ winner: null, server: null });
 	            _this2.resetGame();
 	          }, 5000);
 	        } else if (_this2.state.playerTwoScore >= 21 && _this2.state.playerOneScore + 2 <= _this2.state.playerTwoScore) {
 	          _this2.setState({ winner: "player2" });
 	          setTimeout(function () {
-	            _this2.setState({ winner: null });
+	            _this2.setState({ winner: null, server: null });
 	            _this2.resetGame();
 	          }, 5000);
 	        }

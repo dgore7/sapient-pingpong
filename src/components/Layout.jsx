@@ -1,29 +1,38 @@
 import React from 'react';
 import Player from './Player';
-// var Pusher = require('pusher-js');
-
 
 export default class Layout extends React.Component{
   constructor(props) {
     super(props);
+
+    // Configure game state
     this.state = {
       playerOneScore: 0,
       playerTwoScore: 0,
       winner: null,
       server: null
     };
+
+    // Configure Pusher
+    this.pusher = new Pusher('7478bf1c2d89d2efb9b0', {
+      cluster: 'eu',
+      encrypted:true
+    });
+    this.scoreBoard = this.pusher.subscribe('scoreboard') // change variable name
   }
 
   isNewGame() {
-    if (this.state.playerOneScore == 0 && this.state.playerTwoScore == 0) {
-      return true;
-    } else {
-      return false;
-    }
+      return this.state.playerOneScore == 0 && this.state.playerTwoScore == 0;
   }
 
   setServer(player) {
     this.setState({server: "player" + player});
+  }
+
+  shouldToggleServer() {
+    return this.state.server != null &&
+      (this.state.playerOneScore != 0 || this.state.playerTwoScore != 0) &&
+      ((this.state.playerOneScore + this.state.playerTwoScore) % 5 === 0);
   }
 
   incrementScore(player) {
@@ -36,12 +45,18 @@ export default class Layout extends React.Component{
         break;
     }
     var nextServer = this.state.server==="player1"?"2":"1";
-    if ((this.state.playerOneScore+this.state.playerTwoScore) % 5 === 0) this.setServer(nextServer);
+    if (this.shouldToggleServer()) {
+      this.setServer(nextServer);
+    }
   }
 
   decrementScore(player) {
     var nextServer = this.state.server==="player1"?"2":"1";
-    if ((this.state.playerOneScore+this.state.playerTwoScore) % 5 === 0) this.setServer(nextServer);
+    if (this.shouldToggleServer() &&
+        ((this.state.playerOneScore > 0 && player == 1) || (this.state.playerTwoScore > 0 && player == 2))) {
+      this.setServer(nextServer);
+    }
+
     switch (player) {
       case 1:
         if (this.state.playerOneScore > 0) {
@@ -57,19 +72,10 @@ export default class Layout extends React.Component{
   }
 
   resetGame() {
-    this.setState({playerTwoScore: 0, playerOneScore: 0});
-  }
-
-  componentWillMount() {
-    this.pusher = new Pusher('7478bf1c2d89d2efb9b0', {
-      cluster: 'eu',
-      encrypted:true
-    });
-    this.scoreBoard = this.pusher.subscribe('scoreboard') // change variable name
+    this.setState({playerTwoScore: 0, playerOneScore: 0, server: null, winner: null});
   }
 
   componentDidMount() {
-    //Pusher.logToConsole = true;
     this.scoreBoard.bind('update-score', (message) => {
       switch (message.clickType) {
         case 'single':
@@ -94,13 +100,13 @@ export default class Layout extends React.Component{
       if (this.state.playerOneScore>=21 && this.state.playerTwoScore+2 <= this.state.playerOneScore) {
         this.setState({winner:"player1"});
         setTimeout(() =>{
-          this.setState({winner:null});
+          this.setState({winner:null,server:null});
           this.resetGame();
         },5000)
       } else if (this.state.playerTwoScore>=21 && this.state.playerOneScore+2 <= this.state.playerTwoScore) {
         this.setState({winner:"player2"});
         setTimeout(() =>{
-          this.setState({winner:null});
+          this.setState({winner:null, server:null});
           this.resetGame();
         },5000)
       }
