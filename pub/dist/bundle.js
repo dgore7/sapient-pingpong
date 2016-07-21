@@ -21126,6 +21126,10 @@
 
 	var _Player2 = _interopRequireDefault(_Player);
 
+	var _Background = __webpack_require__(177);
+
+	var _Background2 = _interopRequireDefault(_Background);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21281,58 +21285,8 @@
 	          decrementScore: this.decrementScore.bind(this),
 	          score: this.state.playerTwoScore }),
 	        _react2.default.createElement('div', { id: this.isNewGame() ? "ball" : "" }),
-	        _react2.default.createElement(
-	          'div',
-	          { id: 'background-table', className: 'container' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'col s6' },
-	            _react2.default.createElement('div', { className: 'row' }),
-	            _react2.default.createElement('div', { className: 'row' })
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'col s6' },
-	            _react2.default.createElement('div', { className: 'row' }),
-	            _react2.default.createElement('div', { className: 'row' })
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { id: 'reset-btn-container' },
-	          _react2.default.createElement(
-	            'button',
-	            {
-	              id: 'reset-btn',
-	              className: 'waves-effect waves-light btn',
-	              onClick: this.resetGame.bind(this) },
-	            'Reset'
-	          )
-	        )
+	        _react2.default.createElement(_Background2.default, { resetGame: this.resetGame.bind(this) })
 	      );
-	      // <div className="quad-group">
-	      //   <div className="left-quads">
-	      //     <div id="quad1">
-	      //       <Profile
-	      //         name="Django"
-	      //         picURL="http://placekitten.com/g/225/225"/>
-	      //     </div>
-	      //     <div id="quad2">
-	      //       <Score score={this.state.playerOneScore}/>
-	      //     </div>
-	      //   </div>
-	      //   <div className="right-quads">
-	      //     <div id="quad3">
-	      //       <Profile
-	      //         name="Whiskers"
-	      //         picURL="http://placekitten.com/225/225"/>
-	      //     </div>
-	      //     <div id="quad4">
-	      //       <Score score={this.state.playerTwoScore}/>
-	      //     </div>
-	      //   </div>
-	      //   {this.isNewGame()?<div id="ball"></div>:<div></div>}
-	      // </div>);
 	    }
 	  }]);
 
@@ -21564,6 +21518,78 @@
 	}(_react2.default.Component);
 
 	exports.default = Score;
+
+/***/ },
+/* 177 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Background = function (_React$Component) {
+	  _inherits(Background, _React$Component);
+
+	  function Background() {
+	    _classCallCheck(this, Background);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Background).apply(this, arguments));
+	  }
+
+	  _createClass(Background, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        { id: "background-table", className: "container" },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "col s6" },
+	          _react2.default.createElement("div", { className: "row" }),
+	          _react2.default.createElement("div", { className: "row" })
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "col s6" },
+	          _react2.default.createElement("div", { className: "row" }),
+	          _react2.default.createElement("div", { className: "row" })
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { id: "reset-btn-container" },
+	          _react2.default.createElement(
+	            "button",
+	            {
+	              id: "reset-btn",
+	              className: "waves-effect waves-light btn",
+	              onClick: this.props.resetGame.bind(this) },
+	            "Reset"
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Background;
+	}(_react2.default.Component);
+
+	exports.default = Background;
 
 /***/ }
 /******/ ]);

@@ -1,5 +1,6 @@
 import React from 'react';
 import Player from './Player';
+import Background from './Background';
 
 export default class Layout extends React.Component{
   constructor(props) {
@@ -139,48 +140,8 @@ export default class Layout extends React.Component{
           decrementScore={this.decrementScore.bind(this)}
           score={this.state.playerTwoScore} />
         <div id={this.isNewGame()?"ball":""}></div>
-        <div id="background-table" className="container">
-          <div className="col s6">
-            <div className="row"></div>
-            <div className="row"></div>
-          </div>
-          <div className="col s6">
-            <div className="row"></div>
-            <div className="row"></div>
-          </div>
-        </div>
-        <div id="reset-btn-container">
-          <button
-              id="reset-btn"
-              className="waves-effect waves-light btn"
-              onClick={this.resetGame.bind(this)}>
-            Reset
-          </button>
-        </div>
+        <Background resetGame={this.resetGame.bind(this)}/>
       </div>
     );
-    // <div className="quad-group">
-    //   <div className="left-quads">
-    //     <div id="quad1">
-    //       <Profile
-    //         name="Django"
-    //         picURL="http://placekitten.com/g/225/225"/>
-    //     </div>
-    //     <div id="quad2">
-    //       <Score score={this.state.playerOneScore}/>
-    //     </div>
-    //   </div>
-    //   <div className="right-quads">
-    //     <div id="quad3">
-    //       <Profile
-    //         name="Whiskers"
-    //         picURL="http://placekitten.com/225/225"/>
-    //     </div>
-    //     <div id="quad4">
-    //       <Score score={this.state.playerTwoScore}/>
-    //     </div>
-    //   </div>
-    //   {this.isNewGame()?<div id="ball"></div>:<div></div>}
-    // </div>);
   }
 }

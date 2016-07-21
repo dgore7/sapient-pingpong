@@ -56,10 +56,10 @@ function validateButtonData(data) {
     return false;
   }
   // Check click type
-  if (!buttonActions.includes(data.clickType)) {
-    console.log("action not found");
-    return false;
-  }
+  // if (!buttonActions.includes(data.clickType)) {
+  //   console.log("action not found");
+  //   return false;
+  // }
 
   return true;
 }
