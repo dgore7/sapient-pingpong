@@ -9,7 +9,8 @@ export default class Layout extends React.Component{
     this.state = {
       playerOneScore: 0,
       playerTwoScore: 0,
-      winner: null
+      winner: null,
+      server: null
     };
   }
 
@@ -51,20 +52,23 @@ export default class Layout extends React.Component{
   componentDidMount() {
     //Pusher.logToConsole = true;
     this.scoreBoard.bind('update-score', (message) => {
-      switch (message.action) {
-        case 'increment-score':
-          message.player===1?
+      switch (message.clickType) {
+        case 'single':
+          message.button===1?
             this.setState({playerOneScore: this.state.playerOneScore+1}):
             this.setState({playerTwoScore: this.state.playerTwoScore+1});
           break;
-        case 'decrement-score':
-          this.decrementScore(message.player);
-          break;
-        case 'end-game':
+        case 'double':
           this.resetGame();
           break;
+        case 'hold':
+          this.state.playerOneScore || this.state.playerTwoScore?
+            this.decrementScore(message.button):
+            this.setState({server: "player" + message.button});
+            console.log(this.state.server);
+          break;
         case 'set-score':
-          message.player===1 ?
+          message.button===1 ?
             this.setState({playerOneScore: message.score}) :
             this.setState({playerTwoScore: message.score});
           break;
@@ -91,6 +95,7 @@ export default class Layout extends React.Component{
     return (
       <div className="row">
         <Player
+          server={this.state.server}
           winner={this.state.winner}
           offset="s1"
           player="player1"
@@ -101,6 +106,7 @@ export default class Layout extends React.Component{
         <div className="col s2"></div>
         <Player
           winner={this.state.winner}
+          server={this.state.server}
           offset="s2"
           player="player2"
           className="player2"

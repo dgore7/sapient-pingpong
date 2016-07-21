@@ -21147,7 +21147,8 @@
 	    _this.state = {
 	      playerOneScore: 0,
 	      playerTwoScore: 0,
-	      winner: null
+	      winner: null,
+	      server: null
 	    };
 	    return _this;
 	  }
@@ -21198,18 +21199,19 @@
 
 	      //Pusher.logToConsole = true;
 	      this.scoreBoard.bind('update-score', function (message) {
-	        switch (message.action) {
-	          case 'increment-score':
-	            message.player === 1 ? _this2.setState({ playerOneScore: _this2.state.playerOneScore + 1 }) : _this2.setState({ playerTwoScore: _this2.state.playerTwoScore + 1 });
+	        switch (message.clickType) {
+	          case 'single':
+	            message.button === 1 ? _this2.setState({ playerOneScore: _this2.state.playerOneScore + 1 }) : _this2.setState({ playerTwoScore: _this2.state.playerTwoScore + 1 });
 	            break;
-	          case 'decrement-score':
-	            _this2.decrementScore(message.player);
-	            break;
-	          case 'end-game':
+	          case 'double':
 	            _this2.resetGame();
 	            break;
+	          case 'hold':
+	            _this2.state.playerOneScore || _this2.state.playerTwoScore ? _this2.decrementScore(message.button) : _this2.setState({ server: "player" + message.button });
+	            console.log(_this2.state.server);
+	            break;
 	          case 'set-score':
-	            message.player === 1 ? _this2.setState({ playerOneScore: message.score }) : _this2.setState({ playerTwoScore: message.score });
+	            message.button === 1 ? _this2.setState({ playerOneScore: message.score }) : _this2.setState({ playerTwoScore: message.score });
 	            break;
 	        }
 	        if (_this2.state.playerOneScore >= 21 && _this2.state.playerTwoScore + 2 <= _this2.state.playerOneScore) {
@@ -21234,6 +21236,7 @@
 	        'div',
 	        { className: 'row' },
 	        _react2.default.createElement(_Player2.default, {
+	          server: this.state.server,
 	          winner: this.state.winner,
 	          offset: 's1',
 	          player: 'player1',
@@ -21244,6 +21247,7 @@
 	        _react2.default.createElement('div', { className: 'col s2' }),
 	        _react2.default.createElement(_Player2.default, {
 	          winner: this.state.winner,
+	          server: this.state.server,
 	          offset: 's2',
 	          player: 'player2',
 	          className: 'player2',
@@ -21381,6 +21385,11 @@
 	      }
 	    }
 	  }, {
+	    key: 'isServer',
+	    value: function isServer() {
+	      return this.props.server === this.props.player;
+	    }
+	  }, {
 	    key: 'onTakeBackClick',
 	    value: function onTakeBackClick(e) {
 	      var player = e.target.id == "player1" ? 1 : 2;
@@ -21398,6 +21407,11 @@
 	            style: this.props.winner === this.props.player ? { backgroundColor: "#22CC22" } : this.props.winner ? { opacity: 0.5, paddingTop: 115 } : {},
 	            className: 'card center-align z-depth-5' },
 	          this.checkWinner(),
+	          _react2.default.createElement(
+	            'div',
+	            { id: 'serving-marker' },
+	            this.isServer() ? _react2.default.createElement('img', { src: 'assets/ping-pong-red.png', alt: 'serving marker', height: '42', width: '42' }) : ""
+	          ),
 	          _react2.default.createElement(_Score2.default, {
 	            className: 'score-div',
 	            score: this.props.score }),

@@ -22,6 +22,11 @@ export default class Player extends React.Component {
         break;
     }
   }
+
+  isServer() {
+    return this.props.server===this.props.player
+  }
+
   onTakeBackClick(e) {
     var player = (e.target.id == "player1") ? 1 : 2;
     this.props.decrementScore(player);
@@ -38,7 +43,7 @@ export default class Player extends React.Component {
                 {}}
             className="card center-align z-depth-5">
           {this.checkWinner()}
-          {/*{this.checkWinner()}*/}
+          <div id="serving-marker">{this.isServer()?<img src="assets/ping-pong-red.png" alt="serving marker" height="42" width="42"/>:""}</div>
           {/*<Profile
           className="profile-div"
           name={this.props.name}

@@ -5,14 +5,15 @@ var secret = require('../../secret');
 
 var debounce = false;
 var timeout = null;
+const delay= 1500;
 
 // Initialize physical push-button actions
 // TODO: use map instead?
-var buttonActions = {
-  single: 'increment-score',
-  double: 'decrement-score',
-  hold: 'decrement-score'
-};
+var buttonActions = [
+  'single',
+  'double',
+  'hold'
+];
 
 // Initialize Pusher
 var pusher = new Pusher({
@@ -32,7 +33,7 @@ function onMessage(scoreData, res) {
   clearTimeout(timeout);
   timeout = setTimeout(function() {
     debounce = false;
-  }, 2000);
+  }, delay);
 }
 
 /*
@@ -54,9 +55,8 @@ function validateButtonData(data) {
     console.log("invalid button");
     return false;
   }
-
   // Check click type
-  if (!(data.clickType in buttonActions)) {
+  if (!buttonActions.includes(data.clickType)) {
     console.log("action not found");
     return false;
   }
@@ -80,13 +80,10 @@ function handleButtonPress(req, res) {
     return;
   }
 
-  var scoreData = {
-    player: data.button,
-    action: buttonActions[data.clickType]
-  }
 
-  console.log(scoreData);
-  onMessage(scoreData, res);
+
+  console.log(data);
+  onMessage(data, res);
   res.end();
 }
 
