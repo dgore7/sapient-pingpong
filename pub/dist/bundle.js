@@ -21138,6 +21138,16 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var defaults = {
+	  playerOneScore: 0,
+	  playerTwoScore: 0,
+	  winner: null,
+	  server: null
+	};
+	var winTimeout = 5000;
+	var scoreToWin = 21;
+	var winBy2 = true;
+
 	var Layout = function (_React$Component) {
 	  _inherits(Layout, _React$Component);
 
@@ -21148,32 +21158,40 @@
 
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Layout).call(this, props));
 
-	    _this.state = {
-	      playerOneScore: 0,
-	      playerTwoScore: 0,
-	      winner: null,
-	      server: null
-	    };
+	    _this.state = defaults;
 
 	    // Configure Pusher
 	    _this.pusher = new Pusher('7478bf1c2d89d2efb9b0', {
 	      cluster: 'eu',
 	      encrypted: true
 	    });
-	    _this.scoreBoard = _this.pusher.subscribe('scoreboard'); // change variable name
+	    _this.scoreBoard = _this.pusher.subscribe('scoreboard'); // change letiable name
 	    return _this;
 	  }
+
+	  /*
+	   * Checks whether the current score for both players is 0.
+	   */
+
 
 	  _createClass(Layout, [{
 	    key: 'isNewGame',
 	    value: function isNewGame() {
 	      return this.state.playerOneScore == 0 && this.state.playerTwoScore == 0;
 	    }
+
+	    /*
+	     * Marks a player as the server.
+	     */
+
 	  }, {
 	    key: 'setServer',
 	    value: function setServer(player) {
 	      this.setState({ server: "player" + player });
 	    }
+
+	    // TODO: consider rename
+
 	  }, {
 	    key: 'shouldToggleServer',
 	    value: function shouldToggleServer() {
@@ -21182,6 +21200,7 @@
 	  }, {
 	    key: 'incrementScore',
 	    value: function incrementScore(player) {
+	      // Increment score
 	      switch (player) {
 	        case 1:
 	          this.setState({ playerOneScore: this.state.playerOneScore + 1 });
@@ -21190,6 +21209,8 @@
 	          this.setState({ playerTwoScore: this.state.playerTwoScore + 1 });
 	          break;
 	      }
+
+	      // Check if server should be changed and change server if needed
 	      var nextServer = this.state.server === "player1" ? "2" : "1";
 	      if (this.shouldToggleServer()) {
 	        this.setServer(nextServer);
@@ -21198,11 +21219,15 @@
 	  }, {
 	    key: 'decrementScore',
 	    value: function decrementScore(player) {
+	      // Check if server can/should be changed and change server if needed
 	      var nextServer = this.state.server === "player1" ? "2" : "1";
-	      if (this.shouldToggleServer() && (this.state.playerOneScore > 0 && player == 1 || this.state.playerTwoScore > 0 && player == 2)) {
+	      var playerOneCanToggle = player === 1 && this.state.playerOneScore > 0;
+	      var playerTwoCanToggle = player === 2 && this.state.playerTwoScore > 0;
+	      if (this.shouldToggleServer() && (playerOneCanToggle || playerTwoCanToggle)) {
 	        this.setServer(nextServer);
 	      }
 
+	      // Decrement score
 	      switch (player) {
 	        case 1:
 	          if (this.state.playerOneScore > 0) {
@@ -21216,10 +21241,49 @@
 	          break;
 	      }
 	    }
+
+	    /*
+	     * Resets the game to its default state.
+	     */
+
 	  }, {
 	    key: 'resetGame',
 	    value: function resetGame() {
-	      this.setState({ playerTwoScore: 0, playerOneScore: 0, server: null, winner: null });
+	      this.setState(defaults);
+	    }
+	  }, {
+	    key: 'onSingle',
+	    value: function onSingle(message) {
+	      this.incrementScore(message.button);
+	    }
+	  }, {
+	    key: 'onDouble',
+	    value: function onDouble(message) {
+	      this.resetGame();
+	    }
+	  }, {
+	    key: 'onHold',
+	    value: function onHold(message) {
+	      this.state.playerOneScore || this.state.playerTwoScore ? this.decrementScore(message.button) : this.setServer(message.button);
+	    }
+	  }, {
+	    key: 'onSetScore',
+	    value: function onSetScore(message) {
+	      message.button === 1 ? this.setState({ playerOneScore: message.score }) : this.setState({ playerTwoScore: message.score });
+	    }
+	  }, {
+	    key: 'checkWinner',
+	    value: function checkWinner() {
+	      if (this.state.playerOneScore >= scoreToWin) {
+	        if (winBy2 && this.state.playerOneScore >= this.state.playerTwoScore + 2) {
+	          return { hasWinner: true, winner: "player1" };
+	        }
+	      } else if (this.state.playerTwoScore >= scoreToWin) {
+	        if (winBy2 && this.state.playerTwoScore >= this.state.playerOneScore + 2) {
+	          return { hasWinner: true, winner: "player2" };
+	        }
+	      }
+	      return { hasWinner: false };
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -21227,34 +21291,30 @@
 	      var _this2 = this;
 
 	      this.scoreBoard.bind('update-score', function (message) {
+	        // Handle click types
 	        switch (message.clickType) {
 	          case 'single':
-	            _this2.incrementScore(message.button);
+	            _this2.onSingle(message);
 	            break;
 	          case 'double':
-	            _this2.resetGame();
+	            _this2.onDouble(message);
 	            break;
 	          case 'hold':
-	            _this2.state.playerOneScore || _this2.state.playerTwoScore ? _this2.decrementScore(message.button) : _this2.setServer(message.button);
-	            console.log(_this2.state.server);
+	            _this2.onHold(message);
 	            break;
+
+	          // Debug
 	          case 'set-score':
-	            message.button === 1 ? _this2.setState({ playerOneScore: message.score }) : _this2.setState({ playerTwoScore: message.score });
+	            _this2.onSetScore(message);
 	            break;
 	        }
 
-	        if (_this2.state.playerOneScore >= 21 && _this2.state.playerTwoScore + 2 <= _this2.state.playerOneScore) {
-	          _this2.setState({ winner: "player1" });
+	        var winInfo = _this2.checkWinner();
+	        if (winInfo.hasWinner === true) {
+	          _this2.setState({ winner: winInfo.winner });
 	          setTimeout(function () {
-	            _this2.setState({ winner: null, server: null });
 	            _this2.resetGame();
-	          }, 5000);
-	        } else if (_this2.state.playerTwoScore >= 21 && _this2.state.playerOneScore + 2 <= _this2.state.playerTwoScore) {
-	          _this2.setState({ winner: "player2" });
-	          setTimeout(function () {
-	            _this2.setState({ winner: null, server: null });
-	            _this2.resetGame();
-	          }, 5000);
+	          }, winTimeout);
 	        }
 	      });
 	    }
@@ -21269,8 +21329,6 @@
 	          winner: this.state.winner,
 	          offset: 's1',
 	          player: 'player1',
-	          name: 'Django',
-	          picURL: 'http://placekitten.com/g/225/225',
 	          decrementScore: this.decrementScore.bind(this),
 	          score: this.state.playerOneScore }),
 	        _react2.default.createElement('div', { className: 'col s2' }),
@@ -21280,8 +21338,6 @@
 	          offset: 's2',
 	          player: 'player2',
 	          className: 'player2',
-	          name: 'Whiskers',
-	          picURL: 'http://placekitten.com/225/225',
 	          decrementScore: this.decrementScore.bind(this),
 	          score: this.state.playerTwoScore }),
 	        _react2.default.createElement('div', { id: this.isNewGame() ? "ball" : "" }),
