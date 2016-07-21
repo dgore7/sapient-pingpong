@@ -21163,8 +21163,29 @@
 	      }
 	    }
 	  }, {
+	    key: 'setServer',
+	    value: function setServer(player) {
+	      this.setState({ server: "player" + player });
+	    }
+	  }, {
+	    key: 'incrementScore',
+	    value: function incrementScore(player) {
+	      switch (player) {
+	        case 1:
+	          this.setState({ playerOneScore: this.state.playerOneScore + 1 });
+	          break;
+	        case 2:
+	          this.setState({ playerTwoScore: this.state.playerTwoScore + 1 });
+	          break;
+	      }
+	      var nextServer = this.state.server === "player1" ? "2" : "1";
+	      if ((this.state.playerOneScore + this.state.playerTwoScore) % 5 === 0) this.setServer(nextServer);
+	    }
+	  }, {
 	    key: 'decrementScore',
 	    value: function decrementScore(player) {
+	      var nextServer = this.state.server === "player1" ? "2" : "1";
+	      if ((this.state.playerOneScore + this.state.playerTwoScore) % 5 === 0) this.setServer(nextServer);
 	      switch (player) {
 	        case 1:
 	          if (this.state.playerOneScore > 0) {
@@ -21201,19 +21222,20 @@
 	      this.scoreBoard.bind('update-score', function (message) {
 	        switch (message.clickType) {
 	          case 'single':
-	            message.button === 1 ? _this2.setState({ playerOneScore: _this2.state.playerOneScore + 1 }) : _this2.setState({ playerTwoScore: _this2.state.playerTwoScore + 1 });
+	            _this2.incrementScore(message.button);
 	            break;
 	          case 'double':
 	            _this2.resetGame();
 	            break;
 	          case 'hold':
-	            _this2.state.playerOneScore || _this2.state.playerTwoScore ? _this2.decrementScore(message.button) : _this2.setState({ server: "player" + message.button });
+	            _this2.state.playerOneScore || _this2.state.playerTwoScore ? _this2.decrementScore(message.button) : _this2.setServer(message.button);
 	            console.log(_this2.state.server);
 	            break;
 	          case 'set-score':
 	            message.button === 1 ? _this2.setState({ playerOneScore: message.score }) : _this2.setState({ playerTwoScore: message.score });
 	            break;
 	        }
+
 	        if (_this2.state.playerOneScore >= 21 && _this2.state.playerTwoScore + 2 <= _this2.state.playerOneScore) {
 	          _this2.setState({ winner: "player1" });
 	          setTimeout(function () {

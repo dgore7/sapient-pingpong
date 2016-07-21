@@ -22,7 +22,26 @@ export default class Layout extends React.Component{
     }
   }
 
+  setServer(player) {
+    this.setState({server: "player" + player});
+  }
+
+  incrementScore(player) {
+    switch (player) {
+      case 1:
+        this.setState({playerOneScore: this.state.playerOneScore+1});
+        break;
+      case 2:
+        this.setState({playerTwoScore: this.state.playerTwoScore+1});
+        break;
+    }
+    var nextServer = this.state.server==="player1"?"2":"1";
+    if ((this.state.playerOneScore+this.state.playerTwoScore) % 5 === 0) this.setServer(nextServer);
+  }
+
   decrementScore(player) {
+    var nextServer = this.state.server==="player1"?"2":"1";
+    if ((this.state.playerOneScore+this.state.playerTwoScore) % 5 === 0) this.setServer(nextServer);
     switch (player) {
       case 1:
         if (this.state.playerOneScore > 0) {
@@ -54,9 +73,7 @@ export default class Layout extends React.Component{
     this.scoreBoard.bind('update-score', (message) => {
       switch (message.clickType) {
         case 'single':
-          message.button===1?
-            this.setState({playerOneScore: this.state.playerOneScore+1}):
-            this.setState({playerTwoScore: this.state.playerTwoScore+1});
+          this.incrementScore(message.button);
           break;
         case 'double':
           this.resetGame();
@@ -64,7 +81,7 @@ export default class Layout extends React.Component{
         case 'hold':
           this.state.playerOneScore || this.state.playerTwoScore?
             this.decrementScore(message.button):
-            this.setState({server: "player" + message.button});
+            this.setServer(message.button);
             console.log(this.state.server);
           break;
         case 'set-score':
@@ -73,6 +90,7 @@ export default class Layout extends React.Component{
             this.setState({playerTwoScore: message.score});
           break;
       }
+
       if (this.state.playerOneScore>=21 && this.state.playerTwoScore+2 <= this.state.playerOneScore) {
         this.setState({winner:"player1"});
         setTimeout(() =>{
