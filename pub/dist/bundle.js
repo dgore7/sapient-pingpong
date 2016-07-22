@@ -21154,10 +21154,14 @@
 	  function Layout(props) {
 	    _classCallCheck(this, Layout);
 
-	    // Configure game state
-
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Layout).call(this, props));
 
+	    var debug = true;
+
+	    var timestamp = null;
+	    var duration = null;
+
+	    // Configure game state
 	    _this.state = defaults;
 
 	    // Configure Pusher
@@ -21165,7 +21169,8 @@
 	      cluster: 'eu',
 	      encrypted: true
 	    });
-	    _this.scoreBoard = _this.pusher.subscribe('scoreboard'); // change letiable name
+	    var pusherChannel = debug ? 'scoreboard-test' : 'scoreboard';
+	    _this.scoreBoard = _this.pusher.subscribe(pusherChannel); // change letiable name
 	    return _this;
 	  }
 
@@ -21232,6 +21237,11 @@
 	          break;
 	      }
 
+	      if (this.state.playerOneScore + this.state.playerTwoScore === 1) {
+	        // A new game has started
+	        this.timestamp = Date.now();
+	      }
+
 	      this.toggleServer();
 	    }
 	  }, {
@@ -21261,6 +21271,8 @@
 	  }, {
 	    key: 'resetGame',
 	    value: function resetGame() {
+	      this.timestamp = null;
+	      this.duration = null;
 	      this.setState(defaults);
 	    }
 	  }, {
@@ -21299,6 +21311,18 @@
 	      return { hasWinner: false };
 	    }
 	  }, {
+	    key: 'postGameStats',
+	    value: function postGameStats() {
+	      var stats = {
+	        timestamp: this.timestamp,
+	        duration: this.duration,
+	        score: [this.state.playerOneScore, this.state.playerTwoScore]
+	      };
+
+	      // TODO: post stats to db
+	      console.log(JSON.stringify(stats));
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var _this2 = this;
@@ -21330,6 +21354,10 @@
 
 	        var winInfo = _this2.checkWinner();
 	        if (winInfo.hasWinner === true) {
+	          _this2.duration = Date.now() - _this2.timestamp;
+	          if (!debug) {
+	            _this2.postGameStats();
+	          }
 	          _this2.setState({ winner: winInfo.winner, server: null });
 	          setTimeout(function () {
 	            _this2.resetGame();

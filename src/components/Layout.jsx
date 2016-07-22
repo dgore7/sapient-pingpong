@@ -16,6 +16,11 @@ export default class Layout extends React.Component {
   constructor(props) {
     super(props);
 
+    let debug = true;
+
+    let timestamp = null;
+    let duration = null;
+
     // Configure game state
     this.state = defaults;
 
@@ -24,7 +29,8 @@ export default class Layout extends React.Component {
       cluster: 'eu',
       encrypted: true
     });
-    this.scoreBoard = this.pusher.subscribe('scoreboard') // change letiable name
+    let pusherChannel = debug ? 'scoreboard-test' : 'scoreboard';
+    this.scoreBoard = this.pusher.subscribe(pusherChannel) // change letiable name
   }
 
   /*
@@ -73,11 +79,16 @@ export default class Layout extends React.Component {
     // Increment score
     switch (player) {
       case 1:
-        this.setState({playerOneScore: this.state.playerOneScore + 1});
+        this.setState({ playerOneScore: this.state.playerOneScore + 1 });
         break;
       case 2:
-        this.setState({playerTwoScore: this.state.playerTwoScore + 1});
+        this.setState({ playerTwoScore: this.state.playerTwoScore + 1 });
         break;
+    }
+
+    if (this.state.playerOneScore + this.state.playerTwoScore === 1) {
+      // A new game has started
+      this.timestamp = Date.now();
     }
 
     this.toggleServer();
@@ -105,6 +116,8 @@ export default class Layout extends React.Component {
    * Resets the game to its default state.
    */
   resetGame() {
+    this.timestamp = null;
+    this.duration = null;
     this.setState(defaults);
   }
 
@@ -142,6 +155,17 @@ export default class Layout extends React.Component {
     return { hasWinner: false };
   }
 
+  postGameStats() {
+    let stats = {
+      timestamp: this.timestamp,
+      duration: this.duration,
+      score: [this.state.playerOneScore, this.state.playerTwoScore]
+    };
+
+    // TODO: post stats to db
+    console.log(JSON.stringify(stats));
+  }
+
   componentDidMount() {
     this.scoreBoard.bind('update-score', (message) => {
       // Handle click types
@@ -170,6 +194,10 @@ export default class Layout extends React.Component {
 
       let winInfo = this.checkWinner();
       if (winInfo.hasWinner === true) {
+        this.duration = Date.now() - this.timestamp;
+        if (!debug) {
+          this.postGameStats();
+        }
         this.setState({winner: winInfo.winner, server: null});
         setTimeout(() => {
           this.resetGame();
