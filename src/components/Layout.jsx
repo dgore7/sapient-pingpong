@@ -31,7 +31,11 @@ export default class Layout extends React.Component {
    * Checks whether the current score for both players is 0.
    */
   isNewGame() {
-      return this.state.playerOneScore == 0 && this.state.playerTwoScore == 0;
+    return this.state.playerOneScore == 0 && this.state.playerTwoScore == 0;
+  }
+
+  isServerModeEnabled() {
+    return this.state.server != null;
   }
 
   /*
@@ -41,11 +45,28 @@ export default class Layout extends React.Component {
     this.setState({server: "player" + player});
   }
 
-  // TODO: consider rename
-  shouldToggleServer() {
-    return this.state.server != null &&
-      (this.state.playerOneScore != 0 || this.state.playerTwoScore != 0) &&
-      ((this.state.playerOneScore + this.state.playerTwoScore) % 5 === 0);
+  toggleServer() {
+    if (!this.isServerModeEnabled() || this.isNewGame()) {
+      return;
+    }
+
+    let toggleEvery5 = (this.state.playerOneScore < 20 || this.state.playerTwoScore < 20);
+    let toggleEvery2 = (this.state.playerOneScore >= 20 && this.state.playerTwoScore >= 20);
+    let nextServer = this.state.server === "player1" ? "2" : "1";
+
+    if (this.state.playerOneScore == 20 && this.state.playerTwoScore < 20) {
+      this.setServer(2);
+      return;
+    } else if (this.state.playerTwoScore == 20 && this.state.playerOneScore < 20) {
+      this.setServer(1);
+      return;
+    }
+
+    if (toggleEvery5 && (this.state.playerOneScore + this.state.playerTwoScore) % 5 === 0) {
+      this.setServer(nextServer);
+    } else if (toggleEvery2 && (this.state.playerOneScore + this.state.playerTwoScore) % 2 === 0) {
+      this.setServer(nextServer);
+    }
   }
 
   incrementScore(player) {
@@ -59,32 +80,22 @@ export default class Layout extends React.Component {
         break;
     }
 
-    // Check if server should be changed and change server if needed
-    let nextServer = this.state.server === "player1" ? "2" : "1";
-    if (this.shouldToggleServer()) {
-      this.setServer(nextServer);
-    }
+    this.toggleServer();
   }
 
   decrementScore(player) {
-    // Check if server can/should be changed and change server if needed
-    let nextServer = this.state.server === "player1" ? "2" : "1";
-    let playerOneCanToggle = (player === 1 && this.state.playerOneScore > 0);
-    let playerTwoCanToggle = (player === 2 && this.state.playerTwoScore > 0);
-    if (this.shouldToggleServer() && (playerOneCanToggle || playerTwoCanToggle)) {
-      this.setServer(nextServer);
-    }
+    this.toggleServer();
 
     // Decrement score
     switch (player) {
       case 1:
         if (this.state.playerOneScore > 0) {
-          this.setState({playerOneScore: this.state.playerOneScore-1});
+          this.setState({playerOneScore: this.state.playerOneScore - 1});
         }
         break;
       case 2:
         if (this.state.playerTwoScore > 0) {
-          this.setState({playerTwoScore: this.state.playerTwoScore-1});
+          this.setState({playerTwoScore: this.state.playerTwoScore - 1});
         }
         break;
     }
@@ -118,15 +129,16 @@ export default class Layout extends React.Component {
   }
 
   checkWinner() {
-    if (this.state.playerOneScore >= scoreToWin) {
-      if (winBy2 && this.state.playerOneScore >= this.state.playerTwoScore + 2) {
-        return { hasWinner: true, winner: "player1" };
-      }
-    } else if (this.state.playerTwoScore >= scoreToWin) {
-      if (winBy2 && this.state.playerTwoScore >= this.state.playerOneScore + 2) {
-        return { hasWinner: true, winner: "player2" };
-      }
+    if (this.state.playerOneScore < scoreToWin || this.state.playerOneScore < scoreToWin) {
+      return { hasWinner: false };
     }
+
+    if (winBy2 && (this.state.playerOneScore >= this.state.playerTwoScore + 2)) {
+      return { hasWinner: true, winner: "player1" };
+    } else if (winBy2 && (this.state.playerTwoScore >= this.state.playerOneScore + 2)) {
+      return { hasWinner: true, winner: "player2" };
+    }
+
     return { hasWinner: false };
   }
 
@@ -148,11 +160,17 @@ export default class Layout extends React.Component {
         case 'set-score':
           this.onSetScore(message);
           break;
+        case 'reset':
+          this.resetGame();
+          break;
+        case 'set-server':
+          this.setServer(message.button);
+          break;
       }
 
       let winInfo = this.checkWinner();
       if (winInfo.hasWinner === true) {
-        this.setState({winner: winInfo.winner});
+        this.setState({winner: winInfo.winner, server: null});
         setTimeout(() => {
           this.resetGame();
         }, winTimeout);
