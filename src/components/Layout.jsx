@@ -29,8 +29,8 @@ export default class Layout extends React.Component {
       cluster: 'eu',
       encrypted: true
     });
-    let pusherChannel = this.debug ? 'scoreboard-test' : 'scoreboard';
-    this.scoreBoard = this.pusher.subscribe(pusherChannel) // change letiable name
+    let pusherChannel = debug === true ? 'scoreboard-test' : 'scoreboard';
+    this.scoreBoard = this.pusher.subscribe(pusherChannel);
   }
 
   /*
@@ -163,7 +163,7 @@ export default class Layout extends React.Component {
     };
 
     // TODO: post stats to db
-    console.log(JSON.stringify(stats));
+    console.log(JSON.stringify(stats, null, 2));
   }
 
   componentDidMount() {
@@ -195,7 +195,7 @@ export default class Layout extends React.Component {
       let winInfo = this.checkWinner();
       if (winInfo.hasWinner === true) {
         this.duration = Date.now() - this.timestamp;
-        if (!debug) {
+        if (!this.debug) {
           this.postGameStats();
         }
         this.setState({winner: winInfo.winner, server: null});

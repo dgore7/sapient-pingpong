@@ -7,14 +7,6 @@ var debounce = false;
 var timeout = null;
 const delay= 1500;
 
-// Initialize physical push-button actions
-// TODO: use map instead?
-var buttonActions = [
-  'single',
-  'double',
-  'hold'
-];
-
 // Initialize Pusher
 var pusher = new Pusher({
   appId: '225891',
@@ -24,16 +16,21 @@ var pusher = new Pusher({
   encrypted: true
 });
 
-function onMessage(scoreData, res) {
+function sendData(scoreData) {
+  var sent = false;
+
   if (!debounce) {
     debounce = true;
     pusher.trigger('scoreboard', 'update-score', scoreData);
-    res.json({status: 'ok', message: 'transmit success'});
+    sent = true;
   }
+
   clearTimeout(timeout);
   timeout = setTimeout(function() {
     debounce = false;
   }, delay);
+
+  return sent;
 }
 
 /*
@@ -41,27 +38,20 @@ function onMessage(scoreData, res) {
  */
 function validateButtonData(data) {
   if (data == null) {
-    return false;
+    return { status: 'error', message: 'no data' };
   }
 
   // Check fields
   if (!data.hasOwnProperty('button') || !data.hasOwnProperty('clickType')) {
-    console.log("missing field");
-    return false;
+    return { status: 'error', message: 'missing field' };
   }
 
   // Check button value
   if (data.button != 1 && data.button != 2) {
-    console.log("invalid button");
-    return false;
+    return { status: 'error', message: 'invalid button number' };
   }
-  // Check click type
-  // if (!buttonActions.includes(data.clickType)) {
-  //   console.log("action not found");
-  //   return false;
-  // }
 
-  return true;
+  return { status: 'ok' };
 }
 
 /*
@@ -74,16 +64,24 @@ function handleButtonPress(req, res) {
 
   var data = req.body;
 
-  if (!validateButtonData(data)) {
-    res.json({status: 'error', message: 'invalid data'});
+  var validationResult = validateButtonData(data);
+
+  if (validationResult.status != 'ok') {
+    console.log(validationResult);
+    res.json(validationResult);
     res.end();
     return;
   }
 
-
-
   console.log(data);
-  onMessage(data, res);
+  var hasSent = sendData(data);
+
+  if (hasSent) {
+    res.json({ status: 'ok', message: 'transmit success' });
+  } else {
+    res.json({ status: 'error', message: 'transmit unsuccessful - debounce' });
+  }
+
   res.end();
 }
 
