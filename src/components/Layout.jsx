@@ -29,7 +29,7 @@ export default class Layout extends React.Component {
       cluster: 'eu',
       encrypted: true
     });
-    let pusherChannel = debug ? 'scoreboard-test' : 'scoreboard';
+    let pusherChannel = this.debug ? 'scoreboard-test' : 'scoreboard';
     this.scoreBoard = this.pusher.subscribe(pusherChannel) // change letiable name
   }
 

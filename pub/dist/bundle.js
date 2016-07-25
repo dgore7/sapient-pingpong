@@ -21156,7 +21156,7 @@
 
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Layout).call(this, props));
 
-	    var debug = true;
+	    var debug = false;
 
 	    var timestamp = null;
 	    var duration = null;
@@ -21169,7 +21169,7 @@
 	      cluster: 'eu',
 	      encrypted: true
 	    });
-	    var pusherChannel = debug ? 'scoreboard-test' : 'scoreboard';
+	    var pusherChannel = _this.debug ? 'scoreboard-test' : 'scoreboard';
 	    _this.scoreBoard = _this.pusher.subscribe(pusherChannel); // change letiable name
 	    return _this;
 	  }
