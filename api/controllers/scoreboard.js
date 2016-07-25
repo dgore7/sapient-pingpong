@@ -86,7 +86,7 @@ function handleButtonPress(req, res) {
 }
 
 // Handle PUT from push-buttons
-router.post('/', function(req, res) {
+router.post('/update-score', function(req, res) {
   handleButtonPress(req, res);
 });
 
