@@ -16,7 +16,7 @@ export default class Layout extends React.Component {
   constructor(props) {
     super(props);
 
-    let debug = true;
+    let debug = false;
 
     let timestamp = null;
     let duration = null;
