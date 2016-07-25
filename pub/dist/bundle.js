@@ -61,16 +61,16 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _Layout = __webpack_require__(173);
+	var _App = __webpack_require__(173);
 
-	var _Layout2 = _interopRequireDefault(_Layout);
+	var _App2 = _interopRequireDefault(_App);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	_reactDom2.default.render(_react2.default.createElement(
 	  'div',
 	  null,
-	  _react2.default.createElement(_Layout2.default, null)
+	  _react2.default.createElement(_App2.default, null)
 	), document.getElementById('app'));
 	// import {Route, Router, hashHistory} from 'react-router';
 
@@ -21122,13 +21122,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Player = __webpack_require__(174);
+	var _Layout = __webpack_require__(174);
 
-	var _Player2 = _interopRequireDefault(_Player);
-
-	var _Background = __webpack_require__(177);
-
-	var _Background2 = _interopRequireDefault(_Background);
+	var _Layout2 = _interopRequireDefault(_Layout);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21148,13 +21144,13 @@
 	var scoreToWin = 21;
 	var winBy2 = true;
 
-	var Layout = function (_React$Component) {
-	  _inherits(Layout, _React$Component);
+	var App = function (_React$Component) {
+	  _inherits(App, _React$Component);
 
-	  function Layout(props) {
-	    _classCallCheck(this, Layout);
+	  function App(props) {
+	    _classCallCheck(this, App);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Layout).call(this, props));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
 
 	    var debug = false;
 
@@ -21174,12 +21170,7 @@
 	    return _this;
 	  }
 
-	  /*
-	   * Checks whether the current score for both players is 0.
-	   */
-
-
-	  _createClass(Layout, [{
+	  _createClass(App, [{
 	    key: 'isNewGame',
 	    value: function isNewGame() {
 	      return this.state.playerOneScore == 0 && this.state.playerTwoScore == 0;
@@ -21298,7 +21289,7 @@
 	  }, {
 	    key: 'checkWinner',
 	    value: function checkWinner() {
-	      if (this.state.playerOneScore < scoreToWin || this.state.playerOneScore < scoreToWin) {
+	      if (this.state.playerOneScore < scoreToWin && this.state.playerTwoScore < scoreToWin) {
 	        return { hasWinner: false };
 	      }
 
@@ -21353,6 +21344,7 @@
 	        }
 
 	        var winInfo = _this2.checkWinner();
+	        console.log(winInfo);
 	        if (winInfo.hasWinner === true) {
 	          _this2.duration = Date.now() - _this2.timestamp;
 	          if (!_this2.debug) {
@@ -21363,40 +21355,28 @@
 	            _this2.resetGame();
 	          }, winTimeout);
 	        }
+
+	        console.log(_this2.state);
 	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'row' },
-	        _react2.default.createElement(_Player2.default, {
-	          server: this.state.server,
-	          winner: this.state.winner,
-	          offset: 's1',
-	          player: 'player1',
-	          decrementScore: this.decrementScore.bind(this),
-	          score: this.state.playerOneScore }),
-	        _react2.default.createElement('div', { className: 'col s2' }),
-	        _react2.default.createElement(_Player2.default, {
-	          winner: this.state.winner,
-	          server: this.state.server,
-	          offset: 's2',
-	          player: 'player2',
-	          className: 'player2',
-	          decrementScore: this.decrementScore.bind(this),
-	          score: this.state.playerTwoScore }),
-	        _react2.default.createElement('div', { id: this.isNewGame() ? "ball" : "" }),
-	        _react2.default.createElement(_Background2.default, { resetGame: this.resetGame.bind(this) })
-	      );
+	      return _react2.default.createElement(_Layout2.default, {
+	        server: this.state.server,
+	        winner: this.state.winner,
+	        playerOneScore: this.state.playerOneScore,
+	        playerTwoScore: this.state.playerTwoScore,
+	        decrementScore: this.decrementScore.bind(this),
+	        isNewGame: this.isNewGame.bind(this),
+	        resetGame: this.resetGame.bind(this) });
 	    }
 	  }]);
 
-	  return Layout;
+	  return App;
 	}(_react2.default.Component);
 
-	exports.default = Layout;
+	exports.default = App;
 
 /***/ },
 /* 174 */
@@ -21414,11 +21394,85 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Profile = __webpack_require__(175);
+	var _Player = __webpack_require__(175);
+
+	var _Player2 = _interopRequireDefault(_Player);
+
+	var _Background = __webpack_require__(178);
+
+	var _Background2 = _interopRequireDefault(_Background);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Layout = function (_React$Component) {
+	  _inherits(Layout, _React$Component);
+
+	  function Layout() {
+	    _classCallCheck(this, Layout);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Layout).apply(this, arguments));
+	  }
+
+	  _createClass(Layout, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'row' },
+	        _react2.default.createElement(_Player2.default, {
+	          server: this.props.server,
+	          winner: this.props.winner,
+	          offset: 's1',
+	          player: 'player1',
+	          decrementScore: this.props.decrementScore,
+	          score: this.props.playerOneScore }),
+	        _react2.default.createElement('div', { className: 'col s2' }),
+	        _react2.default.createElement(_Player2.default, {
+	          server: this.props.server,
+	          winner: this.props.winner,
+	          offset: 's2',
+	          player: 'player2',
+	          className: 'player2',
+	          decrementScore: this.props.decrementScore,
+	          score: this.props.playerTwoScore }),
+	        _react2.default.createElement('div', { id: this.props.isNewGame() ? "ball" : "" }),
+	        _react2.default.createElement(_Background2.default, { resetGame: this.props.resetGame })
+	      );
+	    }
+	  }]);
+
+	  return Layout;
+	}(_react2.default.Component);
+
+	exports.default = Layout;
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Profile = __webpack_require__(176);
 
 	var _Profile2 = _interopRequireDefault(_Profile);
 
-	var _Score = __webpack_require__(176);
+	var _Score = __webpack_require__(177);
 
 	var _Score2 = _interopRequireDefault(_Score);
 
@@ -21516,7 +21570,7 @@
 	exports.default = Player;
 
 /***/ },
-/* 175 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21570,7 +21624,7 @@
 	exports.default = Profile;
 
 /***/ },
-/* 176 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21623,7 +21677,7 @@
 	exports.default = Score;
 
 /***/ },
-/* 177 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
