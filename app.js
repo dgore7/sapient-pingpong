@@ -8,11 +8,11 @@ var app = express();
 
 const PORT = process.env.PORT || 80;
 
-var routesAPI = require('./api/routes/index');
+var scoreboardAPI = require('./api/routes/scoreboard');
 
 app.use(bodyParser.json({type: '*/*'}));
 app.use(express.static('pub'));
-app.use('/api', routesAPI);
+app.use('/api', scoreboardAPI);
 
 // Server
 var server = http.createServer(app);

@@ -63,7 +63,7 @@ function validateButtonData(data) {
  * Interprets data sent from push-button, then sends a request via Pusher
  * containing the action to perform on the scoreboard.
  */
-function handleButtonPress(req, res) {
+module.exports.handleButtonPress = function(req, res) {
   res.type('json');
   console.log(req.body);
 
@@ -88,10 +88,3 @@ function handleButtonPress(req, res) {
 
   res.end();
 }
-
-// Handle POST from push-buttons
-router.post('/update-score', function(req, res) {
-  handleButtonPress(req, res);
-});
-
-module.exports = router;
