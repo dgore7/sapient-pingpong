@@ -142,7 +142,7 @@ export default class Layout extends React.Component {
   }
 
   checkWinner() {
-    if (this.state.playerOneScore < scoreToWin || this.state.playerOneScore < scoreToWin) {
+    if (this.state.playerOneScore < scoreToWin && this.state.playerOneScore < scoreToWin) {
       return { hasWinner: false };
     }
 
