@@ -21169,8 +21169,8 @@
 	      cluster: 'eu',
 	      encrypted: true
 	    });
-	    var pusherChannel = _this.debug ? 'scoreboard-test' : 'scoreboard';
-	    _this.scoreBoard = _this.pusher.subscribe(pusherChannel); // change letiable name
+	    var pusherChannel = debug === true ? 'scoreboard-test' : 'scoreboard';
+	    _this.scoreBoard = _this.pusher.subscribe(pusherChannel);
 	    return _this;
 	  }
 
@@ -21320,7 +21320,7 @@
 	      };
 
 	      // TODO: post stats to db
-	      console.log(JSON.stringify(stats));
+	      console.log(JSON.stringify(stats, null, 2));
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -21355,7 +21355,7 @@
 	        var winInfo = _this2.checkWinner();
 	        if (winInfo.hasWinner === true) {
 	          _this2.duration = Date.now() - _this2.timestamp;
-	          if (!debug) {
+	          if (!_this2.debug) {
 	            _this2.postGameStats();
 	          }
 	          _this2.setState({ winner: winInfo.winner, server: null });
