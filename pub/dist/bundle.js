@@ -21154,10 +21154,14 @@
 	  function Layout(props) {
 	    _classCallCheck(this, Layout);
 
-	    // Configure game state
-
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Layout).call(this, props));
 
+	    var debug = false;
+
+	    var timestamp = null;
+	    var duration = null;
+
+	    // Configure game state
 	    _this.state = defaults;
 
 	    // Configure Pusher
@@ -21165,7 +21169,8 @@
 	      cluster: 'eu',
 	      encrypted: true
 	    });
-	    _this.scoreBoard = _this.pusher.subscribe('scoreboard'); // change letiable name
+	    var pusherChannel = _this.debug ? 'scoreboard-test' : 'scoreboard';
+	    _this.scoreBoard = _this.pusher.subscribe(pusherChannel); // change letiable name
 	    return _this;
 	  }
 
@@ -21179,6 +21184,11 @@
 	    value: function isNewGame() {
 	      return this.state.playerOneScore == 0 && this.state.playerTwoScore == 0;
 	    }
+	  }, {
+	    key: 'isServerModeEnabled',
+	    value: function isServerModeEnabled() {
+	      return this.state.server != null;
+	    }
 
 	    /*
 	     * Marks a player as the server.
@@ -21189,13 +21199,30 @@
 	    value: function setServer(player) {
 	      this.setState({ server: "player" + player });
 	    }
-
-	    // TODO: consider rename
-
 	  }, {
-	    key: 'shouldToggleServer',
-	    value: function shouldToggleServer() {
-	      return this.state.server != null && (this.state.playerOneScore != 0 || this.state.playerTwoScore != 0) && (this.state.playerOneScore + this.state.playerTwoScore) % 5 === 0;
+	    key: 'toggleServer',
+	    value: function toggleServer() {
+	      if (!this.isServerModeEnabled() || this.isNewGame()) {
+	        return;
+	      }
+
+	      var toggleEvery5 = this.state.playerOneScore < 20 || this.state.playerTwoScore < 20;
+	      var toggleEvery2 = this.state.playerOneScore >= 20 && this.state.playerTwoScore >= 20;
+	      var nextServer = this.state.server === "player1" ? "2" : "1";
+
+	      if (this.state.playerOneScore == 20 && this.state.playerTwoScore < 20) {
+	        this.setServer(2);
+	        return;
+	      } else if (this.state.playerTwoScore == 20 && this.state.playerOneScore < 20) {
+	        this.setServer(1);
+	        return;
+	      }
+
+	      if (toggleEvery5 && (this.state.playerOneScore + this.state.playerTwoScore) % 5 === 0) {
+	        this.setServer(nextServer);
+	      } else if (toggleEvery2 && (this.state.playerOneScore + this.state.playerTwoScore) % 2 === 0) {
+	        this.setServer(nextServer);
+	      }
 	    }
 	  }, {
 	    key: 'incrementScore',
@@ -21210,22 +21237,17 @@
 	          break;
 	      }
 
-	      // Check if server should be changed and change server if needed
-	      var nextServer = this.state.server === "player1" ? "2" : "1";
-	      if (this.shouldToggleServer()) {
-	        this.setServer(nextServer);
+	      if (this.state.playerOneScore + this.state.playerTwoScore === 1) {
+	        // A new game has started
+	        this.timestamp = Date.now();
 	      }
+
+	      this.toggleServer();
 	    }
 	  }, {
 	    key: 'decrementScore',
 	    value: function decrementScore(player) {
-	      // Check if server can/should be changed and change server if needed
-	      var nextServer = this.state.server === "player1" ? "2" : "1";
-	      var playerOneCanToggle = player === 1 && this.state.playerOneScore > 0;
-	      var playerTwoCanToggle = player === 2 && this.state.playerTwoScore > 0;
-	      if (this.shouldToggleServer() && (playerOneCanToggle || playerTwoCanToggle)) {
-	        this.setServer(nextServer);
-	      }
+	      this.toggleServer();
 
 	      // Decrement score
 	      switch (player) {
@@ -21249,6 +21271,8 @@
 	  }, {
 	    key: 'resetGame',
 	    value: function resetGame() {
+	      this.timestamp = null;
+	      this.duration = null;
 	      this.setState(defaults);
 	    }
 	  }, {
@@ -21274,16 +21298,29 @@
 	  }, {
 	    key: 'checkWinner',
 	    value: function checkWinner() {
-	      if (this.state.playerOneScore >= scoreToWin) {
-	        if (winBy2 && this.state.playerOneScore >= this.state.playerTwoScore + 2) {
-	          return { hasWinner: true, winner: "player1" };
-	        }
-	      } else if (this.state.playerTwoScore >= scoreToWin) {
-	        if (winBy2 && this.state.playerTwoScore >= this.state.playerOneScore + 2) {
-	          return { hasWinner: true, winner: "player2" };
-	        }
+	      if (this.state.playerOneScore < scoreToWin || this.state.playerOneScore < scoreToWin) {
+	        return { hasWinner: false };
 	      }
+
+	      if (winBy2 && this.state.playerOneScore >= this.state.playerTwoScore + 2) {
+	        return { hasWinner: true, winner: "player1" };
+	      } else if (winBy2 && this.state.playerTwoScore >= this.state.playerOneScore + 2) {
+	        return { hasWinner: true, winner: "player2" };
+	      }
+
 	      return { hasWinner: false };
+	    }
+	  }, {
+	    key: 'postGameStats',
+	    value: function postGameStats() {
+	      var stats = {
+	        timestamp: this.timestamp,
+	        duration: this.duration,
+	        score: [this.state.playerOneScore, this.state.playerTwoScore]
+	      };
+
+	      // TODO: post stats to db
+	      console.log(JSON.stringify(stats));
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -21307,11 +21344,21 @@
 	          case 'set-score':
 	            _this2.onSetScore(message);
 	            break;
+	          case 'reset':
+	            _this2.resetGame();
+	            break;
+	          case 'set-server':
+	            _this2.setServer(message.button);
+	            break;
 	        }
 
 	        var winInfo = _this2.checkWinner();
 	        if (winInfo.hasWinner === true) {
-	          _this2.setState({ winner: winInfo.winner });
+	          _this2.duration = Date.now() - _this2.timestamp;
+	          if (!debug) {
+	            _this2.postGameStats();
+	          }
+	          _this2.setState({ winner: winInfo.winner, server: null });
 	          setTimeout(function () {
 	            _this2.resetGame();
 	          }, winTimeout);
