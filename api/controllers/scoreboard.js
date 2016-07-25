@@ -10,7 +10,7 @@ const delay= 1500;
 // Initialize Pusher
 var pusher = new Pusher({
   appId: '225891',
-  key: '7478bf1c2d89d2efb9b0',
+  key: '45a78a912c58902f2b95',
   secret: secret.pusher,
   cluster: 'eu',
   encrypted: true

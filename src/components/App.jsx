@@ -30,7 +30,7 @@ export default class App extends React.Component {
     this.state = defaults;
 
     // Configure Pusher
-    this.pusher = new Pusher('7478bf1c2d89d2efb9b0', {
+    this.pusher = new Pusher('45a78a912c58902f2b95', {
       cluster: 'eu',
       encrypted: true
     });

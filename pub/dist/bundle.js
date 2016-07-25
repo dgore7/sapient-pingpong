@@ -21168,7 +21168,7 @@
 	    _this.state = defaults;
 
 	    // Configure Pusher
-	    _this.pusher = new Pusher('7478bf1c2d89d2efb9b0', {
+	    _this.pusher = new Pusher('45a78a912c58902f2b95', {
 	      cluster: 'eu',
 	      encrypted: true
 	    });
