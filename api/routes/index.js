@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var gameAPI = require('../controllers/game');
+var scoreboardAPI = require('../controllers/scoreboard');
+var game = require('../controllers/game');
 
-router.use('/game', gameAPI);
+router.use('/scoreboard', scoreboardAPI);
 
 module.exports = router;

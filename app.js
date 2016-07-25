@@ -1,7 +1,10 @@
 var http = require('http');
 var express = require('express');
 var bodyParser = require('body-parser');
+require('./api/models/db');
+
 var app = express();
+
 
 const PORT = process.env.PORT || 80;
 

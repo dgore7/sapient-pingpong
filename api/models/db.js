@@ -1,7 +1,9 @@
 var mongoose = require('mongoose');
 var gracefulShutdown;
 
-var dbURI = process.env.NODE_ENV==="production"?'mongodb://localhost/pingpong':'mongodb://heroku_d2772s7c:6oksljcds6r2v6hf3c8prt2uv7@ds033133.mlab.com:33133/heroku_d2772s7c';
+var dbURI = process.env.NODE_ENV==="production"?
+  'mongodb://localhost/pingpong': // Local dev db
+  'mongodb://heroku_d2772s7c:6oksljcds6r2v6hf3c8prt2uv7@ds033133.mlab.com:33133/heroku_d2772s7c'; // MLab URI
 
 mongoose.connect(dbURI);
 
@@ -34,14 +36,10 @@ process.once('SIGUSR2', function () {
 });
 
 // for app termination
-process.on('SIGINT', function () {
+process.once('SIGINT', function () {
   gracefulShutdown('app termination', function () {
     process.exit(0);
   });
 });
 
-process.on('uncaughtException', function () {
-  gracefulShutdown('app termination', function () {
-    process.exit(0);
-  });
-});
+require('./game');
