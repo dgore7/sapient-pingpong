@@ -16,15 +16,20 @@ var pusher = new Pusher({
   encrypted: true
 });
 
+/*
+ * Sends data to the frontend via Pusher.
+ */
 function sendData(scoreData) {
   var sent = false;
 
+  // Only send if debouncer is not currently running.
   if (!debounce) {
     debounce = true;
     pusher.trigger('scoreboard', 'update-score', scoreData);
     sent = true;
   }
 
+  // Start debouncer.
   clearTimeout(timeout);
   timeout = setTimeout(function() {
     debounce = false;
@@ -55,7 +60,7 @@ function validateButtonData(data) {
 }
 
 /*
- * Interprets data sent from push-button, then sends a request via pusher
+ * Interprets data sent from push-button, then sends a request via Pusher
  * containing the action to perform on the scoreboard.
  */
 function handleButtonPress(req, res) {
@@ -65,7 +70,6 @@ function handleButtonPress(req, res) {
   var data = req.body;
 
   var validationResult = validateButtonData(data);
-
   if (validationResult.status != 'ok') {
     console.log(validationResult);
     res.json(validationResult);
@@ -85,7 +89,7 @@ function handleButtonPress(req, res) {
   res.end();
 }
 
-// Handle PUT from push-buttons
+// Handle POST from push-buttons
 router.post('/update-score', function(req, res) {
   handleButtonPress(req, res);
 });
