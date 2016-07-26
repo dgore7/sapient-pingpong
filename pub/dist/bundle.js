@@ -21309,6 +21309,9 @@
 	        duration: this.duration,
 	        score: [this.state.playerOneScore, this.state.playerTwoScore]
 	      };
+	      axois.post('/api/games', stats).catch(function (err) {
+	        console.log(error);
+	      });
 
 	      // TODO: post stats to db
 	      console.log(JSON.stringify(stats, null, 2));

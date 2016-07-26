@@ -6,4 +6,4 @@ var gameSchema = new mongoose.Schema({
   score: [Number]
 });
 
-mongoose.model('game', gameSchema);
+mongoose.model('Game', gameSchema);

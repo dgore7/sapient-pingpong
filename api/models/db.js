@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var gracefulShutdown;
 
 var dbURI = process.env.NODE_ENV==="production"?
-  'mongodb://localhost/pingpong': // Local dev db
-  'mongodb://heroku_d2772s7c:6oksljcds6r2v6hf3c8prt2uv7@ds033133.mlab.com:33133/heroku_d2772s7c'; // MLab URI
+  'mongodb://heroku_d2772s7c:6oksljcds6r2v6hf3c8prt2uv7@ds033133.mlab.com:33133/heroku_d2772s7c': // MLab URI
+  'mongodb://localhost/pingpong'; // Local dev db
 
 mongoose.connect(dbURI);
 
@@ -38,6 +38,13 @@ process.once('SIGUSR2', function () {
 // for app termination
 process.once('SIGINT', function () {
   gracefulShutdown('app termination', function () {
+    process.exit(0);
+  });
+});
+
+// for Heroku app termination
+process.on('SIGTERM', function () {
+  gracefulShutdown('Heroku app shutdown', function () {
     process.exit(0);
   });
 });
