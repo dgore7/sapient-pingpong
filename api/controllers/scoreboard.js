@@ -10,21 +10,26 @@ const delay= 1500;
 // Initialize Pusher
 var pusher = new Pusher({
   appId: '225891',
-  key: '7478bf1c2d89d2efb9b0',
+  key: '45a78a912c58902f2b95',
   secret: secret.pusher,
   cluster: 'eu',
   encrypted: true
 });
 
+/*
+ * Sends data to the frontend via Pusher.
+ */
 function sendData(scoreData) {
   var sent = false;
 
+  // Only send if debouncer is not currently running.
   if (!debounce) {
     debounce = true;
     pusher.trigger('scoreboard', 'update-score', scoreData);
     sent = true;
   }
 
+  // Start debouncer.
   clearTimeout(timeout);
   timeout = setTimeout(function() {
     debounce = false;
@@ -55,7 +60,7 @@ function validateButtonData(data) {
 }
 
 /*
- * Interprets data sent from push-button, then sends a request via pusher
+ * Interprets data sent from push-button, then sends a request via Pusher
  * containing the action to perform on the scoreboard.
  */
 module.exports.handleButtonPress = function(req, res) {
@@ -65,7 +70,6 @@ module.exports.handleButtonPress = function(req, res) {
   var data = req.body;
 
   var validationResult = validateButtonData(data);
-
   if (validationResult.status != 'ok') {
     console.log(validationResult);
     res.json(validationResult);

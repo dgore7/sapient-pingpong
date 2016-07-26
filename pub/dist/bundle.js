@@ -21134,15 +21134,22 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	// Drefault game state
 	var defaults = {
 	  playerOneScore: 0,
 	  playerTwoScore: 0,
 	  winner: null,
 	  server: null
 	};
+
+	// Game and display rules
 	var winTimeout = 5000;
 	var scoreToWin = 21;
 	var winBy2 = true;
+
+	/*
+	 * Game Logic
+	 */
 
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -21161,7 +21168,7 @@
 	    _this.state = defaults;
 
 	    // Configure Pusher
-	    _this.pusher = new Pusher('7478bf1c2d89d2efb9b0', {
+	    _this.pusher = new Pusher('45a78a912c58902f2b95', {
 	      cluster: 'eu',
 	      encrypted: true
 	    });
@@ -21170,11 +21177,22 @@
 	    return _this;
 	  }
 
+	  /*
+	   * Checks whether this is a new game by checking if both players' scores are
+	   * zero.
+	   */
+
+
 	  _createClass(App, [{
 	    key: 'isNewGame',
 	    value: function isNewGame() {
 	      return this.state.playerOneScore == 0 && this.state.playerTwoScore == 0;
 	    }
+
+	    /*
+	     * Checks if the ping-pong server tracking icon should be shown.
+	     */
+
 	  }, {
 	    key: 'isServerModeEnabled',
 	    value: function isServerModeEnabled() {
@@ -21190,6 +21208,17 @@
 	    value: function setServer(player) {
 	      this.setState({ server: "player" + player });
 	    }
+
+	    /*
+	     * Switches the server from one player to the other, but only if it is time
+	     * to do so.
+	     *
+	     * Servers are toggled/set based on the following rules:
+	     *    - Toggle every 5 points if both scores are less than 20
+	     *    - Toggle every 2 points if both scores are greater than 20
+	     *    - If one player is on game point, set the other player to be the server
+	     */
+
 	  }, {
 	    key: 'toggleServer',
 	    value: function toggleServer() {
@@ -21197,10 +21226,11 @@
 	        return;
 	      }
 
+	      // Check which server toggling mode to use
 	      var toggleEvery5 = this.state.playerOneScore < 20 || this.state.playerTwoScore < 20;
 	      var toggleEvery2 = this.state.playerOneScore >= 20 && this.state.playerTwoScore >= 20;
-	      var nextServer = this.state.server === "player1" ? "2" : "1";
 
+	      // Check if a player is on game point
 	      if (this.state.playerOneScore == 20 && this.state.playerTwoScore < 20) {
 	        this.setServer(2);
 	        return;
@@ -21209,16 +21239,24 @@
 	        return;
 	      }
 
+	      // Toggle server
+	      var nextServer = this.state.server === "player1" ? "2" : "1";
+
+	      // Set server based on points and toggle mode ('toggle every 5' or 'toggle every 2')
 	      if (toggleEvery5 && (this.state.playerOneScore + this.state.playerTwoScore) % 5 === 0) {
 	        this.setServer(nextServer);
 	      } else if (toggleEvery2 && (this.state.playerOneScore + this.state.playerTwoScore) % 2 === 0) {
 	        this.setServer(nextServer);
 	      }
 	    }
+
+	    /*
+	     * Adds 1 to a player's current score.
+	     */
+
 	  }, {
 	    key: 'incrementScore',
 	    value: function incrementScore(player) {
-	      // Increment score
 	      switch (player) {
 	        case 1:
 	          this.setState({ playerOneScore: this.state.playerOneScore + 1 });
@@ -21229,18 +21267,22 @@
 	      }
 
 	      if (this.state.playerOneScore + this.state.playerTwoScore === 1) {
-	        // A new game has started
+	        // A new game has started; used for game stats
 	        this.timestamp = Date.now();
 	      }
 
 	      this.toggleServer();
 	    }
+
+	    /*
+	     * Subtracts 1 from a player's current score.
+	     */
+
 	  }, {
 	    key: 'decrementScore',
 	    value: function decrementScore(player) {
 	      this.toggleServer();
 
-	      // Decrement score
 	      switch (player) {
 	        case 1:
 	          if (this.state.playerOneScore > 0) {
@@ -21266,29 +21308,53 @@
 	      this.duration = null;
 	      this.setState(defaults);
 	    }
+
+	    // ===== BUTTON ACTION HANDLERS ===== //
+
+	    /*
+	     * Action to perform when a button is clicked once.
+	     */
+
 	  }, {
 	    key: 'onSingle',
 	    value: function onSingle(message) {
 	      this.incrementScore(message.button);
 	    }
+
+	    /*
+	     * Action to perform when a button is double clicked.
+	     */
+
 	  }, {
 	    key: 'onDouble',
 	    value: function onDouble(message) {
 	      this.resetGame();
 	    }
+
+	    /*
+	     * Action to perform when a button is held.
+	     */
+
 	  }, {
 	    key: 'onHold',
 	    value: function onHold(message) {
-	      this.state.playerOneScore || this.state.playerTwoScore ? this.decrementScore(message.button) : this.setServer(message.button);
+	      if (this.state.playerOneScore != 0 || this.state.playerTwoScore != 0) {
+	        this.decrementScore(message.button);
+	      } else {
+	        this.setServer(message.button);
+	      }
 	    }
-	  }, {
-	    key: 'onSetScore',
-	    value: function onSetScore(message) {
-	      message.button === 1 ? this.setState({ playerOneScore: message.score }) : this.setState({ playerTwoScore: message.score });
-	    }
+
+	    // ===== END: BUTTON ACTION HANDLERS ===== //
+
+	    /*
+	     * Checks if the game has a winner.
+	     */
+
 	  }, {
 	    key: 'checkWinner',
 	    value: function checkWinner() {
+	      // Both scores under 21, no winner.
 	      if (this.state.playerOneScore < scoreToWin && this.state.playerTwoScore < scoreToWin) {
 	        return { hasWinner: false };
 	      }
@@ -21301,6 +21367,11 @@
 
 	      return { hasWinner: false };
 	    }
+
+	    /*
+	     * Posts game stats to the database.
+	     */
+
 	  }, {
 	    key: 'postGameStats',
 	    value: function postGameStats() {
@@ -21336,7 +21407,7 @@
 
 	          // Debug
 	          case 'set-score':
-	            _this2.onSetScore(message);
+	            message.button === 1 ? _this2.setState({ playerOneScore: message.score }) : _this2.setState({ playerTwoScore: message.score });
 	            break;
 	          case 'reset':
 	            _this2.resetGame();
@@ -21347,19 +21418,21 @@
 	        }
 
 	        var winInfo = _this2.checkWinner();
-	        console.log(winInfo);
-	        if (winInfo.hasWinner === true) {
-	          _this2.duration = Date.now() - _this2.timestamp;
-	          if (!_this2.debug) {
-	            _this2.postGameStats();
-	          }
-	          _this2.setState({ winner: winInfo.winner, server: null });
-	          setTimeout(function () {
-	            _this2.resetGame();
-	          }, winTimeout);
+	        if (!winInfo.hasWinner) {
+	          return;
 	        }
 
-	        console.log(_this2.state);
+	        // Calculate game duration and post game stats.
+	        _this2.duration = Date.now() - _this2.timestamp;
+	        if (!_this2.debug) {
+	          _this2.postGameStats();
+	        }
+
+	        // Set winner and delay before game reset.
+	        _this2.setState({ winner: winInfo.winner, server: null });
+	        setTimeout(function () {
+	          _this2.resetGame();
+	        }, winTimeout);
 	      });
 	    }
 	  }, {
