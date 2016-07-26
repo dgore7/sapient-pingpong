@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from './Layout';
+import axios from 'axios';
 
 // Drefault game state
 const defaults = {
@@ -111,9 +112,10 @@ export default class App extends React.Component {
         break;
     }
 
-    if (this.state.playerOneScore + this.state.playerTwoScore === 1) {
+    if (this.timestamp == null) {
       // A new game has started; used for game stats
       this.timestamp = Date.now();
+      console.log("timestamp created: " + this.timestamp);
     }
 
     this.toggleServer();
@@ -204,7 +206,7 @@ export default class App extends React.Component {
       duration: this.duration,
       score: [this.state.playerOneScore, this.state.playerTwoScore]
     };
-    axois.post('/api/games', stats)
+    axios.post('/api/games', stats)
       .catch(function (err) {
         console.log(error);
       });
