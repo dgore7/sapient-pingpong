@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+require('../models/game')
 var games = mongoose.model("Game");
 
 

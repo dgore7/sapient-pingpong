@@ -44,10 +44,10 @@ export default class Player extends React.Component {
             className="card center-align z-depth-5">
           {this.checkWinner()}
           <div id="serving-marker">{this.isServer()?<img src="assets/ping-pong-red.png" alt="serving marker" height="42" width="42"/>:""}</div>
-          {/*<Profile
+          <Profile
           className="profile-div"
           name={this.props.name}
-          picURL={this.props.picURL}/>*/}
+          picURL={this.props.picURL}/>
           <Score
           className="score-div"
           score={this.props.score}/>

@@ -6,6 +6,8 @@ import axios from 'axios';
 const defaults = {
   playerOneScore: 0,
   playerTwoScore: 0,
+  userOne:null,
+  userTwo:null,
   winner: null,
   server: null
 };
@@ -210,12 +212,17 @@ export default class App extends React.Component {
       .catch(function (err) {
         console.log(error);
       });
-
-    // TODO: post stats to db
-    console.log(JSON.stringify(stats, null, 2));
   }
 
   componentDidMount() {
+    this.scoreBoard.bind('user-sign-in', (data) => {
+      if (data.userExists) {
+        this.setState({userOne: data.user.name});
+      } else {
+        $('#modal1').openModal();
+        // axios.post('/api/user/register',)//:TODO finish method after creating respective route on backend
+      }
+    });
     this.scoreBoard.bind('update-score', (message) => {
       // Handle click types
       switch (message.clickType) {
@@ -265,6 +272,8 @@ export default class App extends React.Component {
   render() {
     return (
       <Layout
+        nameOne={this.state.userOne}
+        nameTwo={this.state.userTwo}
         server={this.state.server}
         winner={this.state.winner}
         playerOneScore={this.state.playerOneScore}
