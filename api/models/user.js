@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var UserSchema = module.exports = new mongoose.Schema({
   _id: {
-    type: Number,
+    type: String,
     required: true
   },
   name: String,

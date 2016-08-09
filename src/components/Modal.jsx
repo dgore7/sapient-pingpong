@@ -5,9 +5,6 @@ export default class Modal extends React.Component{
   render(){
     return (
       <div style={{"position":"absolute"}, {"zIndex":500}}>
-        {/*<!-- Modal Trigger  --- To be removed -->*/}
-        <a className="modal-trigger waves-effect waves-light btn" href="#modal1">Modal</a>
-
         {/*<!-- Modal Structure -->*/}
         <div id="modal1" className="modal">
           <form method="post" action="api/user/register">

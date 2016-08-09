@@ -4,11 +4,11 @@ require('../models/user');
 var Users = mongoose.model("User");
 var secret = require('../../secret');
 
-
+console.log(secret.pusher);
 var pusher = new Pusher({
   appId: '225891',
   key: '45a78a912c58902f2b95',
-  secret: secret,
+  secret: secret.pusher,
   cluster: 'eu',
   encrypted: true
 });
@@ -21,6 +21,7 @@ var sendJSONResponse = function (res,status,content) {
 }; //sendJSONResponse
 
 module.exports.createUser = function(req, res) {
+  console.log(req.body);
   Users.create({
     _id: req.body.rfid,
     name: req.body.name
@@ -34,7 +35,6 @@ module.exports.createUser = function(req, res) {
 }
 
 module.exports.readUser = function (req,res) {
-  console.log('made it');
   if(req.body && req.body.rfid) {
     Users
       .findById(req.body.rfid)
@@ -45,11 +45,11 @@ module.exports.readUser = function (req,res) {
         }
         else if(!user) {
           sendJSONResponse (res, 200, null);
-          pusher.trigger('scoreboard', 'user-sign-in', {userExists:false});
-          return;
+          pusher.trigger('scoreboard-test', 'user-sign-in', {userExists:false, rfid:req.body.rfid});
+        } else {
+          sendJSONResponse (res, 200, user);
+          pusher.trigger('scoreboard-test', 'user-sign-in', {userExists:true, user:user});
         }
-        sendJSONResponse (res, 200, user);
-        pusher.trigger('scoreboard', 'user-sign-in', {userExists:true, user:user});
       });
   } else {
     sendJSONResponse (res, 404, {message: "No RFID in request"});

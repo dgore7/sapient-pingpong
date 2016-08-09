@@ -21157,15 +21157,15 @@
 	 * Game Logic
 	 */
 
-	var App = function (_React$Component) {
-	  _inherits(App, _React$Component);
+	var ScoreboardApp = function (_React$Component) {
+	  _inherits(ScoreboardApp, _React$Component);
 
-	  function App(props) {
-	    _classCallCheck(this, App);
+	  function ScoreboardApp(props) {
+	    _classCallCheck(this, ScoreboardApp);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ScoreboardApp).call(this, props));
 
-	    var debug = false;
+	    var debug = true;
 
 	    var timestamp = null;
 	    var duration = null;
@@ -21189,7 +21189,7 @@
 	   */
 
 
-	  _createClass(App, [{
+	  _createClass(ScoreboardApp, [{
 	    key: 'isNewGame',
 	    value: function isNewGame() {
 	      return this.state.playerOneScore == 0 && this.state.playerTwoScore == 0;
@@ -21397,6 +21397,7 @@
 	      var _this2 = this;
 
 	      this.scoreBoard.bind('user-sign-in', function (data) {
+	        console.log('made it to front end');
 	        if (data.userExists) {
 	          _this2.setState({ userOne: data.user.name });
 	        } else {
@@ -21463,10 +21464,10 @@
 	    }
 	  }]);
 
-	  return App;
+	  return ScoreboardApp;
 	}(_react2.default.Component);
 
-	exports.default = App;
+	exports.default = ScoreboardApp;
 
 /***/ },
 /* 174 */
@@ -21888,11 +21889,6 @@
 	      return _react2.default.createElement(
 	        "div",
 	        { style: ({ "position": "absolute" }, { "zIndex": 500 }) },
-	        _react2.default.createElement(
-	          "a",
-	          { className: "modal-trigger waves-effect waves-light btn", href: "#modal1" },
-	          "Modal"
-	        ),
 	        _react2.default.createElement(
 	          "div",
 	          { id: "modal1", className: "modal" },

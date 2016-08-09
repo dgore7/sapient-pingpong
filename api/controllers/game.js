@@ -21,3 +21,20 @@ module.exports.createGame = function(req, res) {
     }
   });
 }
+
+
+
+module.exports.readManyGames = function(req, res) {
+  games
+    .find({})
+    .sort({timestamp:-1})
+    .exec(function (err, games) {
+      if (err) {
+        console.log(err);
+        sendJSONResponse(res, 404, err);
+      }
+      sendJSONResponse(res, 200, games);
+
+    });
+  // sendJSONResponse(res, 404, {message: "idk what happened"});
+}

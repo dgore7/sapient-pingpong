@@ -20,11 +20,11 @@ const winBy2 = true;
 /*
  * Game Logic
  */
-export default class App extends React.Component {
+export default class ScoreboardApp extends React.Component {
   constructor(props) {
     super(props);
 
-    let debug = false;
+    let debug = true;
 
     let timestamp = null;
     let duration = null;
@@ -216,6 +216,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.scoreBoard.bind('user-sign-in', (data) => {
+      console.log('made it to front end');
       if (data.userExists) {
         this.setState({userOne: data.user.name});
       } else {
