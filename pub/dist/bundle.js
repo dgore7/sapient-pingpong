@@ -21165,7 +21165,7 @@
 
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ScoreboardApp).call(this, props));
 
-	    var debug = true;
+	    var debug = false;
 
 	    var timestamp = null;
 	    var duration = null;
