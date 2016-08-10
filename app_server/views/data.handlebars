@@ -17,20 +17,16 @@
       </thead>
       <tbody>
         {{#each games}}
-        
-          <tr class="table-row">
-            <td class="time">{{this.timestamp}}</td>
-            <td class="duration">{{this.duration}}</td>
-            {{#if this.score}}
+          {{#if this.score}}
+            <tr class="table-row">
+              <td class="time">{{this.timestamp}}</td>
+              <td class="duration">{{this.duration}}</td>
               {{#each this.score}}
                 <td>{{this}}</td>
               {{/each}}
-            {{else}}
-              <td>N/A</td>
-              <td>N/A</td>
-            {{/if}}
+            </tr>
+          {{/if}}
 
-          </tr>
         {{/each}}
       </tbody>
     </table>
