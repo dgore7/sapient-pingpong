@@ -15,7 +15,7 @@ var pusher = new Pusher({
   encrypted: true
 });
 
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 3000;
 
 var app = express();
 
