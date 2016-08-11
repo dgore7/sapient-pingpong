@@ -26,7 +26,6 @@ app.set('view engine', 'handlebars');
 var routesAPI = require('./api/routes/index');
 var routes = require('./app_server/routes/index');
 
-// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({type: '*/*'}));
 app.use(express.static('pub'));
 app.use('/api', routesAPI);
