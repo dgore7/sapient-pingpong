@@ -5,7 +5,12 @@ var UserSchema = module.exports = new mongoose.Schema({
     type: String,
     required: true
   },
-  name: String,
+  name: {
+    type: String,
+    required: true,
+    min: [1, "name field is too short"],
+    max: [32, "name field is too long"]
+  }
 });
 
 

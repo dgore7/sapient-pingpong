@@ -1,17 +1,17 @@
 var mongoose = require('mongoose');
 
-var GameSchema = module.exports = new mongoose.Schema({
+var GameSchema = new mongoose.Schema({
   timestamp: Number,
   duration: Number,
-  score: [Number]
-  // playerOne: {
-  //   user_id: Number,
-  //   score: Number
-  // },
-  // playerTwo: {
-  //   user_id: Number,
-  //   score: Number
-  // }
+  // score: [Number]
+  playerOne: {
+    user_id: Number,
+    score: Number
+  },
+  playerTwo: {
+    user_id: Number,
+    score: Number
+  }
 });
 
 

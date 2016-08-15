@@ -9,6 +9,7 @@ export default class Player extends React.Component {
   }
 
   checkWinner() {
+    console.log(this.props.user)
     switch (this.props.winner) {
       case "player1":
         if(this.props.player==="player1"){
@@ -32,22 +33,33 @@ export default class Player extends React.Component {
     this.props.decrementScore(player);
   }
 
+  styleCard() {
+    var res = {}
+    if (this.props.user.name) {
+      Object.assign(res, {paddingTop:"4%"})
+    }
+    if (this.props.winner === this.props.player) {
+      Object.assign(res, {backgroundColor:"#22CC22"})
+    } else if (this.props.winner) {
+      Object.assign(res, {opacity: 0.5,paddingTop: 115})
+    }
+    return res;
+  }
+
+
   render() {
     return (
       <div id={this.props.player} className={"col s4 offset-" + this.props.offset}>
         <div
-            style={this.props.winner===this.props.player?
-              {backgroundColor: "#22CC22"}:
-              this.props.winner?
-                {opacity: 0.5,paddingTop: 115}:
-                {}}
+            style={this.styleCard()}
             className="card center-align z-depth-5">
           {this.checkWinner()}
           <div id="serving-marker">{this.isServer()?<img src="assets/ping-pong-red.png" alt="serving marker" height="42" width="42"/>:""}</div>
           <Profile
-          className="profile-div"
-          name={this.props.name}
-          picURL={this.props.picURL}/>
+            player={this.props.player}
+            className="profile-div"
+            user={this.props.user}
+            picURL={this.props.picURL}/>
           <Score
           className="score-div"
           score={this.props.score}/>
