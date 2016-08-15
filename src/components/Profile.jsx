@@ -8,7 +8,7 @@ export default class Profile extends React.Component {
     return (
       <div className="profile-div">
         <img src={this.props.picURL}/>
-        <h2>{this.props.name}</h2>
+        <h5 id={'user-name' + this.props.player}>{this.props.user.name}</h5>
       </div>
     );
   }

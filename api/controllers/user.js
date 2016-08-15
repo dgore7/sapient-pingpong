@@ -24,7 +24,7 @@ module.exports.createUser = function(req, res) {
   console.log(req.body);
   Users.create({
     _id: req.body.rfid,
-    name: req.body.name
+    name: req.body.name.trim()
   }, function(err, user) {
     if (!err) {
       sendJSONResponse(res, 201, user);
@@ -36,6 +36,7 @@ module.exports.createUser = function(req, res) {
 
 module.exports.readUser = function (req,res) {
   if(req.body && req.body.rfid) {
+    console.log(req.body);
     Users
       .findById(req.body.rfid)
       .exec(function (err, user) {
@@ -45,10 +46,10 @@ module.exports.readUser = function (req,res) {
         }
         else if(!user) {
           sendJSONResponse (res, 200, null);
-          pusher.trigger('scoreboard-test', 'user-sign-in', {userExists:false, rfid:req.body.rfid});
+          pusher.trigger('scoreboard', 'user-sign-in', {userExists:false, rfid:req.body.rfid});
         } else {
           sendJSONResponse (res, 200, user);
-          pusher.trigger('scoreboard-test', 'user-sign-in', {userExists:true, user:user});
+          pusher.trigger('scoreboard', 'user-sign-in', {userExists:true, user:user});
         }
       });
   } else {

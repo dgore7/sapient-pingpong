@@ -12,7 +12,9 @@ module.exports.createGame = function(req, res) {
   games.create({
     timestamp: req.body.timestamp,
     duration: req.body.duration,
-    score: req.body.score
+    score: req.body.score,
+    playerOne: req.body.playerOne,
+    playerTwo: req.body.playerTwo,
   }, function(err, game) {
     if (!err) {
       sendJSONResponse(res, 201, game);

@@ -2,12 +2,30 @@ import React from 'react';
 import Layout from './Layout';
 import axios from 'axios';
 
+
+if (!String.prototype.trim) {
+    (function() {
+        // Make sure we trim BOM and NBSP
+        var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+        String.prototype.trim = function() {
+            return this.replace(rtrim, '');
+        };
+    })();
+}
+
+
 // Drefault game state
 const defaults = {
   playerOneScore: 0,
   playerTwoScore: 0,
-  userOne:null,
-  userTwo:null,
+  userOne:{
+    name: null,
+    id: 0  // evaluates as falsey
+  },
+  userTwo:{
+    name: null,
+    id: 0  // evaluates as falsey
+  },
   winner: null,
   server: null
 };
@@ -23,14 +41,14 @@ const winBy2 = true;
 export default class ScoreboardApp extends React.Component {
   constructor(props) {
     super(props);
-
     let debug = false;
-
     let timestamp = null;
     let duration = null;
 
+
     // Configure game state
     this.state = defaults;
+
 
     // Configure Pusher
     this.pusher = new Pusher('45a78a912c58902f2b95', {
@@ -41,6 +59,7 @@ export default class ScoreboardApp extends React.Component {
     this.scoreBoard = this.pusher.subscribe(pusherChannel);
   }
 
+
   /*
    * Checks whether this is a new game by checking if both players' scores are
    * zero.
@@ -48,6 +67,7 @@ export default class ScoreboardApp extends React.Component {
   isNewGame() {
     return this.state.playerOneScore == 0 && this.state.playerTwoScore == 0;
   }
+
 
   /*
    * Checks if the ping-pong server tracking icon should be shown.
@@ -62,6 +82,7 @@ export default class ScoreboardApp extends React.Component {
   setServer(player) {
     this.setState({server: "player" + player});
   }
+
 
   /*
    * Switches the server from one player to the other, but only if it is time
@@ -101,6 +122,7 @@ export default class ScoreboardApp extends React.Component {
     }
   }
 
+
   /*
    * Adds 1 to a player's current score.
    */
@@ -123,6 +145,7 @@ export default class ScoreboardApp extends React.Component {
     this.toggleServer();
   }
 
+
   /*
    * Subtracts 1 from a player's current score.
    */
@@ -143,6 +166,7 @@ export default class ScoreboardApp extends React.Component {
     }
   }
 
+
   /*
    * Resets the game to its default state.
    */
@@ -154,6 +178,7 @@ export default class ScoreboardApp extends React.Component {
 
   // ===== BUTTON ACTION HANDLERS ===== //
 
+
   /*
    * Action to perform when a button is clicked once.
    */
@@ -161,12 +186,14 @@ export default class ScoreboardApp extends React.Component {
     this.incrementScore(message.button);
   }
 
+
   /*
    * Action to perform when a button is double clicked.
    */
   onDouble(message) {
     this.resetGame();
   }
+
 
   /*
    * Action to perform when a button is held.
@@ -180,6 +207,7 @@ export default class ScoreboardApp extends React.Component {
   }
 
   // ===== END: BUTTON ACTION HANDLERS ===== //
+
 
   /*
    * Checks if the game has a winner.
@@ -199,6 +227,7 @@ export default class ScoreboardApp extends React.Component {
     return { hasWinner: false };
   }
 
+
   /*
    * Posts game stats to the database.
    */
@@ -206,24 +235,78 @@ export default class ScoreboardApp extends React.Component {
     let stats = {
       timestamp: this.timestamp,
       duration: this.duration,
-      score: [this.state.playerOneScore, this.state.playerTwoScore]
+      playerOne: {
+        user_id: this.state.userOne.id,
+        score: this.state.playerOneScore
+      },
+      playerTwo: {
+        user_id: this.state.userTwo.id,
+        score: this.state.playerTwoScore
+      }
+      // score: [this.state.playerOneScore, this.state.playerTwoScore]
     };
     axios.post('/api/games', stats)
-      .catch(function (err) {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
       });
   }
+
+
+  assignUser(name, id) {
+    if(this.state.userOne.id && this.state.userTwo.id) {
+      this.setState({userOne: {name:name, id:id}});
+    } else if(this.state.userOne.id === id) {
+      this.setState({userOne: this.state.userTwo, userTwo: {name:name, id:id}});
+    } else if(this.state.userTwo.id === id) {
+      this.setState({userTwo: this.state.userOne, userOne: {name:name, id:id}});
+    } else {
+      if (this.state.userOne.id) {
+        this.setState({userTwo: {name:name, id:id}});
+      } else {
+        this.setState({userOne: {name:name, id:id}});
+      }
+    }
+  }
+
+
+  postWithRFID(e) {
+    e.preventDefault();
+    var playerName = $('#name');
+    axios.post("api/user/register", {rfid:this.state.rfid, name:playerName.val()})
+      .then((response) => {
+        console.log(response)
+        if (response.data) {
+          this.assignUser(response.data.name, response.data._id);
+        }
+      })
+      .catch(function (error) {
+        alert(error);
+      });
+    playerName.val('');
+  }
+
 
   componentDidMount() {
     this.scoreBoard.bind('user-sign-in', (data) => {
       console.log('made it to front end');
-      if (data.userExists) {
-        this.setState({userOne: data.user.name});
-      } else {
-        $('#modal1').openModal();
-        // axios.post('/api/user/register',)//:TODO finish method after creating respective route on backend
+      // check if players are already in a game
+      if (this.state.playerOneScore === 0 && this.state.playerTwoScore === 0) {
+        if (data.err) alert(data.err);
+        else if (data.userExists) {
+          this.assignUser(data.user.name, data.user._id);
+        } else {
+          console.log(data);
+          if(!data.rfid || String(data.rfid).length > 6) {
+            alert("something went wrong");
+          } else {
+            this.setState({rfid:data.rfid});
+            $('#modal1').openModal();
+            $('#name').focus();
+          }
+        }
       }
     });
+
     this.scoreBoard.bind('update-score', (message) => {
       // Handle click types
       switch (message.clickType) {
@@ -236,7 +319,6 @@ export default class ScoreboardApp extends React.Component {
         case 'hold':
           this.onHold(message);
           break;
-
         // Debug
         case 'set-score':
           message.button === 1 ?
@@ -270,18 +352,20 @@ export default class ScoreboardApp extends React.Component {
     });
   }
 
+
   render() {
     return (
       <Layout
-        nameOne={this.state.userOne}
-        nameTwo={this.state.userTwo}
+        userOne={this.state.userOne}
+        userTwo={this.state.userTwo}
         server={this.state.server}
         winner={this.state.winner}
         playerOneScore={this.state.playerOneScore}
         playerTwoScore={this.state.playerTwoScore}
         decrementScore={this.decrementScore.bind(this)}
         isNewGame={this.isNewGame.bind(this)}
-        resetGame={this.resetGame.bind(this)} />
+        resetGame={this.resetGame.bind(this)}
+        postWithRFID={this.postWithRFID.bind(this)}/>
     );
   }
 }

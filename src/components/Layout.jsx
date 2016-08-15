@@ -8,7 +8,7 @@ export default class Layout extends React.Component {
     return (
       <div className="row">
         <Player
-          name={this.props.nameOne}
+          user={this.props.userOne}
           server={this.props.server}
           winner={this.props.winner}
           offset="s1"
@@ -17,7 +17,7 @@ export default class Layout extends React.Component {
           score={this.props.playerOneScore} />
         <div className="col s2"></div>
         <Player
-          name={this.props.nameTwo}
+          user={this.props.userTwo}
           server={this.props.server}
           winner={this.props.winner}
           offset="s2"
@@ -27,7 +27,7 @@ export default class Layout extends React.Component {
           score={this.props.playerTwoScore} />
         <div id={this.props.isNewGame() ? "ball" : ""}></div>
         <Background resetGame={this.props.resetGame}/>
-        <Modal />
+        <Modal postWithRFID={this.props.postWithRFID}/>
       </div>
     );
   }
