@@ -879,3 +879,39 @@ footer a:hover {
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) { }
 
+
+/* ======== custom styles =========*/
+.my-pics {
+  width: 30%;
+  display: inline;
+  margin-top:300px; 
+}
+
+.my-pics > a > img{
+  box-shadow: 2px 2px 20px grey;
+  width: 340px;
+  height: 220px;
+}
+
+div.implementation {
+  display: flex;
+
+}
+
+div.implementation > * {
+  display: flex;
+  width: 46%;
+}
+
+div.implementation div.left-implementation {
+  flex-direction: column;
+  margin-right: 4%;
+}
+
+code {
+  margin-bottom: 0%;
+}
+
+pre {
+  padding-bottom: 0%;
+}
