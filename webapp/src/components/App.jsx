@@ -272,10 +272,49 @@ export default class ScoreboardApp extends React.Component {
     axios.post('/api/games', stats)
       .catch((err) => {
         console.log(err);
+<<<<<<< HEAD:webapp/src/components/App.jsx
       });
   }
 
 
+  assignUser(name, id) {
+    if(this.state.userOne.id && this.state.userTwo.id) {
+      this.setState({userOne: {name:name, id:id}});
+    } else if(this.state.userOne.id === id) {
+      this.setState({userOne: this.state.userTwo, userTwo: {name:name, id:id}});
+    } else if(this.state.userTwo.id === id) {
+      this.setState({userTwo: this.state.userOne, userOne: {name:name, id:id}});
+    } else {
+      if (this.state.userOne.id) {
+        this.setState({userTwo: {name:name, id:id}});
+      } else {
+        this.setState({userOne: {name:name, id:id}});
+      }
+    }
+  }
+
+
+  postWithRFID(e) {
+    e.preventDefault();
+    var playerName = $('#name');
+    axios.post("api/user/register", {rfid:this.state.rfid, name:playerName.val()})
+      .then((response) => {
+        console.log(response)
+        if (response.data) {
+          this.assignUser(response.data.name, response.data._id);
+        }
+      })
+      .catch(function (error) {
+        alert(error);
+=======
+>>>>>>> e89c8a9a12320ca14f640d274de62be69c4361b2:src/components/App.jsx
+      });
+    playerName.val('');
+  }
+
+
+<<<<<<< HEAD:webapp/src/components/App.jsx
+=======
   assignUser(name, id) {
     if(this.state.userOne.id && this.state.userTwo.id) {
       this.setState({userOne: {name:name, id:id}});
@@ -310,6 +349,7 @@ export default class ScoreboardApp extends React.Component {
   }
 
 
+>>>>>>> e89c8a9a12320ca14f640d274de62be69c4361b2:src/components/App.jsx
   componentDidMount() {
     this.scoreBoard.bind('user-sign-in', (data) => {
       console.log('made it to front end');
