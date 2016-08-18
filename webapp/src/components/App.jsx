@@ -272,7 +272,6 @@ export default class ScoreboardApp extends React.Component {
     axios.post('/api/games', stats)
       .catch((err) => {
         console.log(err);
-<<<<<<< HEAD:webapp/src/components/App.jsx
       });
   }
 
@@ -306,15 +305,10 @@ export default class ScoreboardApp extends React.Component {
       })
       .catch(function (error) {
         alert(error);
-=======
->>>>>>> e89c8a9a12320ca14f640d274de62be69c4361b2:src/components/App.jsx
       });
     playerName.val('');
   }
 
-
-<<<<<<< HEAD:webapp/src/components/App.jsx
-=======
   assignUser(name, id) {
     if(this.state.userOne.id && this.state.userTwo.id) {
       this.setState({userOne: {name:name, id:id}});
@@ -349,7 +343,6 @@ export default class ScoreboardApp extends React.Component {
   }
 
 
->>>>>>> e89c8a9a12320ca14f640d274de62be69c4361b2:src/components/App.jsx
   componentDidMount() {
     this.scoreBoard.bind('user-sign-in', (data) => {
       console.log('made it to front end');
