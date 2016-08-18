@@ -22,32 +22,39 @@
  * SOFTWARE.
  */
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+var http = require('http');
+var express = require('express');
+var bodyParser = require('body-parser');
+var Pusher = require('pusher');
+var exphbs = require('express-handlebars');
+var secret = require('./secret');
+const path = require('path');
+require('./api/models/db');
 
-// General Information about an assembly is controlled through the following
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("RFIDPost")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RFIDPost")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+var pusher = new Pusher({
+  appId: '225891',
+  key: '45a78a912c58902f2b95',
+  secret: secret,
+  cluster: 'eu',
+  encrypted: true
+});
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: ComVisible(false)]
+const PORT = process.env.PORT || 3000;
+
+var app = express();
+
+app.set('views', path.join(__dirname, 'app_server', 'views'));
+app.engine('handlebars', exphbs({layoutsDir:"/app_server/"}));
+app.set('view engine', 'handlebars');
+
+var routesAPI = require('./api/routes/index');
+var routes = require('./app_server/routes/index');
+
+app.use(bodyParser.json({type: '*/*'}));
+app.use(express.static('pub'));
+app.use('/api', routesAPI);
+app.use('/', routes);
+
+// Server
+var server = http.createServer(app);
+server.listen(PORT);

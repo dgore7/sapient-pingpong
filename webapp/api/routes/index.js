@@ -22,32 +22,20 @@
  * SOFTWARE.
  */
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+var express = require('express');
+var router = express.Router();
+var ctrlScoreboard = require('../controllers/scoreboard');
+var ctrlGame = require('../controllers/game');
+var ctrlUser = require('../controllers/user');
 
-// General Information about an assembly is controlled through the following
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("RFIDPost")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RFIDPost")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+// scoreboard routes
+router.post('/scoreboard/update-score', ctrlScoreboard.handleButtonPress);
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: ComVisible(false)]
+router.get('/games', ctrlGame.readManyGames)
+router.post('/games', ctrlGame.createGame);
+router.post('/user/login', ctrlUser.readUser);
+router.post('/user/register', ctrlUser.createUser);
+
+
+
+module.exports = router;

@@ -1,0 +1,200 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2016 David Gorelik, Wes Hampson.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+.card {
+  border-radius: 10%;
+  z-index: 2;
+  padding:20%;
+  margin-top: 30%;
+  margin-bottom: auto
+  opacity: 1.5;
+}
+
+/*.profile-div > img {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}*/
+
+
+#background-table {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  top: 0;
+  height: 100%;
+  background-color: #26A6AF;
+}
+
+#background-table > .col {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.score > h1 {
+  font-size: 10em;
+}
+
+#background-table > .col:nth-child(even){
+  border-left: medium dashed black;
+  border-right: medium solid white
+}
+#background-table > .col:nth-child(odd){
+  border-right: medium dashed black;
+  border-left: medium solid white;
+}
+
+#background-table > .col > .row {
+  margin: 0;
+  height: 50%;
+  border: medium solid white;
+  border-left: none;
+  border-right: none;
+}
+
+#reset-btn-container {
+  position: absolute;
+  left: 50%;
+  top: 90%;
+  margin-left: -75px;
+}
+
+#reset-btn {
+  border-radius: 3px;
+  background-color: red;
+  border: none;
+  width: 150px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  align-self: flex-end;
+}
+
+.card > button {
+  margin-top: 30%;
+}
+
+@media (orientation: portrait) {
+  .card{
+    margin-top: 120%
+  }
+
+  .score > h1 {
+    font-size: 9em;
+  }
+
+  #serving-marker {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+  }
+}
+
+div.modal-content > h4 {
+  text-align: center;
+}
+
+div.modal {
+  margin-top: 30%;
+}
+
+
+
+
+
+
+
+
+#ball {
+  background: tomato;
+  background: linear-gradient(tomato,orange);
+  position: absolute;
+  left: 10px;
+  top: 50px;
+  width:30px;
+  height:30px;
+  border-radius: 50%;
+  animation-name: pong;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  z-index: 1;
+  box-shadow: 15px 15px 10px #666;
+}
+
+
+@keyframes pong {
+    0%   {}
+    15%  {
+      box-shadow: 2px 2px 5px #333;
+      width:20px;
+      height:20px;
+    }
+    25%  {
+      box-shadow: 15px 15px 10px #666;
+      width:30px;
+      height:30px;
+      left:96%;
+      top: 85%
+    }
+    40%  {
+      box-shadow: 2px 2px 5px #333;
+      width:20px;
+      height:20px;
+    }
+    50%  {
+      box-shadow: 15px 15px 10px #666;
+      width:30px;
+      height:30px;
+      left:5px;
+      top: 90%;
+    }
+    65%  {
+      box-shadow: 2px 2px 5px #333;
+      width:20px;
+      height:20px;
+    }
+    75%  {
+      box-shadow: 15px 15px 10px #666;
+      width:30px;
+      height:30px;
+      left: 96%;
+      top: 50px;
+    }
+    90%  {
+      box-shadow: 2px 2px 5px #333;
+      width:20px;
+      height:20px;
+    }
+    100% {
+      box-shadow: 15px 15px 10px #666;
+      width:30px;
+      height:30px;
+      left:10;
+      top: 50px;
+    }
+}

@@ -22,32 +22,29 @@
  * SOFTWARE.
  */
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+import React from 'react';
 
-// General Information about an assembly is controlled through the following
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("RFIDPost")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RFIDPost")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+export default class Background extends React.Component {
+  render() {
+    return (<div id="background-table" className="container">
+        <div className="col s6">
+          <div className="row"></div>
+          <div className="row"></div>
+        </div>
+        <div className="col s6">
+          <div className="row"></div>
+          <div className="row"></div>
+        </div>
+        <div id="reset-btn-container">
+          <button
+              id="reset-btn"
+              className="waves-effect waves-light btn"
+              onClick={this.props.resetGame.bind(this)}>
+            Reset
+          </button>
+        </div>
+      </div>
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: ComVisible(false)]
+    );
+  }
+}

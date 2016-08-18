@@ -22,32 +22,21 @@
  * SOFTWARE.
  */
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+console.log("wooo hooo!");
 
-// General Information about an assembly is controlled through the following
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("RFIDPost")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RFIDPost")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+$("td.time").each(function (index, elem) {
+  var date = new Date(Number(elem.innerHTML));
+  date = date.toLocaleString()
+  elem.innerHTML = date;
+});
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: ComVisible(false)]
+$("td.duration").each(function (index, elem) {
+  console.log(Number(elem.innerHTML));
+  var date = new Date(Number(elem.innerHTML));
+  elem.innerHTML = padZeroes(date.getMinutes()) + ":" + padZeroes(date.getSeconds());
+});
+
+function padZeroes(value, padding) {
+  if(!padding) var padding = "00";
+  return padding.substring(0,padding.length - value.toString().length) + value.toString();
+}
