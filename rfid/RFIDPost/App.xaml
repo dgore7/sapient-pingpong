@@ -1,3 +1,11 @@
+<Application
+    x:Class="RFIDPost.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:RFIDPost"
+    RequestedTheme="Light">
+
+</Application>
 <!--
   MIT License
 
@@ -22,11 +30,3 @@
   SOFTWARE.
 -->
 
-<Application
-    x:Class="RFIDPost.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:RFIDPost"
-    RequestedTheme="Light">
-
-</Application>
