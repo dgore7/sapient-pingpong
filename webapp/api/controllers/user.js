@@ -28,11 +28,11 @@ require('../models/user');
 var Users = mongoose.model("User");
 var secret = require('../../secret');
 
-console.log(secret.pusher);
+
 var pusher = new Pusher({
   appId: '225891',
   key: '3c2527d150d803fc2cd0',
-  secret: secret.pusher,
+  secret: 'e96c94de2dec0edefb5a',
   cluster: 'eu',
   encrypted: true
 });
@@ -70,7 +70,12 @@ module.exports.readUser = function (req,res) {
         }
         else if(!user) {
           sendJSONResponse (res, 200, null);
-          pusher.trigger('scoreboard', 'user-sign-in', {userExists:false, rfid:req.body.rfid});
+          pusher.trigger('scoreboard', 'user-sign-in', {userExists:false, rfid:req.body.rfid}, function (err, req, res) {
+            if (err) {
+              console.log(err);
+            }
+          });
+
         } else {
           sendJSONResponse (res, 200, user);
           pusher.trigger('scoreboard', 'user-sign-in', {userExists:true, user:user});

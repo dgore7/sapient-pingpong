@@ -59,6 +59,12 @@ const winTimeout = 5000;
 const scoreToWin = 21;
 const winBy2 = true;
 
+// Configure Pusher
+const pusher = new Pusher('3c2527d150d803fc2cd0', {
+  cluster: 'eu',
+  encrypted: true
+});
+
 /*
  * Game Logic
  */
@@ -74,13 +80,9 @@ export default class ScoreboardApp extends React.Component {
     this.state = defaults;
 
 
-    // Configure Pusher
-    this.pusher = new Pusher('3c2527d150d803fc2cd0', {
-      cluster: 'eu',
-      encrypted: true
-    });
+
     let pusherChannel = debug === true ? 'scoreboard-test' : 'scoreboard';
-    this.scoreBoard = this.pusher.subscribe(pusherChannel);
+    this.scoreBoard = pusher.subscribe(pusherChannel);
   }
 
 
@@ -237,7 +239,7 @@ export default class ScoreboardApp extends React.Component {
    * Checks if the game has a winner.
    */
   checkWinner() {
-    // Both scores under 21, no winner.
+    // Both scores under 21, no winner.,
     if (this.state.playerOneScore < scoreToWin && this.state.playerTwoScore < scoreToWin) {
       return { hasWinner: false };
     }
@@ -347,7 +349,7 @@ export default class ScoreboardApp extends React.Component {
     this.scoreBoard.bind('user-sign-in', (data) => {
       console.log('made it to front end');
       // check if players are already in a game
-      if (this.state.playerOneScore === 0 && this.state.playerTwoScore === 0) {
+      if (this.state.playerOneScore == 0 && this.state.playerTwoScore == 0) {
         if (data.err) alert(data.err);
         else if (data.userExists) {
           this.assignUser(data.user.name, data.user._id);
@@ -407,6 +409,8 @@ export default class ScoreboardApp extends React.Component {
         this.resetGame();
       }, winTimeout);
     });
+    console.log(this.scoreBoard);
+
   }
 
 

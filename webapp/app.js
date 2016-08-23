@@ -25,19 +25,11 @@
 var http = require('http');
 var express = require('express');
 var bodyParser = require('body-parser');
-var Pusher = require('pusher');
 var exphbs = require('express-handlebars');
 var secret = require('./secret');
 const path = require('path');
 require('./api/models/db');
 
-var pusher = new Pusher({
-  appId: '225891',
-  key: '45a78a912c58902f2b95',
-  secret: secret,
-  cluster: 'eu',
-  encrypted: true
-});
 
 const PORT = process.env.PORT || 3000;
 
