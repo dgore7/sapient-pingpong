@@ -59,11 +59,6 @@ const winTimeout = 5000;
 const scoreToWin = 21;
 const winBy2 = true;
 
-// Configure Pusher
-const pusher = new Pusher('3c2527d150d803fc2cd0', {
-  cluster: 'eu',
-  encrypted: true
-});
 
 /*
  * Game Logic
@@ -79,7 +74,11 @@ export default class ScoreboardApp extends React.Component {
     // Configure game state
     this.state = defaults;
 
-
+    // Configure Pusher
+    const pusher = new Pusher('3c2527d150d803fc2cd0', {
+      cluster: 'eu',
+      encrypted: true
+    });
 
     let pusherChannel = debug === true ? 'scoreboard-test' : 'scoreboard';
     this.scoreBoard = pusher.subscribe(pusherChannel);
