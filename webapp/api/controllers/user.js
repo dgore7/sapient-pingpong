@@ -70,11 +70,7 @@ module.exports.readUser = function (req,res) {
         }
         else if(!user) {
           sendJSONResponse (res, 200, null);
-          pusher.trigger('scoreboard', 'user-sign-in', {userExists:false, rfid:req.body.rfid}, function (err, req, res) {
-            if (err) {
-              console.log(err);
-            }
-          });
+          pusher.trigger('scoreboard', 'user-sign-in', {userExists:false, rfid:req.body.rfid});
 
         } else {
           sendJSONResponse (res, 200, user);
