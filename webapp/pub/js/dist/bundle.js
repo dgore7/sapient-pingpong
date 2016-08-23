@@ -21472,12 +21472,6 @@
 	var scoreToWin = 21;
 	var winBy2 = true;
 
-	// Configure Pusher
-	var pusher = new Pusher('3c2527d150d803fc2cd0', {
-	  cluster: 'eu',
-	  encrypted: true
-	});
-
 	/*
 	 * Game Logic
 	 */
@@ -21496,6 +21490,12 @@
 
 	    // Configure game state
 	    _this.state = defaults;
+
+	    // Configure Pusher
+	    var pusher = new Pusher('3c2527d150d803fc2cd0', {
+	      cluster: 'eu',
+	      encrypted: true
+	    });
 
 	    var pusherChannel = debug === true ? 'scoreboard-test' : 'scoreboard';
 	    _this.scoreBoard = pusher.subscribe(pusherChannel);
