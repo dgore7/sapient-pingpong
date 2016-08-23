@@ -27,6 +27,8 @@ var gracefulShutdown;
 
 // var dbURI = 'mongodb://heroku_d2772s7c:6oksljcds6r2v6hf3c8prt2uv7@ds033133.mlab.com:33133/heroku_d2772s7c'; // MLab URI
 
+// var dbURI = 'mongodb://localhost/pingpong'; // Local dev db
+
 var dbURI = process.env.NODE_ENV==="production"?
   'mongodb://heroku_d2772s7c:6oksljcds6r2v6hf3c8prt2uv7@ds033133.mlab.com:33133/heroku_d2772s7c': // MLab URI
   'mongodb://localhost/pingpong'; // Local dev db
