@@ -309,6 +309,39 @@ export default class ScoreboardApp extends React.Component {
     playerName.val('');
   }
 
+  assignUser(name, id) {
+    if(this.state.userOne.id && this.state.userTwo.id) {
+      this.setState({userOne: {name:name, id:id}});
+    } else if(this.state.userOne.id === id) {
+      this.setState({userOne: this.state.userTwo, userTwo: {name:name, id:id}});
+    } else if(this.state.userTwo.id === id) {
+      this.setState({userTwo: this.state.userOne, userOne: {name:name, id:id}});
+    } else {
+      if (this.state.userOne.id) {
+        this.setState({userTwo: {name:name, id:id}});
+      } else {
+        this.setState({userOne: {name:name, id:id}});
+      }
+    }
+  }
+
+
+  postWithRFID(e) {
+    e.preventDefault();
+    var playerName = $('#name');
+    axios.post("api/user/register", {rfid:this.state.rfid, name:playerName.val()})
+      .then((response) => {
+        console.log(response)
+        if (response.data) {
+          this.assignUser(response.data.name, response.data._id);
+        }
+      })
+      .catch(function (error) {
+        alert(error);
+      });
+    playerName.val('');
+  }
+
 
   componentDidMount() {
     this.scoreBoard.bind('user-sign-in', (data) => {
