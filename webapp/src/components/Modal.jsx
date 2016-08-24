@@ -31,13 +31,14 @@ export default class Modal extends React.Component {
     return (
       <div style={{"position":"absolute"}, {"zIndex":500}}>
         {/*<!-- Modal Structure -->*/}
-        <div id="modal1" className="modal">
-          <form onSubmit={this.props.postWithRFID.bind(this)}method="post" action="api/user/register">
+        <div id={"modal-" + this.props.player} className="modal">
+          <div>{this.props.uid}</div>
+          <form onSubmit={this.props.formHandler.bind(this, this.props.user)} method="" action="">
             <div className="modal-content">
               <h4>Welcome to <br/>Ping-Pong Nitro</h4>
               <div className="input-field col s8 offset-s2">
                 <label>Player Name</label>
-                <input id="name" type="text" name="name"/>
+                <input className={"name" + (this.props.user?this.props.user.id:"")} type="text" name="name"/>
                 <br/>
               </div>
             </div>

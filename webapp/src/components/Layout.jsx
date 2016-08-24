@@ -40,6 +40,7 @@ export default class Layout extends React.Component {
           decrementScore={this.props.decrementScore}
           swapUser={this.props.swapUser}
           logoutUser={this.props.logoutUser}
+          updateUserName={this.props.updateUserName}
           score={this.props.playerOneScore} />
         <div className="col s2"></div>
         <Player
@@ -52,10 +53,11 @@ export default class Layout extends React.Component {
           decrementScore={this.props.decrementScore}
           swapUser={this.props.swapUser}
           logoutUser={this.props.logoutUser}
+          updateUserName={this.props.updateUserName}
           score={this.props.playerTwoScore} />
         <div id={this.props.isNewGame() ? "ball" : ""}></div>
         <Background resetGame={this.props.resetGame}/>
-        <Modal postWithRFID={this.props.postWithRFID}/>
+        <Modal formHandler={this.props.postWithRFID} method="post"/>
       </div>
     );
   }

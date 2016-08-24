@@ -25,6 +25,7 @@
 import React from 'react';
 import Profile from './Profile';
 import Score from './Score';
+import Modal from './Modal';
 
 export default class Player extends React.Component {
   constructor(props){
@@ -74,8 +75,10 @@ export default class Player extends React.Component {
     return res;
   }
 
-  test() {
-    alert('hello');
+  activatePutModal() {
+    $('#modal-'+this.props.player).openModal();
+    $('.name').val(this.props.user.name);
+    $('.name').focus();
   }
 
   render() {
@@ -105,7 +108,7 @@ export default class Player extends React.Component {
           }
           {this.props.user.id !== 0?
             <div className="bottom-buttons">
-              <i className="material-icons" onClick={this.test}>mode_edit</i>
+              <i className="material-icons" onClick={this.activatePutModal.bind(this)}>mode_edit</i>
               <i className="material-icons" onClick={this.props.swapUser.bind(this)}>loop</i>
               <i className="material-icons" onClick={this.props.logoutUser.bind(this, this.props.user.id)}>not_interested</i>
             </div>:
@@ -113,6 +116,7 @@ export default class Player extends React.Component {
           }
 
         </div>
+        <Modal formHandler={this.props.updateUserName} player={this.props.player} user={this.props.user}/>
       </div>
     );
   }

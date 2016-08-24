@@ -259,7 +259,9 @@ export default class ScoreboardApp extends React.Component {
     this.setState({userTwo:this.state.userOne, userOne:this.state.userTwo});
   }
 
-
+  /*
+   * logout the user
+   */
   logoutUser(id) {
     if (this.state.userOne.id === id) {
       this.setState({userOne: {name: null, id: 0}});
@@ -268,6 +270,26 @@ export default class ScoreboardApp extends React.Component {
     }
   }
 
+  // TODO: Refactor this method. Too similar to postWithRFID
+  updateUserName(user, e) {
+    e.preventDefault();
+    var playerName = $('.name' + user.id);
+    axios.put("api/user/update", {rfid:user.id, name:playerName.val()})
+      .then((response) => {
+        if (response.data) {
+          if (response.data._id === this.state.userOne.id) {
+            this.setState({userOne: {name: response.data.name, id: response.data._id}});
+          }
+          else {
+            this.setState({userTwo: {name: response.data.name, id: response.data._id}});
+          }
+        }
+      })
+      .catch(function (error) {
+        alert(error);
+      });
+    playerName.val('');
+  }
 
   /*
    * Posts game stats to the database.
@@ -284,7 +306,6 @@ export default class ScoreboardApp extends React.Component {
         user_id: this.state.userTwo.id,
         score: this.state.playerTwoScore
       }
-      // score: [this.state.playerOneScore, this.state.playerTwoScore]
     };
     axios.post('/api/games', stats)
       .catch((err) => {
@@ -312,10 +333,10 @@ export default class ScoreboardApp extends React.Component {
 
   postWithRFID(e) {
     e.preventDefault();
-    var playerName = $('#name');
+    var playerName = $('.name');
     axios.post("api/user/register", {rfid:this.state.rfid, name:playerName.val()})
       .then((response) => {
-        console.log(response)
+        console.log(response);
         if (response.data) {
           this.assignUser(response.data.name, response.data._id);
         }
@@ -337,12 +358,12 @@ export default class ScoreboardApp extends React.Component {
           this.assignUser(data.user.name, data.user._id);
         } else {
           console.log(data);
-          if(!data.rfid || String(data.rfid).length > 6) {
+          if(!data.rfid || String(data.rfid).length > 7) {
             alert("something went wrong");
           } else {
             this.setState({rfid:data.rfid});
-            $('#modal1').openModal();
-            $('#name').focus();
+            $('#modal-post').openModal();
+            $('.name').focus();
           }
         }
       }
@@ -410,7 +431,8 @@ export default class ScoreboardApp extends React.Component {
         resetGame={this.resetGame.bind(this)}
         postWithRFID={this.postWithRFID.bind(this)}
         swapUser={this.swapUser.bind(this)}
-        logoutUser={this.logoutUser.bind(this)}/>
+        logoutUser={this.logoutUser.bind(this)}
+        updateUserName={this.updateUserName.bind(this)}/>
     );
   }
 }
