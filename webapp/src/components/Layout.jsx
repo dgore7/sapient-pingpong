@@ -38,6 +38,8 @@ export default class Layout extends React.Component {
           offset="s1"
           player="player1"
           decrementScore={this.props.decrementScore}
+          swapUser={this.props.swapUser}
+          logoutUser={this.props.logoutUser}
           score={this.props.playerOneScore} />
         <div className="col s2"></div>
         <Player
@@ -48,6 +50,8 @@ export default class Layout extends React.Component {
           player="player2"
           className="player2"
           decrementScore={this.props.decrementScore}
+          swapUser={this.props.swapUser}
+          logoutUser={this.props.logoutUser}
           score={this.props.playerTwoScore} />
         <div id={this.props.isNewGame() ? "ball" : ""}></div>
         <Background resetGame={this.props.resetGame}/>

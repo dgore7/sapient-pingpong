@@ -58,8 +58,9 @@ module.exports.createUser = function(req, res) {
   });
 }
 
+
 module.exports.readUser = function (req,res) {
-  if(req.body && req.body.rfid) {
+  if(req.body.rfid) {
     console.log(req.body);
     Users
       .findById(req.body.rfid)
@@ -71,7 +72,6 @@ module.exports.readUser = function (req,res) {
         else if(!user) {
           sendJSONResponse (res, 200, null);
           pusher.trigger('scoreboard', 'user-sign-in', {userExists:false, rfid:req.body.rfid});
-
         } else {
           sendJSONResponse (res, 200, user);
           pusher.trigger('scoreboard', 'user-sign-in', {userExists:true, user:user});
@@ -80,4 +80,22 @@ module.exports.readUser = function (req,res) {
   } else {
     sendJSONResponse (res, 404, {message: "No RFID in request"});
   }
+};
+
+
+module.exports.updateUser = function (req,res) {
+  if (!req.body.rfid) sendJSONResponse (res, 404, {message: "No RFID in request"});
+  if (!req.body.name) sendJSONResponse (res, 404, {message: "No name in request"});
+  Users
+    .findById(req.body.rfid, function (err, user) {
+      if (err) sendJSONResponse(res, 404, err);
+      else if (!user) sendJSONResponse (res, 404, null);
+      else {
+        user.name = req.body.name
+        user.save(function (err) {
+          if (err) sendJSONResponse(res, 404, err);
+          else sendJSONResponse (res, 200, user);
+        });
+      }
+    });
 };

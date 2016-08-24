@@ -64,12 +64,19 @@ export default class Player extends React.Component {
     }
     if (this.props.winner === this.props.player) {
       Object.assign(res, {backgroundColor:"#22CC22"})
-    } else if (this.props.winner) {
+    }
+    else if (this.props.winner) {
       Object.assign(res, {opacity: 0.5,paddingTop: 115})
+    }
+    if (this.props.user.id !== 0) {
+      Object.assign(res, {paddingBottom: 10})
     }
     return res;
   }
 
+  test() {
+    alert('hello');
+  }
 
   render() {
     return (
@@ -85,8 +92,8 @@ export default class Player extends React.Component {
             user={this.props.user}
             picURL={this.props.picURL}/>
           <Score
-          className="score-div"
-          score={this.props.score}/>
+            className="score-div"
+            score={this.props.score}/>
           {this.props.winner?
             "":
             <button
@@ -96,6 +103,15 @@ export default class Player extends React.Component {
             Take Back
             </button>
           }
+          {this.props.user.id !== 0?
+            <div className="bottom-buttons">
+              <i className="material-icons" onClick={this.test}>mode_edit</i>
+              <i className="material-icons" onClick={this.props.swapUser.bind(this)}>loop</i>
+              <i className="material-icons" onClick={this.props.logoutUser.bind(this, this.props.user.id)}>not_interested</i>
+            </div>:
+            ""
+          }
+
         </div>
       </div>
     );
