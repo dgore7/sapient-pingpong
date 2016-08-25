@@ -57,7 +57,7 @@ export default class Layout extends React.Component {
           score={this.props.playerTwoScore} />
         <div id={this.props.isNewGame() ? "ball" : ""}></div>
         <Background resetGame={this.props.resetGame}/>
-        <Modal formHandler={this.props.postWithRFID} method="post"/>
+        <Modal formHandler={this.props.postWithRFID} idSuffix="post" user={undefined}/>
       </div>
     );
   }

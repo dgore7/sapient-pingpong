@@ -21860,9 +21860,10 @@
 	    }
 	  }, {
 	    key: 'postWithRFID',
-	    value: function postWithRFID(e) {
+	    value: function postWithRFID(id, e) {
 	      var _this3 = this;
 
+	      // id parameter is not used. This is necessary for e to capture the Event Object and prevent the default form submission.
 	      e.preventDefault();
 	      var playerName = $('.name');
 	      _axios2.default.post("api/user/register", { rfid: this.state.rfid, name: playerName.val() }).then(function (response) {
@@ -22066,7 +22067,7 @@
 	          score: this.props.playerTwoScore }),
 	        _react2.default.createElement('div', { id: this.props.isNewGame() ? "ball" : "" }),
 	        _react2.default.createElement(_Background2.default, { resetGame: this.props.resetGame }),
-	        _react2.default.createElement(_Modal2.default, { formHandler: this.props.postWithRFID, method: 'post' })
+	        _react2.default.createElement(_Modal2.default, { formHandler: this.props.postWithRFID, idSuffix: 'post', user: undefined })
 	      );
 	    }
 	  }]);
@@ -22259,7 +22260,7 @@
 	            )
 	          ) : ""
 	        ),
-	        _react2.default.createElement(_Modal2.default, { formHandler: this.props.updateUserName, player: this.props.player, user: this.props.user })
+	        _react2.default.createElement(_Modal2.default, { formHandler: this.props.updateUserName, idSuffix: this.props.player, user: this.props.user })
 	      );
 	    }
 	  }]);
@@ -22487,7 +22488,7 @@
 	        { style: ({ "position": "absolute" }, { "zIndex": 500 }) },
 	        _react2.default.createElement(
 	          'div',
-	          { id: "modal-" + this.props.player, className: 'modal' },
+	          { id: "modal-" + this.props.idSuffix, className: 'modal' },
 	          _react2.default.createElement(
 	            'div',
 	            null,
@@ -22495,7 +22496,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'form',
-	            { onSubmit: this.props.formHandler.bind(this, this.props.user), method: '', action: '' },
+	            { onSubmit: this.props.formHandler.bind(this, this.props.user || 0), method: '', action: '' },
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'modal-content' },

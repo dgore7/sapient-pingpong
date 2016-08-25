@@ -116,7 +116,7 @@ export default class Player extends React.Component {
           }
 
         </div>
-        <Modal formHandler={this.props.updateUserName} player={this.props.player} user={this.props.user}/>
+        <Modal formHandler={this.props.updateUserName} idSuffix={this.props.player} user={this.props.user}/>
       </div>
     );
   }

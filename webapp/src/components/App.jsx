@@ -331,7 +331,7 @@ export default class ScoreboardApp extends React.Component {
   }
 
 
-  postWithRFID(e) {
+  postWithRFID(id, e) { // id parameter is not used. This is necessary for e to capture the Event Object and prevent the default form submission.
     e.preventDefault();
     var playerName = $('.name');
     axios.post("api/user/register", {rfid:this.state.rfid, name:playerName.val()})

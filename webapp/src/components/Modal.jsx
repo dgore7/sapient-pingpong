@@ -31,9 +31,9 @@ export default class Modal extends React.Component {
     return (
       <div style={{"position":"absolute"}, {"zIndex":500}}>
         {/*<!-- Modal Structure -->*/}
-        <div id={"modal-" + this.props.player} className="modal">
+        <div id={"modal-" + this.props.idSuffix} className="modal">
           <div>{this.props.uid}</div>
-          <form onSubmit={this.props.formHandler.bind(this, this.props.user)} method="" action="">
+          <form onSubmit={this.props.formHandler.bind(this, this.props.user||0)} method="" action="">
             <div className="modal-content">
               <h4>Welcome to <br/>Ping-Pong Nitro</h4>
               <div className="input-field col s8 offset-s2">
