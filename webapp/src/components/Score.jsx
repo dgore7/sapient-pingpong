@@ -28,10 +28,14 @@ export default class Score extends React.Component {
   constructor(props){
     super(props);
   }
+
   render() {
     return (
       <div className="score">
-        <h1>{this.props.score>9?this.props.score: "0" + this.props.score}</h1>
+        <h1 style={this.props.user.id?{marginTop:20}: {marginTop:29.4}}>
+          {this.props.score>9?this.props.score: "0" + this.props.score}
+          {/* pad score with 0 if it is less than 10 */}
+        </h1>
       </div>
     );
   }

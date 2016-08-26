@@ -27,7 +27,7 @@ import Profile from './Profile';
 import Score from './Score';
 import Modal from './Modal';
 
-export default class Player extends React.Component {
+export default class PlayerCard extends React.Component {
   constructor(props){
     super(props);
     this.state = {style:{}}
@@ -96,7 +96,8 @@ export default class Player extends React.Component {
             picURL={this.props.picURL}/>
           <Score
             className="score-div"
-            score={this.props.score}/>
+            score={this.props.score}
+            user={this.props.user}/>
           {this.props.winner?
             "":
             <button

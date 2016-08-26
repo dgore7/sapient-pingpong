@@ -28,12 +28,21 @@ export default class Profile extends React.Component {
   constructor(props){
     super(props);
   }
+
+  styleProfileChildren() {
+    var style = {};
+    if (this.props.user) {
+      Object.assign(style, {margin: 0});
+    }
+    return style;
+  }
+
   render() {
     return (
       <div className="profile-div">
         <img src={this.props.picURL}/>
-        <h5 id={'user-name' + this.props.player}>{this.props.user.name}</h5>
-        <h4 id={'rating' + this.props.player}>{this.props.user.rating||''}</h4>
+        <h5 id={'user-name' + this.props.player} style={this.styleProfileChildren()}>{this.props.user.name}</h5>
+        <h5 id={'rating' + this.props.player} style={this.styleProfileChildren()}>{this.props.user.rating||''}</h5>
       </div>
     );
   }

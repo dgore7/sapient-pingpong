@@ -23,7 +23,7 @@
  */
 
 import React from 'react';
-import Player from './Player';
+import PlayerCard from './PlayerCard';
 import Background from './Background';
 import Modal from './Modal';
 
@@ -31,7 +31,7 @@ export default class Layout extends React.Component {
   render() {
     return (
       <div className="row">
-        <Player
+        <PlayerCard
           user={this.props.userOne}
           server={this.props.server}
           winner={this.props.winner}
@@ -43,7 +43,7 @@ export default class Layout extends React.Component {
           updateUserName={this.props.updateUserName}
           score={this.props.playerOneScore} />
         <div className="col s2"></div>
-        <Player
+        <PlayerCard
           user={this.props.userTwo}
           server={this.props.server}
           winner={this.props.winner}
