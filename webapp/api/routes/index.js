@@ -36,7 +36,7 @@ router.post('/games', ctrlGame.createGame);
 
 router.post('/user/login', ctrlUser.readUser);
 router.post('/user/register', ctrlUser.createUser);
-router.put('/user/update', ctrlUser.updateUser);
+router.put('/user/update', ctrlUser.updateUserName);
 
 
 

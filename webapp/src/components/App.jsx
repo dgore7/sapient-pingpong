@@ -44,11 +44,13 @@ const defaults = {
   playerTwoScore: 0,
   userOne:{
     name: null,
-    id: 0  // evaluates as falsey
+    id: 0,  // evaluates as falsey
+    rating: 0
   },
   userTwo:{
     name: null,
-    id: 0  // evaluates as falsey
+    id: 0,  // evaluates as falsey
+    rating: 0
   },
   winner: null,
   server: null
@@ -278,10 +280,10 @@ export default class ScoreboardApp extends React.Component {
       .then((response) => {
         if (response.data) {
           if (response.data._id === this.state.userOne.id) {
-            this.setState({userOne: {name: response.data.name, id: response.data._id}});
+            this.setState({userOne: {name: response.data.name, id: response.data._id, rating: response.data.rating}});
           }
           else {
-            this.setState({userTwo: {name: response.data.name, id: response.data._id}});
+            this.setState({userTwo: {name: response.data.name, id: response.data._id, rating: response.data.rating}});
           }
         }
       })
@@ -300,11 +302,13 @@ export default class ScoreboardApp extends React.Component {
       duration: this.duration,
       playerOne: {
         user_id: this.state.userOne.id,
-        score: this.state.playerOneScore
+        score: this.state.playerOneScore,
+        rating: this.state.userOne.rating
       },
       playerTwo: {
         user_id: this.state.userTwo.id,
-        score: this.state.playerTwoScore
+        score: this.state.playerTwoScore,
+        rating: this.state.userTwo.rating
       }
     };
     axios.post('/api/games', stats)
@@ -314,18 +318,18 @@ export default class ScoreboardApp extends React.Component {
   }
 
 
-  assignUser(name, id) {
+  assignUser(name, id, rating) {
     if(this.state.userOne.id && this.state.userTwo.id) {
-      this.setState({userOne: {name:name, id:id}});
+      this.setState({userOne: {name, id, rating}});
     } else if(this.state.userOne.id === id) {
-      this.setState({userOne: this.state.userTwo, userTwo: {name:name, id:id}});
+      this.setState({userOne: this.state.userTwo, userTwo: {name, id, rating}});
     } else if(this.state.userTwo.id === id) {
-      this.setState({userTwo: this.state.userOne, userOne: {name:name, id:id}});
+      this.setState({userTwo: this.state.userOne, userOne: {name, id, rating}});
     } else {
       if (this.state.userOne.id) {
-        this.setState({userTwo: {name:name, id:id}});
+        this.setState({userTwo: {name, id, rating}});
       } else {
-        this.setState({userOne: {name:name, id:id}});
+        this.setState({userOne: {name, id, rating}});
       }
     }
   }
@@ -338,7 +342,7 @@ export default class ScoreboardApp extends React.Component {
       .then((response) => {
         console.log(response);
         if (response.data) {
-          this.assignUser(response.data.name, response.data._id);
+          this.assignUser(response.data.name, response.data._id, response.data.rating);
         }
       })
       .catch(function (error) {
@@ -355,7 +359,7 @@ export default class ScoreboardApp extends React.Component {
       if (this.state.playerOneScore == 0 && this.state.playerTwoScore == 0) {
         if (data.err) alert(data.err);
         else if (data.userExists) {
-          this.assignUser(data.user.name, data.user._id);
+          this.assignUser(data.user.name, data.user._id, data.user.rating);
         } else {
           console.log(data);
           if(!data.rfid || String(data.rfid).length > 7) {

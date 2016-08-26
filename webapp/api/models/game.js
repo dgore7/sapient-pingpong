@@ -27,7 +27,6 @@ var mongoose = require('mongoose');
 var GameSchema = new mongoose.Schema({
   timestamp: Number,
   duration: Number,
-  // score: [Number]
   playerOne: {
     user_id: Number,
     score: Number

@@ -34,6 +34,10 @@ var UserSchema = module.exports = new mongoose.Schema({
     required: true,
     min: [1, "name field is too short"],
     max: [32, "name field is too long"]
+  },
+  rating: {
+    type: Number,
+    default: 1200
   }
 });
 

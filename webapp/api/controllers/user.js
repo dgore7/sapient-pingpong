@@ -23,10 +23,19 @@
  */
 
 var mongoose = require('mongoose');
-var Pusher = require('pusher');
 require('../models/user');
 var Users = mongoose.model("User");
+var Pusher = require('pusher');
+var Elo = require('arpad');
 var secret = require('../../secret');
+
+var uscf = {
+  default: 32,
+  2100: 24,
+  2400: 16
+};
+var elo = new Elo(uscf, 100);
+
 
 
 var pusher = new Pusher({
@@ -44,11 +53,24 @@ var sendJSONResponse = function (res,status,content) {
   res.json(content);
 }; //sendJSONResponse
 
+
+
+_calculateRatings = function (playerOne, playerTwo) {
+  var resultOfGame = playerOne.score>playerTwo.score ? 1 : 0;
+  var odds = elo.bothExpectedScores(playerOne.rating, playerTwo.rating); // returns an array with odds[0] = playerOneOdds, and odds[1] = playerTwoOdds
+  console.log("The odds of PlayerOne winning are about:", odds[0]);
+  playerOne.rating = elo.newRating(odds[0], resultOfGame, playerOne.rating);
+  playerTwo.rating = elo.newRating(odds[1], resultOfGame===1 ? 0 : 1, playerTwo.rating);
+}
+
+
+
 module.exports.createUser = function(req, res) {
   console.log(req.body);
   Users.create({
     _id: req.body.rfid,
-    name: req.body.name.trim()
+    name: req.body.name.trim(),
+    rating: 1200
   }, function(err, user) {
     if (!err) {
       sendJSONResponse(res, 201, user);
@@ -57,6 +79,7 @@ module.exports.createUser = function(req, res) {
     }
   });
 }
+
 
 
 module.exports.readUser = function (req,res) {
@@ -83,7 +106,8 @@ module.exports.readUser = function (req,res) {
 };
 
 
-module.exports.updateUser = function (req,res) {
+
+module.exports.updateUserName = function (req,res) {
   if (!req.body.rfid) sendJSONResponse (res, 404, {message: "No RFID in request"});
   if (!req.body.name) sendJSONResponse (res, 404, {message: "No name in request"});
   Users
@@ -99,3 +123,24 @@ module.exports.updateUser = function (req,res) {
       }
     });
 };
+
+
+
+module.exports.updateUserRatings = function (req, res) {
+  _calculateRatings(req.body.playerOne, req.body.playerTwo);
+  Users
+    .findById(req.body.playerOne.user_id, function (err, user) {
+      if (err) console.log(err);
+      user.rating = req.body.playerOne.rating;
+      console.log(user.rating);
+      user.save();
+    });
+  Users
+    .findById(req.body.playerTwo.user_id, function (err, user) {
+      if (err) console.log(err);
+      user.rating = req.body.playerTwo.rating;
+      console.log(user.rating);
+      user.save();
+    });
+  sendJSONResponse(res, 201, null);
+}

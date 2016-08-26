@@ -21532,11 +21532,13 @@
 	  playerTwoScore: 0,
 	  userOne: {
 	    name: null,
-	    id: 0 // evaluates as falsey
+	    id: 0, // evaluates as falsey
+	    rating: 0
 	  },
 	  userTwo: {
 	    name: null,
-	    id: 0 // evaluates as falsey
+	    id: 0, // evaluates as falsey
+	    rating: 0
 	  },
 	  winner: null,
 	  server: null
@@ -21807,9 +21809,9 @@
 	      _axios2.default.put("api/user/update", { rfid: user.id, name: playerName.val() }).then(function (response) {
 	        if (response.data) {
 	          if (response.data._id === _this2.state.userOne.id) {
-	            _this2.setState({ userOne: { name: response.data.name, id: response.data._id } });
+	            _this2.setState({ userOne: { name: response.data.name, id: response.data._id, rating: response.data.rating } });
 	          } else {
-	            _this2.setState({ userTwo: { name: response.data.name, id: response.data._id } });
+	            _this2.setState({ userTwo: { name: response.data.name, id: response.data._id, rating: response.data.rating } });
 	          }
 	        }
 	      }).catch(function (error) {
@@ -21830,11 +21832,13 @@
 	        duration: this.duration,
 	        playerOne: {
 	          user_id: this.state.userOne.id,
-	          score: this.state.playerOneScore
+	          score: this.state.playerOneScore,
+	          rating: this.state.userOne.rating
 	        },
 	        playerTwo: {
 	          user_id: this.state.userTwo.id,
-	          score: this.state.playerTwoScore
+	          score: this.state.playerTwoScore,
+	          rating: this.state.userTwo.rating
 	        }
 	      };
 	      _axios2.default.post('/api/games', stats).catch(function (err) {
@@ -21843,18 +21847,18 @@
 	    }
 	  }, {
 	    key: 'assignUser',
-	    value: function assignUser(name, id) {
+	    value: function assignUser(name, id, rating) {
 	      if (this.state.userOne.id && this.state.userTwo.id) {
-	        this.setState({ userOne: { name: name, id: id } });
+	        this.setState({ userOne: { name: name, id: id, rating: rating } });
 	      } else if (this.state.userOne.id === id) {
-	        this.setState({ userOne: this.state.userTwo, userTwo: { name: name, id: id } });
+	        this.setState({ userOne: this.state.userTwo, userTwo: { name: name, id: id, rating: rating } });
 	      } else if (this.state.userTwo.id === id) {
-	        this.setState({ userTwo: this.state.userOne, userOne: { name: name, id: id } });
+	        this.setState({ userTwo: this.state.userOne, userOne: { name: name, id: id, rating: rating } });
 	      } else {
 	        if (this.state.userOne.id) {
-	          this.setState({ userTwo: { name: name, id: id } });
+	          this.setState({ userTwo: { name: name, id: id, rating: rating } });
 	        } else {
-	          this.setState({ userOne: { name: name, id: id } });
+	          this.setState({ userOne: { name: name, id: id, rating: rating } });
 	        }
 	      }
 	    }
@@ -21869,7 +21873,7 @@
 	      _axios2.default.post("api/user/register", { rfid: this.state.rfid, name: playerName.val() }).then(function (response) {
 	        console.log(response);
 	        if (response.data) {
-	          _this3.assignUser(response.data.name, response.data._id);
+	          _this3.assignUser(response.data.name, response.data._id, response.data.rating);
 	        }
 	      }).catch(function (error) {
 	        alert(error);
@@ -21886,7 +21890,7 @@
 	        // check if players are already in a game
 	        if (_this4.state.playerOneScore == 0 && _this4.state.playerTwoScore == 0) {
 	          if (data.err) alert(data.err);else if (data.userExists) {
-	            _this4.assignUser(data.user.name, data.user._id);
+	            _this4.assignUser(data.user.name, data.user._id, data.user.rating);
 	          } else {
 	            console.log(data);
 	            if (!data.rfid || String(data.rfid).length > 7) {
@@ -22336,6 +22340,11 @@
 	          'h5',
 	          { id: 'user-name' + this.props.player },
 	          this.props.user.name
+	        ),
+	        _react2.default.createElement(
+	          'h4',
+	          { id: 'rating' + this.props.player },
+	          this.props.user.rating || ''
 	        )
 	      );
 	    }

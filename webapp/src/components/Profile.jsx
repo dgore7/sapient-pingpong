@@ -33,6 +33,7 @@ export default class Profile extends React.Component {
       <div className="profile-div">
         <img src={this.props.picURL}/>
         <h5 id={'user-name' + this.props.player}>{this.props.user.name}</h5>
+        <h4 id={'rating' + this.props.player}>{this.props.user.rating||''}</h4>
       </div>
     );
   }

@@ -23,8 +23,9 @@
  */
 
 var mongoose = require('mongoose');
-require('../models/game')
+require('../models/game');
 var games = mongoose.model("Game");
+var ctrlUser = require('./user.js');
 
 
 var sendJSONResponse = function (res,status,content) {
@@ -32,20 +33,21 @@ var sendJSONResponse = function (res,status,content) {
   res.json(content);
 }; //sendJSONResponse
 
+
 module.exports.createGame = function(req, res) {
   games.create({
     timestamp: req.body.timestamp,
     duration: req.body.duration,
-    score: req.body.score,
     playerOne: req.body.playerOne,
     playerTwo: req.body.playerTwo,
   }, function(err, game) {
     if (!err) {
-      sendJSONResponse(res, 201, game);
+      ctrlUser.updateUserRatings(req, res);
     } else {
       sendJSONResponse(res, 400, err);
     }
   });
+
 }
 
 
@@ -60,7 +62,6 @@ module.exports.readManyGames = function(req, res) {
         sendJSONResponse(res, 404, err);
       }
       sendJSONResponse(res, 200, games);
-
     });
   // sendJSONResponse(res, 404, {message: "idk what happened"});
 }
