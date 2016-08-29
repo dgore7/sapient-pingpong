@@ -33,7 +33,7 @@
     <table class="centered striped">
       <thead>
         <tr>
-          <th width="12%" data-field="king"></th>
+          <th data-field="king"></th>
           <th data-field="name">Name</th>
           <th data-field="rating">Duration</th>
           <th data-field="game-count">Games Played</th>
@@ -42,16 +42,16 @@
       <tbody>
         {{#each users}}
           <tr class="table-row">
-            <td  class="king" style="text-align: right">
+            <td width="12%" class="king" style="text-align: right">
               {{#unless @index}}
                 <img width="24" height="24" id="highscore-icon" src="/assets/crown_gold.png"/>
               {{/unless}}
             </td>
-            <td class="name">
+            <td class="name" width="19%">
               {{this.name}}
               </td>
-            <td class="rating">{{this.rating}}</td>
-            <td class="game-count">{{this.gameCount}}</td>
+            <td class="rating" width="33%">{{this.rating}}</td>
+            <td class="game-count" width="33%">{{this.gameCount}}</td>
           </tr>
         {{/each}}
       </tbody>
