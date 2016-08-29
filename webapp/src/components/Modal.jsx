@@ -43,7 +43,7 @@ export default class Modal extends React.Component {
               </div>
             </div>
             <div className="modal-footer">
-              <input type="submit" href="#!" className="modal-action modal-close waves-effect waves-green btn-flat " value="submit" />
+              <input type="submit" className="modal-action modal-close waves-effect waves-green btn-flat " value="submit" />
             </div>
           </form>
         </div>

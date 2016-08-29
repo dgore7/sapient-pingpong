@@ -22546,7 +22546,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'modal-footer' },
-	              _react2.default.createElement('input', { type: 'submit', href: '#!', className: 'modal-action modal-close waves-effect waves-green btn-flat ', value: 'submit' })
+	              _react2.default.createElement('input', { type: 'submit', className: 'modal-action modal-close waves-effect waves-green btn-flat ', value: 'submit' })
 	            )
 	          )
 	        )
