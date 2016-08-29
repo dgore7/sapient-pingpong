@@ -31,10 +31,12 @@ export default class Background extends React.Component {
           <div className="row"></div>
           <div className="row"></div>
         </div>
+
         <div className="col s6">
           <div className="row"></div>
           <div className="row"></div>
         </div>
+        <a href="/stats/highscore"><img id="highscore-icon" src="/assets/crown_gold.png"/></a>
         <div id="reset-btn-container">
           <button
               id="reset-btn"

@@ -132,14 +132,14 @@ module.exports.updateUserRatings = function (req, res) {
     .findById(req.body.playerOne.user_id, function (err, user) {
       if (err) console.log(err);
       user.rating = req.body.playerOne.rating;
-      console.log(user.rating);
+      user.gameCount += 1;
       user.save();
     });
   Users
     .findById(req.body.playerTwo.user_id, function (err, user) {
       if (err) console.log(err);
       user.rating = req.body.playerTwo.rating;
-      console.log(user.rating);
+      user.gameCount += 1;
       user.save();
     });
   sendJSONResponse(res, 201, null);

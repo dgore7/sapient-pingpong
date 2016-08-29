@@ -23772,6 +23772,11 @@
 	          _react2.default.createElement("div", { className: "row" })
 	        ),
 	        _react2.default.createElement(
+	          "a",
+	          { href: "/stats/highscore" },
+	          _react2.default.createElement("img", { id: "highscore-icon", src: "/assets/crown_gold.png" })
+	        ),
+	        _react2.default.createElement(
 	          "div",
 	          { id: "reset-btn-container" },
 	          _react2.default.createElement(

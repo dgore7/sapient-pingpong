@@ -38,6 +38,10 @@ var UserSchema = module.exports = new mongoose.Schema({
   rating: {
     type: Number,
     default: 1200
+  },
+  gameCount: {
+      type: Number,
+      default: 0
   }
 });
 

@@ -29,8 +29,12 @@ router.get('/', function(req, res) {
   res.render('index');
 });
 
-router.get('/stats', function(req, res) {
-  ctrl.getData(req,res);
+router.get('/stats/games', function(req, res) {
+  ctrl.readGameData(req,res);
+});
+
+router.get('/stats/highscore', function(req, res) {
+  ctrl.readTopRatings(req,res);
 });
 
 module.exports = router;

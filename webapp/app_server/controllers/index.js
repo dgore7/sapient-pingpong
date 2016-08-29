@@ -24,9 +24,10 @@
 
 var mongoose = require('mongoose');
 var games = mongoose.model("Game");
+var users = mongoose.model("User");
 
-module.exports.getData = function(req,res) {
-    console.log('made it here');
+module.exports.readGameData = function(req,res) {
+    console.log('made it to readGameData');
     games
         .find({})
         .sort({
@@ -36,6 +37,19 @@ module.exports.getData = function(req,res) {
           for (var i = 0; i < games.length; i++) {
             games[i] = games[i].toObject();
           }
-          res.render('data', {games: games});
+          res.render('gameData', {games: games});
+        });
+}
+
+
+module.exports.readTopRatings = function(req,res) {
+    console.log('made it to readTopRatings');
+    users
+        .find({})
+        .sort({
+            rating: -1
+        })
+        .exec(function(err, users) {
+          res.render('topRatings', {users: users});
         });
 }
