@@ -21848,11 +21848,14 @@
 	  }, {
 	    key: 'assignUser',
 	    value: function assignUser(name, id, rating) {
+	      // This block may be refactored to switch stetements
 	      if (this.state.userOne.id && this.state.userTwo.id) {
 	        this.setState({ userOne: { name: name, id: id, rating: rating } });
 	      } else if (this.state.userOne.id === id) {
+	        // Can be removed, but might still be a nice feature
 	        this.setState({ userOne: this.state.userTwo, userTwo: { name: name, id: id, rating: rating } });
 	      } else if (this.state.userTwo.id === id) {
+	        // Can be removed, but might still be a nice feature
 	        this.setState({ userTwo: this.state.userOne, userOne: { name: name, id: id, rating: rating } });
 	      } else {
 	        if (this.state.userOne.id) {
@@ -21870,15 +21873,17 @@
 	      // id parameter is not used. This is necessary for e to capture the Event Object and prevent the default form submission.
 	      e.preventDefault();
 	      var playerName = $('.name');
+	      console.log(playerName);
 	      _axios2.default.post("api/user/register", { rfid: this.state.rfid, name: playerName.val() }).then(function (response) {
-	        console.log(response);
+	        // console.log(response);
 	        if (response.data) {
 	          _this3.assignUser(response.data.name, response.data._id, response.data.rating);
 	        }
 	      }).catch(function (error) {
 	        alert(error);
+	      }).then(function () {
+	        playerName.val('');
 	      });
-	      playerName.val('');
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -21896,7 +21901,7 @@
 	            if (!data.rfid || String(data.rfid).length > 7) {
 	              alert("something went wrong");
 	            } else {
-	              _this4.setState({ rfid: data.rfid });
+	              _this4.setState({ rfid: data.rfid }); // not sure if this is still necessary
 	              $('#modal-post').openModal();
 	              $('.name').focus();
 	            }
@@ -21988,7 +21993,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _PlayerCard = __webpack_require__(205);
+	var _PlayerCard = __webpack_require__(178);
 
 	var _PlayerCard2 = _interopRequireDefault(_PlayerCard);
 
@@ -22082,7 +22087,200 @@
 	exports.default = Layout;
 
 /***/ },
-/* 178 */,
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Profile = __webpack_require__(179);
+
+	var _Profile2 = _interopRequireDefault(_Profile);
+
+	var _Score = __webpack_require__(180);
+
+	var _Score2 = _interopRequireDefault(_Score);
+
+	var _Modal = __webpack_require__(181);
+
+	var _Modal2 = _interopRequireDefault(_Modal);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * MIT License
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright (c) 2016 David Gorelik, Wes Hampson.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Permission is hereby granted, free of charge, to any person obtaining a copy
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * of this software and associated documentation files (the "Software"), to deal
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * in the Software without restriction, including without limitation the rights
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * copies of the Software, and to permit persons to whom the Software is
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * furnished to do so, subject to the following conditions:
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * The above copyright notice and this permission notice shall be included in
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * all copies or substantial portions of the Software.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * SOFTWARE.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+	var PlayerCard = function (_React$Component) {
+	  _inherits(PlayerCard, _React$Component);
+
+	  function PlayerCard(props) {
+	    _classCallCheck(this, PlayerCard);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PlayerCard).call(this, props));
+
+	    _this.state = { style: {} };
+	    return _this;
+	  }
+
+	  _createClass(PlayerCard, [{
+	    key: 'checkWinner',
+	    value: function checkWinner() {
+	      console.log(this.props.user);
+	      switch (this.props.winner) {
+	        case "player1":
+	          if (this.props.player === "player1") {
+	            return _react2.default.createElement(
+	              'h3',
+	              null,
+	              'WINNER'
+	            );
+	          }
+	          break;
+	        case "player2":
+	          if (this.props.player === "player2") {
+	            return _react2.default.createElement(
+	              'h3',
+	              null,
+	              'WINNER'
+	            );
+	          }
+	          break;
+	      }
+	    }
+	  }, {
+	    key: 'isServer',
+	    value: function isServer() {
+	      return this.props.server === this.props.player;
+	    }
+	  }, {
+	    key: 'onTakeBackClick',
+	    value: function onTakeBackClick(e) {
+	      var player = e.target.id == "player1" ? 1 : 2;
+	      this.props.decrementScore(player);
+	    }
+	  }, {
+	    key: 'styleCard',
+	    value: function styleCard() {
+	      var res = {};
+	      if (this.props.user.name) {
+	        Object.assign(res, { paddingTop: "4%" });
+	      }
+	      if (this.props.winner === this.props.player) {
+	        Object.assign(res, { backgroundColor: "#22CC22" });
+	      } else if (this.props.winner) {
+	        Object.assign(res, { opacity: 0.5, paddingTop: 115 });
+	      }
+	      if (this.props.user.id !== 0) {
+	        Object.assign(res, { paddingBottom: 10 });
+	      }
+	      return res;
+	    }
+	  }, {
+	    key: 'activatePutModal',
+	    value: function activatePutModal() {
+	      $('#modal-' + this.props.player).openModal();
+	      $('.name').val(this.props.user.name);
+	      $('.name').focus();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { id: this.props.player, className: "col s4 offset-" + this.props.offset },
+	        _react2.default.createElement(
+	          'div',
+	          {
+	            style: this.styleCard(),
+	            className: 'card center-align z-depth-5' },
+	          this.checkWinner(),
+	          _react2.default.createElement(
+	            'div',
+	            { id: 'serving-marker' },
+	            this.isServer() ? _react2.default.createElement('img', { src: 'assets/ping-pong-red.png', alt: 'serving marker', height: '42', width: '42' }) : ""
+	          ),
+	          _react2.default.createElement(_Profile2.default, {
+	            player: this.props.player,
+	            className: 'profile-div',
+	            user: this.props.user,
+	            picURL: this.props.picURL }),
+	          _react2.default.createElement(_Score2.default, {
+	            className: 'score-div',
+	            score: this.props.score,
+	            user: this.props.user }),
+	          this.props.winner ? "" : _react2.default.createElement(
+	            'button',
+	            {
+	              className: 'take-back-point waves-effect waves-light btn',
+	              id: this.props.player,
+	              onClick: this.onTakeBackClick.bind(this) },
+	            'Take Back'
+	          ),
+	          this.props.user.id !== 0 ? _react2.default.createElement(
+	            'div',
+	            { className: 'bottom-buttons' },
+	            _react2.default.createElement(
+	              'i',
+	              { className: 'material-icons', onClick: this.activatePutModal.bind(this) },
+	              'mode_edit'
+	            ),
+	            _react2.default.createElement(
+	              'i',
+	              { className: 'material-icons', onClick: this.props.swapUser.bind(this) },
+	              'loop'
+	            ),
+	            _react2.default.createElement(
+	              'i',
+	              { className: 'material-icons', onClick: this.props.logoutUser.bind(this, this.props.user.id) },
+	              'not_interested'
+	            )
+	          ) : ""
+	        ),
+	        _react2.default.createElement(_Modal2.default, { formHandler: this.props.updateUserName, idSuffix: this.props.player, user: this.props.user })
+	      );
+	    }
+	  }]);
+
+	  return PlayerCard;
+	}(_react2.default.Component);
+
+	exports.default = PlayerCard;
+
+/***/ },
 /* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -23796,200 +23994,6 @@
 	}(_react2.default.Component);
 
 	exports.default = Background;
-
-/***/ },
-/* 205 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Profile = __webpack_require__(179);
-
-	var _Profile2 = _interopRequireDefault(_Profile);
-
-	var _Score = __webpack_require__(180);
-
-	var _Score2 = _interopRequireDefault(_Score);
-
-	var _Modal = __webpack_require__(181);
-
-	var _Modal2 = _interopRequireDefault(_Modal);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * MIT License
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright (c) 2016 David Gorelik, Wes Hampson.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Permission is hereby granted, free of charge, to any person obtaining a copy
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * of this software and associated documentation files (the "Software"), to deal
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * in the Software without restriction, including without limitation the rights
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * copies of the Software, and to permit persons to whom the Software is
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * furnished to do so, subject to the following conditions:
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * The above copyright notice and this permission notice shall be included in
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * all copies or substantial portions of the Software.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * SOFTWARE.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-
-	var PlayerCard = function (_React$Component) {
-	  _inherits(PlayerCard, _React$Component);
-
-	  function PlayerCard(props) {
-	    _classCallCheck(this, PlayerCard);
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PlayerCard).call(this, props));
-
-	    _this.state = { style: {} };
-	    return _this;
-	  }
-
-	  _createClass(PlayerCard, [{
-	    key: 'checkWinner',
-	    value: function checkWinner() {
-	      console.log(this.props.user);
-	      switch (this.props.winner) {
-	        case "player1":
-	          if (this.props.player === "player1") {
-	            return _react2.default.createElement(
-	              'h3',
-	              null,
-	              'WINNER'
-	            );
-	          }
-	          break;
-	        case "player2":
-	          if (this.props.player === "player2") {
-	            return _react2.default.createElement(
-	              'h3',
-	              null,
-	              'WINNER'
-	            );
-	          }
-	          break;
-	      }
-	    }
-	  }, {
-	    key: 'isServer',
-	    value: function isServer() {
-	      return this.props.server === this.props.player;
-	    }
-	  }, {
-	    key: 'onTakeBackClick',
-	    value: function onTakeBackClick(e) {
-	      var player = e.target.id == "player1" ? 1 : 2;
-	      this.props.decrementScore(player);
-	    }
-	  }, {
-	    key: 'styleCard',
-	    value: function styleCard() {
-	      var res = {};
-	      if (this.props.user.name) {
-	        Object.assign(res, { paddingTop: "4%" });
-	      }
-	      if (this.props.winner === this.props.player) {
-	        Object.assign(res, { backgroundColor: "#22CC22" });
-	      } else if (this.props.winner) {
-	        Object.assign(res, { opacity: 0.5, paddingTop: 115 });
-	      }
-	      if (this.props.user.id !== 0) {
-	        Object.assign(res, { paddingBottom: 10 });
-	      }
-	      return res;
-	    }
-	  }, {
-	    key: 'activatePutModal',
-	    value: function activatePutModal() {
-	      $('#modal-' + this.props.player).openModal();
-	      $('.name').val(this.props.user.name);
-	      $('.name').focus();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { id: this.props.player, className: "col s4 offset-" + this.props.offset },
-	        _react2.default.createElement(
-	          'div',
-	          {
-	            style: this.styleCard(),
-	            className: 'card center-align z-depth-5' },
-	          this.checkWinner(),
-	          _react2.default.createElement(
-	            'div',
-	            { id: 'serving-marker' },
-	            this.isServer() ? _react2.default.createElement('img', { src: 'assets/ping-pong-red.png', alt: 'serving marker', height: '42', width: '42' }) : ""
-	          ),
-	          _react2.default.createElement(_Profile2.default, {
-	            player: this.props.player,
-	            className: 'profile-div',
-	            user: this.props.user,
-	            picURL: this.props.picURL }),
-	          _react2.default.createElement(_Score2.default, {
-	            className: 'score-div',
-	            score: this.props.score,
-	            user: this.props.user }),
-	          this.props.winner ? "" : _react2.default.createElement(
-	            'button',
-	            {
-	              className: 'take-back-point waves-effect waves-light btn',
-	              id: this.props.player,
-	              onClick: this.onTakeBackClick.bind(this) },
-	            'Take Back'
-	          ),
-	          this.props.user.id !== 0 ? _react2.default.createElement(
-	            'div',
-	            { className: 'bottom-buttons' },
-	            _react2.default.createElement(
-	              'i',
-	              { className: 'material-icons', onClick: this.activatePutModal.bind(this) },
-	              'mode_edit'
-	            ),
-	            _react2.default.createElement(
-	              'i',
-	              { className: 'material-icons', onClick: this.props.swapUser.bind(this) },
-	              'loop'
-	            ),
-	            _react2.default.createElement(
-	              'i',
-	              { className: 'material-icons', onClick: this.props.logoutUser.bind(this, this.props.user.id) },
-	              'not_interested'
-	            )
-	          ) : ""
-	        ),
-	        _react2.default.createElement(_Modal2.default, { formHandler: this.props.updateUserName, idSuffix: this.props.player, user: this.props.user })
-	      );
-	    }
-	  }]);
-
-	  return PlayerCard;
-	}(_react2.default.Component);
-
-	exports.default = PlayerCard;
 
 /***/ }
 /******/ ]);

@@ -318,12 +318,12 @@ export default class ScoreboardApp extends React.Component {
   }
 
 
-  assignUser(name, id, rating) {
+  assignUser(name, id, rating) { // This block may be refactored to switch stetements
     if(this.state.userOne.id && this.state.userTwo.id) {
       this.setState({userOne: {name, id, rating}});
-    } else if(this.state.userOne.id === id) {
+    } else if(this.state.userOne.id === id) { // Can be removed, but might still be a nice feature
       this.setState({userOne: this.state.userTwo, userTwo: {name, id, rating}});
-    } else if(this.state.userTwo.id === id) {
+    } else if(this.state.userTwo.id === id) { // Can be removed, but might still be a nice feature
       this.setState({userTwo: this.state.userOne, userOne: {name, id, rating}});
     } else {
       if (this.state.userOne.id) {
@@ -338,17 +338,20 @@ export default class ScoreboardApp extends React.Component {
   postWithRFID(id, e) { // id parameter is not used. This is necessary for e to capture the Event Object and prevent the default form submission.
     e.preventDefault();
     var playerName = $('.name');
+    console.log(playerName);
     axios.post("api/user/register", {rfid:this.state.rfid, name:playerName.val()})
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.data) {
           this.assignUser(response.data.name, response.data._id, response.data.rating);
         }
       })
       .catch(function (error) {
         alert(error);
+      }).then(function() {
+        playerName.val('');
       });
-    playerName.val('');
+
   }
 
 
@@ -365,7 +368,7 @@ export default class ScoreboardApp extends React.Component {
           if(!data.rfid || String(data.rfid).length > 7) {
             alert("something went wrong");
           } else {
-            this.setState({rfid:data.rfid});
+            this.setState({rfid:data.rfid}); // not sure if this is still necessary
             $('#modal-post').openModal();
             $('.name').focus();
           }
