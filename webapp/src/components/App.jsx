@@ -81,7 +81,7 @@ export default class ScoreboardApp extends React.Component {
     this.state = defaults;
 
     // Configure Pusher
-    const pusher = new Pusher('3c2527d150d803fc2cd0', {
+    const pusher = new Pusher('891a884611460b9d6699', {
       cluster: 'eu',
       encrypted: true
     });
