@@ -21533,12 +21533,16 @@
 	  userOne: {
 	    name: null,
 	    id: 0, // evaluates as falsey
-	    rating: 0
+	    rating: 0,
+	    longestStreak: 0,
+	    streak: 0
 	  },
 	  userTwo: {
 	    name: null,
 	    id: 0, // evaluates as falsey
-	    rating: 0
+	    rating: 0,
+	    longestStreak: 0,
+	    streak: 0
 	  },
 	  winner: null,
 	  server: null
@@ -21659,12 +21663,47 @@
 	  }, {
 	    key: 'incrementScore',
 	    value: function incrementScore(player) {
+	      var newLongestStreak;
 	      switch (player) {
 	        case 1:
-	          this.setState({ playerOneScore: this.state.playerOneScore + 1 });
+	          newLongestStreak = this.state.userOne.streak > this.state.userOne.longestStreak ? this.state.userOne.streak : this.state.userOne.longestStreak; // find user one's new longest streak
+
+	          this.setState({
+	            playerOneScore: this.state.playerOneScore + 1,
+	            userOne: { // Hard coded because plugin was not working. Unable to use object spread operator from es6
+	              name: this.state.userOne.name,
+	              id: this.state.userOne.id,
+	              rating: this.state.userOne.rating,
+	              streak: this.state.userOne.streak + 1,
+	              longestStreak: newLongestStreak
+	            },
+	            userTwo: {
+	              name: this.state.userTwo.name,
+	              id: this.state.userTwo.id,
+	              rating: this.state.userTwo.rating,
+	              streak: 0
+	            }
+	          });
 	          break;
 	        case 2:
-	          this.setState({ playerTwoScore: this.state.playerTwoScore + 1 });
+	          newLongestStreak = this.state.userTwo.streak > this.state.userTwo.longestStreak ? this.state.userTwo.streak : this.state.userTwo.longestStreak; // find user one's new longest streak
+
+	          this.setState({
+	            playerTwoScore: this.state.playerTwoScore + 1,
+	            userTwo: {
+	              name: this.state.userTwo.name,
+	              id: this.state.userTwo.id,
+	              rating: this.state.userTwo.rating,
+	              streak: this.state.userTwo.streak + 1,
+	              longestStreak: newLongestStreak
+	            },
+	            userOne: {
+	              name: this.state.userOne.name,
+	              id: this.state.userOne.id,
+	              rating: this.state.userOne.rating,
+	              streak: 0
+	            }
+	          });
 	          break;
 	      }
 
@@ -21685,17 +21724,48 @@
 	    key: 'decrementScore',
 	    value: function decrementScore(player) {
 	      this.toggleServer();
-
+	      var newLongestStreak;
+	      var newStreak;
 	      switch (player) {
 	        case 1:
-	          if (this.state.playerOneScore > 0) {
-	            this.setState({ playerOneScore: this.state.playerOneScore - 1 });
-	          }
+	          newLongestStreak = this.state.userOne.streak > this.state.userOne.longestStreak ? this.state.userOne.streak : this.state.userOne.longestStreak; // find user one's new longest streak
+	          newStreak = this.state.userOne.streak === 0 ? 0 : this.state.userOne.streak - 1;
+	          this.setState({
+	            playerOneScore: this.state.playerOneScore - 1,
+	            userOne: { // Hard coded because plugin was not working. Unable to use object spread operator from es6
+	              name: this.state.userOne.name,
+	              id: this.state.userOne.id,
+	              rating: this.state.userOne.rating,
+	              streak: newStreak,
+	              longestStreak: newLongestStreak
+	            },
+	            userTwo: {
+	              name: this.state.userTwo.name,
+	              id: this.state.userTwo.id,
+	              rating: this.state.userTwo.rating,
+	              streak: 0
+	            }
+	          });
 	          break;
 	        case 2:
-	          if (this.state.playerTwoScore > 0) {
-	            this.setState({ playerTwoScore: this.state.playerTwoScore - 1 });
-	          }
+	          newLongestStreak = this.state.userTwo.streak > this.state.userTwo.longestStreak ? this.state.userTwo.streak : this.state.userTwo.longestStreak; // find user one's new longest streak
+	          newStreak = this.state.userTwo.streak === 0 ? 0 : this.state.userTwo.streak - 1;
+	          this.setState({
+	            playerTwoScore: this.state.playerTwoScore - 1,
+	            userTwo: { // Hard coded because plugin was not working. Unable to use object spread operator from es6
+	              name: this.state.userTwo.name,
+	              id: this.state.userTwo.id,
+	              rating: this.state.userTwo.rating,
+	              streak: newStreak,
+	              longestStreak: newLongestStreak
+	            },
+	            userOne: {
+	              name: this.state.userOne.name,
+	              id: this.state.userOne.id,
+	              rating: this.state.userOne.rating,
+	              streak: 0
+	            }
+	          });
 	          break;
 	      }
 	    }
@@ -21833,12 +21903,14 @@
 	        playerOne: {
 	          user_id: this.state.userOne.id,
 	          score: this.state.playerOneScore,
-	          rating: this.state.userOne.rating
+	          rating: this.state.userOne.rating,
+	          longestStreak: this.state.userOne.longestStreak
 	        },
 	        playerTwo: {
 	          user_id: this.state.userTwo.id,
 	          score: this.state.playerTwoScore,
-	          rating: this.state.userTwo.rating
+	          rating: this.state.userTwo.rating,
+	          longestStreak: this.state.userTwo.longestStreak
 	        }
 	      };
 	      _axios2.default.post('/api/games', stats).catch(function (err) {
@@ -22222,6 +22294,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { id: this.props.player, className: "col s4 offset-" + this.props.offset },
+	        this.props.user.streak >= 3 ? _react2.default.createElement('img', { className: 'flames', src: 'assets/flames.png' }) : "",
 	        _react2.default.createElement(
 	          'div',
 	          {

@@ -55,8 +55,7 @@ var sendJSONResponse = function (res,status,content) {
 
 
 
-_calculateRatings = function (playerOne, playerTwo) {
-  var resultOfGame = playerOne.score>playerTwo.score ? 1 : 0;
+_calculateRatings = function (playerOne, playerTwo, resultOfGame) {
   var odds = elo.bothExpectedScores(playerOne.rating, playerTwo.rating); // returns an array with odds[0] = playerOneOdds, and odds[1] = playerTwoOdds
   console.log("The odds of PlayerOne winning are about:", odds[0]);
   playerOne.rating = elo.newRating(odds[0], resultOfGame, playerOne.rating);
@@ -127,20 +126,29 @@ module.exports.updateUserName = function (req,res) {
 
 
 module.exports.updateUserRatings = function (req, res) {
-  _calculateRatings(req.body.playerOne, req.body.playerTwo);
-  Users
-    .findById(req.body.playerOne.user_id, function (err, user) {
-      if (err) console.log(err);
-      user.rating = req.body.playerOne.rating;
-      user.gameCount += 1;
-      user.save();
-    });
-  Users
-    .findById(req.body.playerTwo.user_id, function (err, user) {
-      if (err) console.log(err);
-      user.rating = req.body.playerTwo.rating;
-      user.gameCount += 1;
-      user.save();
-    });
+  var resultOfGame = playerOne.score>playerTwo.score ? 1 : 0;
+  _calculateRatings(req.body.playerOne, req.body.playerTwo, resultOfGame);
+  if (req.body.playerOne.user_id) {
+    Users
+      .findById(req.body.playerOne.user_id, function (err, user) {
+        if (err) console.log(err);
+        user.rating = req.body.playerOne.rating;
+        user.gameCount += 1;
+        if (resultOfGame === 1)       user.wins += 1;
+        else if (resultOfGame === 0)  user.losses += 1;
+        user.save();
+      });
+  }
+  if (req.body.playerTwo.user_id) {
+    Users
+      .findById(req.body.playerTwo.user_id, function (err, user) {
+        if (err) console.log(err);
+        user.rating = req.body.playerTwo.rating;
+        user.gameCount += 1;
+        if (resultOfGame === 0)       user.wins += 1;
+        else if (resultOfGame === 1)  user.losses += 1;
+        user.save();
+      });
+  }
   sendJSONResponse(res, 201, null);
 }

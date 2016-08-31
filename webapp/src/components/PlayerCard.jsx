@@ -84,6 +84,7 @@ export default class PlayerCard extends React.Component {
   render() {
     return (
       <div id={this.props.player} className={"col s4 offset-" + this.props.offset}>
+        {this.props.user.streak >= 3?<img className="flames" src="assets/flames.png" />:""}
         <div
             style={this.styleCard()}
             className="card center-align z-depth-5">

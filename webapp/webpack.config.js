@@ -35,7 +35,10 @@ module.exports = {
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loader: 'babel'
+      loader: 'babel',
+      query: {
+        presets: ['es2015','react']
+      }
     }]
   },
   resolve : {
@@ -50,7 +53,5 @@ module.exports = {
     contentBase: './public/dist',
     hot: true
   },
-  // plugins: [
-  //   new webpack.HotModuleReplacementPlugin()
-  // ]
+  // plugins: ["transform-object-rest-spread"]
 }

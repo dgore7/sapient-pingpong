@@ -29,11 +29,13 @@ var GameSchema = new mongoose.Schema({
   duration: Number,
   playerOne: {
     user_id: Number,
-    score: Number
+    score: Number,
+    longestStreak: Number
   },
   playerTwo: {
     user_id: Number,
-    score: Number
+    score: Number,
+    longestStreak: Number
   }
 });
 
