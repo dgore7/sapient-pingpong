@@ -100,12 +100,7 @@
   align-self: flex-end;
 }
 
-img.flames {
-  position: absolute;
-  z-index: 5;
-  top: 17%;
-  width: 32%;
-}
+img.flames { display:none;}
 
 .card > button {
   margin-top: 30%;
@@ -120,6 +115,14 @@ img.flames {
 @media (orientation: portrait) {
   .card{
     margin-top: 120%
+  }
+
+  img.flames {
+    display: block;
+    position: absolute;
+    z-index: 5;
+    top: 17%;
+    width: 32%;
   }
 
   .score > h1 {

@@ -25,7 +25,6 @@
 var express = require('express');
 var router = express.Router();
 var Pusher = require('pusher');
-var secret = require('../../secret');
 
 var debounce = false;
 var timeout = null;

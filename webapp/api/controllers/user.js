@@ -27,7 +27,6 @@ require('../models/user');
 var Users = mongoose.model("User");
 var Pusher = require('pusher');
 var Elo = require('arpad');
-var secret = require('../../secret');
 
 var uscf = {
   default: 32,
@@ -35,7 +34,6 @@ var uscf = {
   2400: 16
 };
 var elo = new Elo(uscf, 100);
-
 
 
 var pusher = new Pusher({

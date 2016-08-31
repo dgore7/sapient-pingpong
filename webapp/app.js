@@ -26,7 +26,6 @@ var http = require('http');
 var express = require('express');
 var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
-var secret = require('./secret');
 const path = require('path');
 require('./api/models/db');
 
