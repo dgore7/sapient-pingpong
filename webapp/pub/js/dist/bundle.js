@@ -21664,45 +21664,27 @@
 	    key: 'incrementScore',
 	    value: function incrementScore(player) {
 	      var newLongestStreak;
+	      var newUserOne;
+	      var newUserTwo;
 	      switch (player) {
 	        case 1:
-	          newLongestStreak = this.state.userOne.streak > this.state.userOne.longestStreak ? this.state.userOne.streak : this.state.userOne.longestStreak; // find user one's new longest streak
-
+	          newLongestStreak = this.state.userOne.streak + 1 > this.state.userOne.longestStreak ? this.state.userOne.streak + 1 : this.state.userOne.longestStreak; // find user one's new longest streak
+	          newUserOne = Object.assign({}, this.state.userOne, { streak: this.state.userOne.streak + 1, longestStreak: newLongestStreak });
+	          newUserTwo = Object.assign({}, this.state.userTwo, { streak: 0 });
 	          this.setState({
 	            playerOneScore: this.state.playerOneScore + 1,
-	            userOne: { // Hard coded because plugin was not working. Unable to use object spread operator from es6
-	              name: this.state.userOne.name,
-	              id: this.state.userOne.id,
-	              rating: this.state.userOne.rating,
-	              streak: this.state.userOne.streak + 1,
-	              longestStreak: newLongestStreak
-	            },
-	            userTwo: {
-	              name: this.state.userTwo.name,
-	              id: this.state.userTwo.id,
-	              rating: this.state.userTwo.rating,
-	              streak: 0
-	            }
+	            userOne: newUserOne,
+	            userTwo: newUserTwo
 	          });
 	          break;
 	        case 2:
-	          newLongestStreak = this.state.userTwo.streak > this.state.userTwo.longestStreak ? this.state.userTwo.streak : this.state.userTwo.longestStreak; // find user one's new longest streak
-
+	          newLongestStreak = this.state.userTwo.streak + 1 > this.state.userTwo.longestStreak ? this.state.userTwo.streak + 1 : this.state.userTwo.longestStreak; // find user one's new longest streak
+	          newUserOne = Object.assign({}, this.state.userOne, { streak: 0 });
+	          newUserTwo = Object.assign({}, this.state.userTwo, { streak: this.state.userTwo.streak + 1, longestStreak: newLongestStreak });
 	          this.setState({
 	            playerTwoScore: this.state.playerTwoScore + 1,
-	            userTwo: {
-	              name: this.state.userTwo.name,
-	              id: this.state.userTwo.id,
-	              rating: this.state.userTwo.rating,
-	              streak: this.state.userTwo.streak + 1,
-	              longestStreak: newLongestStreak
-	            },
-	            userOne: {
-	              name: this.state.userOne.name,
-	              id: this.state.userOne.id,
-	              rating: this.state.userOne.rating,
-	              streak: 0
-	            }
+	            userTwo: newUserTwo,
+	            userOne: newUserOne
 	          });
 	          break;
 	      }
@@ -21860,10 +21842,13 @@
 	  }, {
 	    key: 'logoutUser',
 	    value: function logoutUser(id) {
+	      var userToLogout = void 0;
 	      if (this.state.userOne.id === id) {
-	        this.setState({ userOne: { name: null, id: 0 } });
+	        userToLogout = Object.assign({}, userOne, { name: null, id: 0, rating: 0 });
+	        this.setState({ userOne: userToLogout });
 	      } else {
-	        this.setState({ userTwo: { name: null, id: 0 } });
+	        userToLogout = Object.assign({}, userTwo, { name: null, id: 0, rating: 0 });
+	        this.setState({ userTwo: userToLogout });
 	      }
 	    }
 
@@ -21875,13 +21860,16 @@
 	      var _this2 = this;
 
 	      e.preventDefault();
+	      var newUser;
 	      var playerName = $('.name' + user.id);
 	      _axios2.default.put("api/user/update", { rfid: user.id, name: playerName.val() }).then(function (response) {
 	        if (response.data) {
 	          if (response.data._id === _this2.state.userOne.id) {
-	            _this2.setState({ userOne: { name: response.data.name, id: response.data._id, rating: response.data.rating } });
+	            newUser = Object.assign({}, thist.state.userOne, { name: response.data.name, id: response.data._id, rating: response.data.rating });
+	            _this2.setState({ userOne: userOne });
 	          } else {
-	            _this2.setState({ userTwo: { name: response.data.name, id: response.data._id, rating: response.data.rating } });
+	            newUser = Object.assign({}, _this2.state.userTwo, { name: response.data.name, id: response.data._id, rating: response.data.rating });
+	            _this2.setState({ userTwo: userTwo });
 	          }
 	        }
 	      }).catch(function (error) {
@@ -21921,19 +21909,21 @@
 	    key: 'assignUser',
 	    value: function assignUser(name, id, rating) {
 	      // This block may be refactored to switch stetements
+	      var newUserOne = Object.assign({}, this.state.userOne, { name: name, id: id, rating: rating }); // merge the two objects in the parameters
+	      var newUserTwo = Object.assign({}, this.state.userTwo, { name: name, id: id, rating: rating });
 	      if (this.state.userOne.id && this.state.userTwo.id) {
-	        this.setState({ userOne: { name: name, id: id, rating: rating } });
+	        this.setState({ userOne: newUserOne });
 	      } else if (this.state.userOne.id === id) {
 	        // Can be removed, but might still be a nice feature
-	        this.setState({ userOne: this.state.userTwo, userTwo: { name: name, id: id, rating: rating } });
+	        this.setState({ userOne: this.state.userTwo, userTwo: newUserOne });
 	      } else if (this.state.userTwo.id === id) {
 	        // Can be removed, but might still be a nice feature
-	        this.setState({ userTwo: this.state.userOne, userOne: { name: name, id: id, rating: rating } });
+	        this.setState({ userTwo: this.state.userOne, userOne: newUserTwo });
 	      } else {
 	        if (this.state.userOne.id) {
-	          this.setState({ userTwo: { name: name, id: id, rating: rating } });
+	          this.setState({ userTwo: newUserTwo });
 	        } else {
-	          this.setState({ userOne: { name: name, id: id, rating: rating } });
+	          this.setState({ userOne: newUserOne });
 	        }
 	      }
 	    }

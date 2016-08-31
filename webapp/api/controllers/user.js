@@ -126,7 +126,7 @@ module.exports.updateUserName = function (req,res) {
 
 
 module.exports.updateUserRatings = function (req, res) {
-  var resultOfGame = playerOne.score>playerTwo.score ? 1 : 0;
+  var resultOfGame = req.body.playerOne.score>req.body.playerTwo.score ? 1 : 0;
   _calculateRatings(req.body.playerOne, req.body.playerTwo, resultOfGame);
   if (req.body.playerOne.user_id) {
     Users
