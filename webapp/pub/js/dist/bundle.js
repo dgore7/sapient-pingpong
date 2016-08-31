@@ -22287,9 +22287,7 @@
 	        this.props.user.streak >= 3 ? _react2.default.createElement('img', { className: 'flames', src: 'assets/flames.png' }) : "",
 	        _react2.default.createElement(
 	          'div',
-	          {
-	            style: this.styleCard(),
-	            className: 'card center-align z-depth-5' },
+	          { style: this.styleCard(), className: 'card center-align z-depth-5' },
 	          this.checkWinner(),
 	          _react2.default.createElement(
 	            'div',

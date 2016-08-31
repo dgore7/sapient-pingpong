@@ -75,6 +75,7 @@ export default class PlayerCard extends React.Component {
     return res;
   }
 
+
   activatePutModal() {
     $('#modal-'+this.props.player).openModal();
     $('.name').val(this.props.user.name);
@@ -85,9 +86,7 @@ export default class PlayerCard extends React.Component {
     return (
       <div id={this.props.player} className={"col s4 offset-" + this.props.offset}>
         {this.props.user.streak >= 3?<img className="flames" src="assets/flames.png" />:""}
-        <div
-            style={this.styleCard()}
-            className="card center-align z-depth-5">
+        <div style={this.styleCard()} className="card center-align z-depth-5">
           {this.checkWinner()}
           <div id="serving-marker">{this.isServer()?<img src="assets/ping-pong-red.png" alt="serving marker" height="42" width="42"/>:""}</div>
           <Profile

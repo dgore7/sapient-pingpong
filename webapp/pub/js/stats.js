@@ -22,8 +22,7 @@
  * SOFTWARE.
  */
 
-console.log("wooo hooo!");
-
+ 
 $("td.time").each(function (index, elem) {
   var date = new Date(Number(elem.innerHTML));
   date = date.toLocaleString()

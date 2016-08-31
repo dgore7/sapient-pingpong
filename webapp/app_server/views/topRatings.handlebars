@@ -35,23 +35,25 @@
         <tr>
           <th data-field="king"></th>
           <th data-field="name">Name</th>
-          <th data-field="rating">Duration</th>
+          <th data-field="rating">Rating</th>
+          <th data-field="win-loss">Record</th>
           <th data-field="game-count">Games Played</th>
         </tr>
       </thead>
       <tbody>
         {{#each users}}
           <tr class="table-row">
-            <td width="12%" class="king" style="text-align: right">
+            <td class="king" style="text-align: right">
               {{#unless @index}}
                 <img width="24" height="24" id="highscore-icon" src="/assets/crown_gold.png"/>
               {{/unless}}
             </td>
-            <td class="name" width="19%" >
+            <td class="name" >
               {{this.name}}
               </td>
-            <td class="rating" width="33%">{{this.rating}}</td>
-            <td class="game-count" width="33%">{{this.gameCount}}</td>
+            <td class="rating">{{this.rating}}</td>
+            <td class="win-loss">W - {{this.wins}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp L - {{this.losses}}</td>
+            <td class="game-count" >{{this.gameCount}}</td>
           </tr>
         {{/each}}
       </tbody>
