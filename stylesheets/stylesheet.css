@@ -882,15 +882,18 @@ footer a:hover {
 
 /* ======== custom styles =========*/
 .my-pics {
-  width: 30%;
-  display: inline;
-  margin-top:300px; 
+  display: flex;
+}
+.my-pics-col {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
 }
 
-.my-pics > a > img{
+.my-pics-col > a > img{
   box-shadow: 2px 2px 20px grey;
-  width: 340px;
-  height: 220px;
+  /*width: 340px;
+  height: 220px;*/
 }
 
 div.implementation {
