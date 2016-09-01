@@ -28,77 +28,74 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
+          <h2><a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h2>
+
+          <p>Sapient Pingpong is an instrumented pingpong platform developed by the SapientNitro Chicago 2016 summer interns, Wesley Hampson and David Gorelik. The platform is built with nodejs and express on the back-end, and React on the front-end. It also includes a serial reader wrtiten in C# that reads input from an RFID scanner.</p>
+
           <h2>
-<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h2>
-
-<p>Sapient Pingpong is an instrumented pingpong platform developed by the SapientNitro Chicago 2016 summer interns, Wesley Hampson and David Gorelik. The platform is built with nodejs and express on the back-end, and React on the front-end. It also includes a serial reader wrtiten in C# that reads input from an RFID scanner.</p>
-
-<h2>
-<a id="implementation" class="anchor" href="#implementation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Implementation</h2>
+          <a id="implementation" class="anchor" href="#implementation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Implementation</h2>
 
 
 
 
-<div class="implementation">
-  <div class="left-implementation">
-    <p>
-      <strong>Project Structure</strong>
-    </p>
+          <div class="implementation">
+            <div class="left-implementation">
+              <p>
+                <strong>Project Structure</strong>
+              </p>
 
-    <p>
-      The project is divided into two parts, the RFID reader and webapp. Through out the project we follow an MVC pattern in each piece of the app. The RFID folder contains the C# program that runs on a windows IoT operating system and reads input from a pcProx RFID reader. The webapp folder contains an API that facilitates communication with the database, a server folder which handles page requests, a public folder containing assets, css, javascript, and transpiled react code, and the src folder contains the original react source code
-    </p>
-  </div>
-  <pre><code>root
-    ├───rfid
-    │   └───RFIDPost
-    │       ├───Assets
-    │       └───Properties
-    └───webapp
-        └───sapient-pingpong
-            ├───api
-            │   ├───controllers
-            │   ├───models
-            │   └───routes
-            ├───app_server
-            │   ├───controllers
-            │   ├───routes
-            │   └───views
-            ├───pub
-            │   ├───assets
-            │   ├───dist
-            │   │   └───css
-            │   └───js
-            └───src
-                └───components
-  </code></pre>
+              <p>
+                The project is divided into two parts, the RFID reader and webapp. Through out the project, we follow an MVC pattern in each piece of the app. The RFID folder contains the C# application that runs on a windows IoT operating system and reads input from a pcProx RFID reader. The webapp folder contains an API that facilitates communication with the database, a server folder which handles page requests, a public folder containing assets, css, javascript, and transpiled react code, and the src folder contains the original react source code
+              </p>
+            </div>
+            <pre><code>root
+              ├───rfid
+              │   └───RFIDPost
+              │       ├───Assets
+              │       └───Properties
+              └───webapp
+                  └───sapient-pingpong
+                      ├───api
+                      │   ├───controllers
+                      │   ├───models
+                      │   └───routes
+                      ├───app_server
+                      │   ├───controllers
+                      │   ├───routes
+                      │   └───views
+                      ├───pub
+                      │   ├───assets
+                      │   ├───dist
+                      │   │   └───css
+                      │   └───js
+                      └───src
+                          └───components
+            </code></pre>
 
-</div>
+          </div>
 
-<p>
-  <strong>How it works</strong>
-</p>
-
-
-
-<p>
-  The scoreboard is a react app designed for a tablet screen. The app hangs over the table and keeps score of the game through user button presses. The buttons fixed underneath the table are made by <a href="https://flic.io/">Flic</a>. Flic buttons work through bluetooth, and come with a phone app which can be configured to recieve button presses, and send an http request to the server based on the particular type of press. The button contact may be removed and used with the preferred button type (we recommend arcade style). The buttons also have other functionality such as point removal (on button hold) and server tracking (hold button at the start of game). The scoreboard also has a digital restart and takeback option. If server tracking is enabled, The serving marker will switch every five serves untill a player reaches 20. At that point the opposite player will serve untill the score is equalized, and then the server will change every two serves until a player wins by two poiints. On winning, the winners player card will be focused on the screen, and after 5 seconds the scoreboard will return to its idle state. We also used pusher as a socket for sending and recieving score and login information on the client.
-</p>
-
-<div class="my-pics">
-  <div class="my-pics-col">
-    <a href="images/scoreboard.png"><img src="images/scoreboard.png" alt="scoreboard" /></a>
-    <a href="images/button.jpg"><img src="images/button.jpg" alt="button" /></a>
-    <a href="images/transfer.jpg"><img src="images/transfer.jpg" alt="transferring circuit" /></a>
-  </div>
-  <div class="my-pics-col">
-    <a href="images/board.png"><img src="images/board.png" alt="scoreboard" /></a>
-    <a href="images/pedal.jpg"><img src="images/pedal.jpg" alt="foot pedal" /></a>
-    <a href="images/topscores.png"><img src="images/topscores.png" alt="top scores" /></a>
-  </div>
-</div>
+          <p>
+            <strong>How it works</strong>
+          </p>
 
 
+
+          <p>
+            The scoreboard is a react app designed for a tablet screen. The app hangs over the table and keeps score of the game through user button presses. The buttons fixed underneath the table are made by <a href="https://flic.io/">Flic</a>. Flic buttons work through bluetooth, and come with a phone app which can be configured to recieve button presses, and send an http request to the server based on the particular type of press. The button contact may be removed and used with the preferred button type (we found that foot pedals work particularly well). The buttons also have other functionality such as point removal (on button hold) and server tracking (hold button at the start of game). The scoreboard also has a digital restart and takeback option. If server tracking is enabled, The serving marker will switch every five serves until a player reaches 20. At that point the opposite player will serve untill the score is equalized, and then the server will change every two serves until a player wins by two points. On scoring the final point, the winners player card will be focused on the screen, and after 5 seconds the scoreboard will return to its idle state. We used pusher as a socket for sending and recieving score and login information on the client. The crown icon at the top of the scoreboard screen will redirect the user to the top ratings page.
+          </p>
+          <a href="images/topscores.png"><img class="fat-bastard" src="images/topscores.png" alt="top scores" /></a>
+
+          <div class="my-pics">
+            <div class="my-pics-col">
+
+            </div>
+            <div class="my-pics-col">
+
+            </div>
+            <div class="my-pics-col">
+
+            </div>
+          </div>
 
         </section>
 
@@ -113,6 +110,13 @@
           </a>
 
           <p class="repo-owner"><a href="https://github.com/dgore7/sapient-pingpong">Sapient Ping-Pong</a> is maintained by <a href="https://github.com/dgore7">dgore7</a>.</p>
+          <div class="fat-bastard">
+            <a href="images/transfer.jpg"><img src="images/transfer.jpg" alt="transferring circuit" /></a>
+            <a href="images/pedal.jpg"><img src="images/pedal.jpg" alt="foot pedal" /></a>
+            <a href="images/board.png"><img src="images/board.png" alt="scoreboard" /></a>
+            <a href="images/scoreboard.png"><img src="images/stand.jpg" alt="scoreboard" /></a>
+            <a href="images/button.jpg"><img src="images/button.jpg" alt="button" /></a>
+          </div>
 
         </aside>
       </div>

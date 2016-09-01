@@ -766,6 +766,10 @@ footer a:hover {
   content: '.';
 }
 
+.fat-bastard a img {
+  max-width: 110%;
+}
+
 .clearfix {display: inline-block;}
 * html .clearfix {height: 1%;}
 .clearfix {display: block;}
@@ -871,6 +875,15 @@ footer a:hover {
     margin-left: 0;
     content: none;
   }
+  div.fat-bastard {
+    display: none;
+    width: 100% ! important;
+    min-height: 0;
+    padding: 20px 0;
+    margin-top: 20px;
+
+  }
+
 }
 
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
@@ -882,18 +895,41 @@ footer a:hover {
 
 /* ======== custom styles =========*/
 .my-pics {
+  width: 200%;
+  margin-left: -25%;
   display: flex;
+  flex-wrap: wrap;
+
 }
 .my-pics-col {
-  width: 50%;
+  width: 25%;
+  height: 300px;
   display: flex;
   flex-direction: column;
 }
 
 .my-pics-col > a > img{
   box-shadow: 2px 2px 20px grey;
+  max-height: 460px;
+  width: 100%;
   /*width: 340px;
   height: 220px;*/
+}
+
+.my-pics-col a {
+  padding: 3px;
+}
+
+img.half-col {
+  height: 230px;
+}
+
+img.three-four {
+  height: 345px;
+}
+
+img.one-four {
+  height: 115px;
 }
 
 div.implementation {
