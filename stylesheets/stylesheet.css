@@ -876,7 +876,7 @@ footer a:hover {
     content: none;
   }
   div.fat-bastard {
-    display: none;
+    
     width: 100% ! important;
     min-height: 0;
     padding: 20px 0;
